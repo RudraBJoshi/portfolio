@@ -1,13 +1,4 @@
-// Import root color map
-@import "root-color-map";
-
-// Responsive logo / nav styles
-@import "nav";
-
-// Then your existing imports
-@import "open-coding/main";
-@import "lessonbase";
-@import "footer";
+@import "nighthawk/main";
 
 // ── Full-bleed kill switch ────────────────────────────────────────────
 // Add `full-bleed: true` to a page's front matter, then wrap content
