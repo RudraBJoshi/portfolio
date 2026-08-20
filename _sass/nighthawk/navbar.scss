@@ -13,7 +13,8 @@
     background-color: transparent;
 }
 
-.site-nav .page-link {
+.site-nav .page-link,
+.site-nav .nav-item {
     color: #eeeeec !important;
     line-height: 1.5;
     padding: 5px 10px;
@@ -35,7 +36,8 @@
     }
 }
 
-.site-nav .page-link:not(:last-child) {
+.site-nav .page-link:not(:last-child),
+.site-nav .nav-item:not(:last-child) {
     margin-right: 0;
 }
 
@@ -46,7 +48,8 @@
 .site-title,
 .site-title:visited,
 .site-nav,
-.page-link {
+.page-link,
+.nav-item {
     font-weight: bolder;
 }
 
