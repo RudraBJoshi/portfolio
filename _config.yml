@@ -92,7 +92,11 @@ minima:
   social_links:
     - { platform: github, user_url: "https://github.com/open-coding-society" }
     - { platform: x, user_url: "https://x.com/Open_Coding" }
-    - { platform: youtube, user_url: "https://www.youtube.com/@OpenCodingSociety" } 
+    - { platform: youtube, user_url: "https://www.youtube.com/@OpenCodingSociety" }
+  nav_pages:
+    - navigation/blog.md
+    - navigation/search.md
+    - navigation/logintoolkit.md
 plugins:
   - jekyll-remote-theme
   - jekyll-include-cache
