@@ -163,7 +163,7 @@ permalink: /search/
       <span class="proj-tag">JavaScript</span>
     </div>
     <div class="proj-links">
-      <a class="proj-link primary" href="/student/titanic">View</a>
+      <a class="proj-link primary" href="/portfolio/titanic">View</a>
     </div>
   </div>
 
@@ -180,7 +180,7 @@ permalink: /search/
       <span class="proj-tag">Networking</span>
     </div>
     <div class="proj-links">
-      <a class="proj-link primary" href="/student/netmaster">Play</a>
+      <a class="proj-link primary" href="/portfolio/netmaster">Play</a>
     </div>
   </div>
 
@@ -197,7 +197,7 @@ permalink: /search/
       <span class="proj-tag">Deep Learning</span>
     </div>
     <div class="proj-links">
-      <a class="proj-link primary" href="/student/digitrecog/">View</a>
+      <a class="proj-link primary" href="/portfolio/digitrecog/">View</a>
     </div>
   </div>
 
@@ -231,7 +231,7 @@ permalink: /search/
       <span class="proj-tag">Cloud</span>
     </div>
     <div class="proj-links">
-      <a class="proj-link primary" href="/student/ocsworkspace">View</a>
+      <a class="proj-link primary" href="/portfolio/ocsworkspace">View</a>
     </div>
   </div>
 
@@ -248,7 +248,7 @@ permalink: /search/
       <span class="proj-tag">AP CSP</span>
     </div>
     <div class="proj-links">
-      <a class="proj-link primary" href="/student/pseudocode-runner/">Open</a>
+      <a class="proj-link primary" href="/portfolio/pseudocode-runner/">Open</a>
     </div>
   </div>
 

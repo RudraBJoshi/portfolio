@@ -2,8 +2,8 @@ title: Rudra Joshi
 description: "Class of 2028"
 owner_name: Rudra Joshi
 github_username: RudraBJoshi 
-github_repo: "student" 
-baseurl: "/student" 
+github_repo: "portfolio"
+baseurl: "/portfolio"
 future: true
 
 # Build settings
