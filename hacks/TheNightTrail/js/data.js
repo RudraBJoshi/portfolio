@@ -1,73 +1,81 @@
 const OCCUPATIONS = [
-  { id: "guide",    name: "Night Guide",    money: 400, desc: "Knows the safe paths. Less starting cash." },
-  { id: "farmer",   name: "Farmer",         money: 700, desc: "Steady and thrifty. Average cash." },
-  { id: "merchant", name: "Merchant",       money: 1200, desc: "Deep pockets, less trail experience." },
+  { id: "farmer",   name: "Farmer",       money: 500,  desc: "Land and livestock left behind. Little cash saved." },
+  { id: "trader",   name: "Cloth Trader", money: 900,  desc: "A shop in Mirpur Khas, sold in haste. Modest savings." },
+  { id: "teacher",  name: "Schoolteacher",money: 650,  desc: "Respected in town, but teachers were never rich." },
 ];
 
 const SUPPLY_ITEMS = [
   { id: "food",    name: "Food",        unit: "lbs",     price: 0.20 },
-  { id: "ammo",    name: "Ammunition",  unit: "boxes",   price: 2.00 },
+  { id: "water",   name: "Water",       unit: "jars",    price: 0.35 },
   { id: "medicine",name: "Medicine",    unit: "kits",    price: 5.00 },
-  { id: "parts",   name: "Spare Parts", unit: "sets",    price: 8.00 },
+  { id: "parts",   name: "Repair Cloth",unit: "sets",    price: 8.00 },
   { id: "lantern", name: "Lantern Oil", unit: "flasks",  price: 1.50 },
 ];
 
 const LANDMARKS = [
-  { name: "Riverside Camp",   miles: 0 },
-  { name: "Hollow Creek",     miles: 180 },
-  { name: "Widow's Pass",     miles: 360 },
-  { name: "Blackwood Forest", miles: 540 },
-  { name: "Coldstone Ridge",  miles: 720 },
-  { name: "Moonlit Crossing", miles: 900 },
-  { name: "The Last Ferry",   miles: 1080 },
+  { name: "Mirpur Khas", miles: 0 },
+  { name: "Umerkot",     miles: 25 },
+  { name: "Khokhrapar",  miles: 95 },
+  { name: "Munabao — the border", miles: 100 },
+  { name: "Barmer",      miles: 165 },
+  { name: "Jodhpur",     miles: 300 },
 ];
 
-const TOTAL_MILES = LANDMARKS[LANDMARKS.length - 1].miles + 120;
+const TOTAL_MILES = LANDMARKS[LANDMARKS.length - 1].miles;
 
 const RANDOM_EVENTS = [
   {
-    id: "wolves",
-    title: "Wolves in the Dark",
-    body: "Eyes catch your lantern light at the treeline. A pack is circling the wagon.",
+    id: "heatstroke",
+    title: "The Sun Turns Cruel",
+    body: "Midday heat catches the column before shade can be found. Throats are dry and tempers short.",
     choices: [
-      { label: "Fire a warning shot", requires: { ammo: 1 }, apply: (s) => { s.inventory.ammo -= 1; s.log("The shot scatters them. Ammo used.", "good"); } },
-      { label: "Keep the fire high and wait", apply: (s) => { s.damagePartyHealth(4); s.log("A tense night. Everyone is shaken but alive.", "bad"); } },
+      { label: "Share water from the jars", requires: { water: 2 }, apply: (s) => { s.inventory.water -= 2; s.log("The water holds everyone together a little longer.", "good"); } },
+      { label: "Push on and ration what's left", apply: (s) => { s.damagePartyHealth(6); s.log("The heat takes its toll on the weakest among you.", "bad"); } },
     ],
   },
   {
-    id: "brokenAxle",
-    title: "Broken Axle",
-    body: "A wheel splits on a hidden rut in the dark road.",
+    id: "strapTear",
+    title: "A Satchel Strap Tears",
+    body: "One of the satchels gives out crossing rough, rocky ground — its strap frayed thin from the weight of everything you own.",
     choices: [
-      { label: "Repair with spare parts", requires: { parts: 1 }, apply: (s) => { s.inventory.parts -= 1; s.log("You patch the axle and press on.", "good"); } },
-      { label: "Lash it together and go slow", apply: (s) => { s.pace = "slow"; s.log("The wagon groans but holds, at a crawl.", "bad"); } },
+      { label: "Mend it with repair cloth", requires: { parts: 1 }, apply: (s) => { s.inventory.parts -= 1; s.log("You mend the strap and keep moving.", "good"); } },
+      { label: "Tie it off and go slow", apply: (s) => { s.pace = "slow"; s.log("The strap holds for now, but you walk slower, careful not to spill what's inside.", "bad"); } },
     ],
   },
   {
     id: "fever",
-    title: "Night Fever",
-    body: "One of the party wakes shivering and pale before dawn.",
+    title: "Sickness in the Column",
+    body: "Word passes back through the column: a family further up the road has fallen ill overnight.",
     choices: [
-      { label: "Use medicine", requires: { medicine: 1 }, apply: (s) => { s.inventory.medicine -= 1; s.log("The fever breaks by morning.", "good"); } },
-      { label: "Push through without it", apply: (s) => { s.damagePartyHealth(10); s.log("The fever lingers, weakening the party.", "bad"); } },
+      { label: "Share medicine", requires: { medicine: 1 }, apply: (s) => { s.inventory.medicine -= 1; s.log("The fever is caught early.", "good"); } },
+      { label: "Keep your distance and move on", apply: (s) => { s.damagePartyHealth(8); s.log("The illness spreads before you can outrun it.", "bad"); } },
     ],
   },
   {
-    id: "lostTrail",
-    title: "Lost the Trail",
-    body: "Clouds swallow the moon and the trail markers vanish.",
+    id: "dustStorm",
+    title: "Dust Storm Over the Thar",
+    body: "The wind rises and swallows the horizon in sand. The path forward disappears.",
     choices: [
-      { label: "Burn extra lantern oil to search", requires: { lantern: 1 }, apply: (s) => { s.inventory.lantern -= 1; s.log("You find the trail again before long.", "good"); } },
-      { label: "Make camp until first light", apply: (s) => { s.day += 1; s.log("A day lost waiting for sunrise.", "bad"); } },
+      { label: "Burn lantern oil and press on carefully", requires: { lantern: 1 }, apply: (s) => { s.inventory.lantern -= 1; s.log("You keep the caravan together and find the road again.", "good"); } },
+      { label: "Shelter until the storm passes", apply: (s) => { s.day += 1; s.log("A day lost waiting out the storm.", "bad"); } },
     ],
   },
   {
-    id: "goodHunt",
-    title: "A Quiet Clearing",
-    body: "Moonlight opens over a meadow thick with game.",
+    id: "wellVillage",
+    title: "A Village Well",
+    body: "A village along the road opens its well to the passing families — neighbors helping strangers where they can, whatever the times.",
     choices: [
-      { label: "Hunt for food", apply: (s) => { const gained = 20 + Math.floor(Math.random() * 30); s.inventory.food += gained; s.log(`The hunt brings in ${gained} lbs of food.`, "good"); } },
-      { label: "Keep moving, no time to spare", apply: (s) => { s.log("You press on through the clearing.", "good"); } },
+      { label: "Draw water and thank them", apply: (s) => { const w = 4 + Math.floor(Math.random() * 6); const f = 5 + Math.floor(Math.random() * 10); s.inventory.water += w; s.inventory.food += f; s.log(`They fill your jars and share what food they can spare. +${w} water, +${f} lbs food.`, "good"); } },
+      { label: "Take only what you need and move on quickly", apply: (s) => { const w = 2; s.inventory.water += w; s.log(`You draw a little water and keep moving. +${w} water.`, "good"); } },
+    ],
+  },
+  {
+    id: "nightProwlers",
+    title: "Prowlers at the Camp's Edge",
+    body: "Shapes move beyond the firelight. Opportunists have been following caravans like this one, looking for unguarded packs.",
+    choices: [
+      { label: "Keep watch through the night", apply: (s) => { s.damagePartyHealth(4); s.log("Nothing is taken, but no one rests easy.", "bad"); } },
+      { label: "Sleep in shifts and hope for the best", apply: (s) => { const lost = Math.min(s.inventory.food, 10 + Math.floor(Math.random() * 15)); s.inventory.food -= lost; s.log(`By morning, ${lost} lbs of food are missing from your packs.`, "bad"); } },
     ],
   },
 ];
@@ -83,3 +91,11 @@ const PACE_LEVELS = {
   steady:  { label: "Steady",  milesPerDay: 14, healthDelta: 0 },
   grueling:{ label: "Grueling",milesPerDay: 22, healthDelta: -2 },
 };
+
+const BORDER_LANDMARK_NAME = "Munabao — the border";
+
+const MAP_WAYPOINTS = [
+  { miles: 0,   x: 0.252, y: 0.418 },
+  { miles: 25,  x: 0.294, y: 0.400 },
+  { miles: TOTAL_MILES, x: 0.388, y: 0.356 },
+];

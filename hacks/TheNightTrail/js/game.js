@@ -2,7 +2,7 @@ const state = {
   leaderName: "",
   occupation: null,
   money: 0,
-  inventory: { food: 0, ammo: 0, medicine: 0, parts: 0, lantern: 0 },
+  inventory: { food: 0, water: 0, medicine: 0, parts: 0, lantern: 0 },
   party: [],
   day: 1,
   miles: 0,
@@ -64,26 +64,31 @@ function renderOutfit() {
       <h4>${item.name}</h4>
       <p>$${item.price.toFixed(2)} / ${item.unit}</p>
       <div class="qty-row">
-        <button type="button" data-action="minus">-</button>
+        <button type="button" data-delta="-10">−10</button>
+        <button type="button" data-delta="-1">−1</button>
         <span data-qty>${state.inventory[item.id]}</span>
-        <button type="button" data-action="plus">+</button>
+        <button type="button" data-delta="1">+1</button>
+        <button type="button" data-delta="10">+10</button>
       </div>`;
     const qtySpan = card.querySelector("[data-qty]");
-    card.querySelector('[data-action="plus"]').addEventListener("click", () => {
-      if (state.money >= item.price) {
-        state.money -= item.price;
-        state.inventory[item.id] += 1;
+    card.querySelectorAll("[data-delta]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const delta = parseInt(btn.dataset.delta, 10);
+        if (delta > 0) {
+          const affordable = Math.floor(state.money / item.price);
+          const amount = Math.min(delta, affordable);
+          if (amount <= 0) return;
+          state.money -= amount * item.price;
+          state.inventory[item.id] += amount;
+        } else {
+          const amount = Math.min(-delta, state.inventory[item.id]);
+          if (amount <= 0) return;
+          state.money += amount * item.price;
+          state.inventory[item.id] -= amount;
+        }
         qtySpan.textContent = state.inventory[item.id];
         document.getElementById("outfit-money").textContent = state.money.toFixed(2);
-      }
-    });
-    card.querySelector('[data-action="minus"]').addEventListener("click", () => {
-      if (state.inventory[item.id] > 0) {
-        state.money += item.price;
-        state.inventory[item.id] -= 1;
-        qtySpan.textContent = state.inventory[item.id];
-        document.getElementById("outfit-money").textContent = state.money.toFixed(2);
-      }
+      });
     });
     list.appendChild(card);
   });
@@ -91,9 +96,9 @@ function renderOutfit() {
 
 function depart() {
   state.party = [
-    { name: state.leaderName || "Leader", health: 100 },
-    { name: "Traveler 2", health: 100 },
-    { name: "Traveler 3", health: 100 },
+    { name: state.leaderName || "You", health: 100 },
+    { name: "Family Elder", health: 100 },
+    { name: "Younger Sibling", health: 100 },
   ];
   state.day = 1;
   state.miles = 0;
@@ -103,8 +108,8 @@ function depart() {
   document.getElementById("trail-log").innerHTML = "";
   document.getElementById("screen-trail").classList.add("active");
   showScreen("screen-trail");
-  document.getElementById("stats-leader").textContent = `${state.leaderName}'s Party`;
-  state.log(`Night falls over ${LANDMARKS[0].name}. The wagon rolls out under starlight.`, "milestone");
+  document.getElementById("stats-leader").textContent = `${state.leaderName}'s Family`;
+  state.log("August, 1947. Mirpur Khas is behind you now. Three satchels, packed light — one each. You set out on foot under starlight, east toward the Thar and whatever waits on the other side of the new border.", "milestone");
   renderStats();
 }
 
@@ -115,12 +120,28 @@ function renderStats() {
     <li><span>Pace</span><span>${PACE_LEVELS[state.pace].label}</span></li>
     <li><span>Rations</span><span>${RATION_LEVELS[state.ration].label}</span></li>
     <li><span>Food</span><span>${Math.floor(state.inventory.food)} lbs</span></li>
-    <li><span>Ammo</span><span>${state.inventory.ammo}</span></li>
+    <li><span>Water</span><span>${state.inventory.water} jars</span></li>
     <li><span>Medicine</span><span>${state.inventory.medicine}</span></li>
     <li><span>Parts</span><span>${state.inventory.parts}</span></li>
     <li><span>Lantern Oil</span><span>${state.inventory.lantern}</span></li>
     ${state.party.map((m) => `<li><span>${m.name}</span><span>${m.health > 0 ? m.health + "%" : "lost"}</span></li>`).join("")}
   `;
+  updateMapMarker();
+}
+
+function updateMapMarker() {
+  const marker = document.getElementById("map-marker");
+  if (!marker) return;
+  const miles = Math.min(state.miles, TOTAL_MILES);
+  let i = 0;
+  while (i < MAP_WAYPOINTS.length - 2 && miles > MAP_WAYPOINTS[i + 1].miles) i++;
+  const a = MAP_WAYPOINTS[i];
+  const b = MAP_WAYPOINTS[i + 1];
+  const t = b.miles === a.miles ? 0 : (miles - a.miles) / (b.miles - a.miles);
+  const x = a.x + (b.x - a.x) * t;
+  const y = a.y + (b.y - a.y) * t;
+  marker.style.left = `${x * 100}%`;
+  marker.style.top = `${y * 100}%`;
 }
 
 function currentLandmarkLabel() {
@@ -132,7 +153,7 @@ function travelDay() {
   if (state.over) return;
 
   const alive = state.party.filter((m) => m.health > 0);
-  if (alive.length === 0) return endGame(false, "The party did not make it through the night.");
+  if (alive.length === 0) return endGame(false, "The family did not make it through the night.");
 
   const rationInfo = RATION_LEVELS[state.ration];
   const foodNeeded = rationInfo.foodPerPerson * alive.length;
@@ -154,15 +175,19 @@ function travelDay() {
   const crossed = LANDMARKS.find((l, i) => i > state.landmarkIndex && l.miles <= state.miles);
   if (crossed) {
     state.landmarkIndex = LANDMARKS.indexOf(crossed);
-    state.log(`You reach ${crossed.name}.`, "milestone");
+    if (crossed.name === BORDER_LANDMARK_NAME) {
+      state.log(`You reach ${crossed.name}. Sindh ends here. Ahead lies India, and an uncertain new home.`, "milestone");
+    } else {
+      state.log(`You reach ${crossed.name}.`, "milestone");
+    }
   }
 
   if (state.miles >= TOTAL_MILES) {
-    return endGame(true, `The party arrives safely after ${state.day} days on the trail.`);
+    return endGame(true, `After ${state.day} days on the road, the family reaches Jodhpur. Sindh is behind you now, but you arrived together.`);
   }
 
   if (state.party.every((m) => m.health <= 0)) {
-    return endGame(false, "No one is left to continue the journey.");
+    return endGame(false, "The family did not make it to Jodhpur.");
   }
 
   renderStats();
@@ -190,7 +215,7 @@ function triggerRandomEvent() {
       choice.apply(state);
       showScreen("screen-trail");
       renderStats();
-      if (state.party.every((m) => m.health <= 0)) endGame(false, "No one is left to continue the journey.");
+      if (state.party.every((m) => m.health <= 0)) endGame(false, "The family did not make it to Jodhpur.");
     });
     choicesEl.appendChild(btn);
   });
@@ -200,7 +225,7 @@ function triggerRandomEvent() {
 
 function endGame(won, message) {
   state.over = true;
-  document.getElementById("end-title").textContent = won ? "You Made It" : "The Trail Ends Here";
+  document.getElementById("end-title").textContent = won ? "A New Home" : "The Journey Ends Here";
   document.getElementById("end-body").textContent = message;
   showScreen("screen-end");
 }
@@ -209,7 +234,7 @@ function resetState() {
   state.leaderName = "";
   state.occupation = null;
   state.money = 0;
-  state.inventory = { food: 0, ammo: 0, medicine: 0, parts: 0, lantern: 0 };
+  state.inventory = { food: 0, water: 0, medicine: 0, parts: 0, lantern: 0 };
   state.party = [];
   state.day = 1;
   state.miles = 0;

@@ -18,23 +18,25 @@ search_exclude: true
 
   <section id="screen-title" class="screen active">
     <h1>THE NIGHT TRAIL</h1>
-    <p class="tagline">The sun is down. The trail is long. Keep moving.</p>
+    <p class="tagline">Mirpur Khas, August 1947. Leave before the roads close for good.</p>
+    <p class="tagline" style="font-size:0.85rem; max-width:520px; margin:0 auto 28px;">A short, fictionalized journey inspired by the 1947 Partition of India, when families from Sindh crossed the Thar Desert by night toward a new home across the border.</p>
     <button id="btn-start">Start the Journey</button>
   </section>
 
   <section id="screen-setup" class="screen">
     <h2>Before You Set Out</h2>
-    <label for="input-name">Wagon leader's name</label>
-    <input id="input-name" type="text" maxlength="20" placeholder="e.g. Jordan">
+    <label for="input-name">Your name</label>
+    <input id="input-name" type="text" maxlength="20" placeholder="e.g. Meera">
 
-    <h3>Choose an occupation</h3>
+    <h3>Choose your family's trade</h3>
     <div id="occupation-list" class="card-list"></div>
 
     <button id="btn-to-outfit" disabled>Continue to Outfitting</button>
   </section>
 
   <section id="screen-outfit" class="screen">
-    <h2>Outfit the Wagon</h2>
+    <h2>Pack the Satchels</h2>
+    <p class="tagline" style="text-align:left; margin-bottom:12px;">No cart, no oxen — only what fits in three satchels, one on each of your backs. Choose carefully.</p>
     <p>Money left: <span id="outfit-money">0</span></p>
     <div id="outfit-list" class="card-list"></div>
     <button id="btn-depart">Depart at Nightfall</button>
@@ -47,6 +49,10 @@ search_exclude: true
     </aside>
 
     <div id="trail-main">
+      <div id="map-wrap">
+        <img src="{{ site.baseurl }}/hacks/TheNightTrail/images/map.png" alt="Map of the route from Mirpur Khas to Jodhpur, 1947" id="trail-map">
+        <div id="map-marker" title="Your family"></div>
+      </div>
       <div id="trail-log"></div>
       <div id="trail-actions">
         <button id="action-continue">Travel Through the Night</button>
