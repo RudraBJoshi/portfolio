@@ -22,5 +22,7 @@ _notebooks/CSP/big-ideas/big-idea-3-part-1-fundamentals/Period3/2024-9-27-fundam
 .vscode/
 .bundle
 vendor/*
+*.scssc
 package-lock.json
 _posts/Project/Project-HIL-FlatSat/
+*.jekyll-metadata
