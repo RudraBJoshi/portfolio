@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Night Trail</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="stars"></div>
+
+<main id="app">
+
+  <section id="screen-title" class="screen active">
+    <h1>THE NIGHT TRAIL</h1>
+    <p class="tagline">The sun is down. The trail is long. Keep moving.</p>
+    <button id="btn-start">Start the Journey</button>
+  </section>
+
+  <section id="screen-setup" class="screen">
+    <h2>Before You Set Out</h2>
+    <label for="input-name">Wagon leader's name</label>
+    <input id="input-name" type="text" maxlength="20" placeholder="e.g. Jordan">
+
+    <h3>Choose an occupation</h3>
+    <div id="occupation-list" class="card-list"></div>
+
+    <button id="btn-to-outfit" disabled>Continue to Outfitting</button>
+  </section>
+
+  <section id="screen-outfit" class="screen">
+    <h2>Outfit the Wagon</h2>
+    <p>Money left: <span id="outfit-money">0</span></p>
+    <div id="outfit-list" class="card-list"></div>
+    <button id="btn-depart">Depart at Nightfall</button>
+  </section>
+
+  <section id="screen-trail" class="screen">
+    <aside id="stats-panel">
+      <h3 id="stats-leader"></h3>
+      <ul id="stats-list"></ul>
+    </aside>
+
+    <div id="trail-main">
+      <div id="trail-log"></div>
+      <div id="trail-actions">
+        <button id="action-continue">Travel Through the Night</button>
+        <button id="action-rest">Make Camp &amp; Rest</button>
+        <button id="action-ration">Change Rations</button>
+        <button id="action-pace">Change Pace</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="screen-event" class="screen">
+    <div class="modal">
+      <h2 id="event-title"></h2>
+      <p id="event-body"></p>
+      <div id="event-choices"></div>
+    </div>
+  </section>
+
+  <section id="screen-end" class="screen">
+    <h2 id="end-title"></h2>
+    <p id="end-body"></p>
+    <button id="btn-restart">Try Again</button>
+  </section>
+
+</main>
+
+<script src="js/data.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>
