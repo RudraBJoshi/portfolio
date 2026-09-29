@@ -1,7 +1,5 @@
 const OCCUPATIONS = [
-  { id: "farmer",  name: "Farmer",        capacityBonus: 4, desc: "Land and livestock left behind. Used to carrying feed sacks." },
-  { id: "trader",  name: "Cloth Trader",  capacityBonus: 8, desc: "A shop in Mirpur Khas, sold in haste. Knows how to pack a bundle tight." },
-  { id: "teacher", name: "Schoolteacher", capacityBonus: 0, desc: "Respected in town, but never one for heavy lifting." },
+  { id: "doctor", name: "Doctor", capacityBonus: 6, desc: "Mirpur Khas's doctor. Used to packing a medical bag quickly and carrying it far." },
 ];
 
 const SUPPLY_ITEMS = [
@@ -17,10 +15,10 @@ const SATCHEL_CAPACITY = 20;
 const TOTAL_CAPACITY = NUM_SATCHELS * SATCHEL_CAPACITY;
 
 const PARTY_TEMPLATE = [
-  { name: "Suresh", susceptibility: 1.0 },
-  { name: "Dadi",   susceptibility: 1.6 },
-  { name: "Amil",   susceptibility: 1.3 },
-  { name: "Nisha",  susceptibility: 1.0 },
+  { name: "Suresh", role: "father, the doctor", susceptibility: 1.0 },
+  { name: "Dadi",   role: "grandmother",        susceptibility: 1.6 },
+  { name: "Amil",   role: "son",                susceptibility: 1.3 },
+  { name: "Nisha",  role: "daughter",           susceptibility: 1.0 },
 ];
 
 const LANDMARKS = [

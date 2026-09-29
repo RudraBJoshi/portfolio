@@ -50,6 +50,11 @@ function renderOccupations() {
     });
     list.appendChild(card);
   });
+  if (OCCUPATIONS.length === 1) {
+    state.occupation = OCCUPATIONS[0];
+    list.querySelector(".card").classList.add("selected");
+    document.getElementById("btn-to-outfit").disabled = false;
+  }
 }
 
 function outfitCapacity() {
@@ -109,7 +114,7 @@ function renderOutfit() {
 }
 
 function depart() {
-  state.party = PARTY_TEMPLATE.map((m) => ({ name: m.name, susceptibility: m.susceptibility, health: 100 }));
+  state.party = PARTY_TEMPLATE.map((m) => ({ name: m.name, role: m.role, susceptibility: m.susceptibility, health: 100 }));
   state.day = 1;
   state.miles = 0;
   state.landmarkIndex = 0;
@@ -119,7 +124,7 @@ function depart() {
   document.getElementById("screen-trail").classList.add("active");
   showScreen("screen-trail");
   document.getElementById("stats-leader").textContent = "Suresh's Family";
-  state.log("August, 1947. Mirpur Khas is behind you now. Four satchels, packed light — one each. Suresh, Dadi, Amil, and Nisha set out on foot under starlight, east toward the Thar and whatever waits on the other side of the new border.", "milestone");
+  state.log("August, 1947. Mirpur Khas is behind you now. Four satchels, packed light — one each. Dr. Suresh, his mother Dadi, and his twins Amil and Nisha set out on foot under starlight, east toward the Thar and whatever waits on the other side of the new border.", "milestone");
   renderStats();
 }
 
@@ -134,7 +139,7 @@ function renderStats() {
     <li><span>Medicine</span><span>${state.inventory.medicine}</span></li>
     <li><span>Parts</span><span>${state.inventory.parts}</span></li>
     <li><span>Lantern Oil</span><span>${state.inventory.lantern}</span></li>
-    ${state.party.map((m) => `<li><span>${m.name}</span><span>${m.health > 0 ? m.health + "%" : "lost"}</span></li>`).join("")}
+    ${state.party.map((m) => `<li><span>${m.name}${m.role ? ` — ${m.role}` : ""}</span><span>${m.health > 0 ? m.health + "%" : "lost"}</span></li>`).join("")}
   `;
   updateMapMarker();
 }

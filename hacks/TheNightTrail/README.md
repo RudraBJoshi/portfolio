@@ -1,6 +1,6 @@
 # The Night Trail
 
-An Oregon Trail-inspired browser game, following Suresh, his mother Dadi, and the twins Amil and Nisha as they leave Mirpur Khas in August 1947 and cross the Thar Desert by night — the historical Sindhi refugee route through Umerkot and the Khokhrapar–Munabao border crossing to Barmer and Jodhpur. Plain HTML/CSS/JS, no build step.
+An Oregon Trail-inspired browser game, following Dr. Suresh, his mother Dadi, and his twin children Amil and Nisha as they leave Mirpur Khas in August 1947 and cross the Thar Desert by night — the historical Sindhi refugee route through Umerkot and the Khokhrapar–Munabao border crossing to Barmer and Jodhpur. Plain HTML/CSS/JS, no build step.
 
 This is a fictionalized, respectful take on a real historical migration during the Partition of India, inspired in part by Veera Hiranandani's novel *The Night Diary*. The focus is on the hardship and resilience of the journey itself (heat, water, illness, lost supplies), not violence.
 
