@@ -1,15 +1,26 @@
 const OCCUPATIONS = [
-  { id: "farmer",   name: "Farmer",       money: 500,  desc: "Land and livestock left behind. Little cash saved." },
-  { id: "trader",   name: "Cloth Trader", money: 900,  desc: "A shop in Mirpur Khas, sold in haste. Modest savings." },
-  { id: "teacher",  name: "Schoolteacher",money: 650,  desc: "Respected in town, but teachers were never rich." },
+  { id: "farmer",  name: "Farmer",        capacityBonus: 4, desc: "Land and livestock left behind. Used to carrying feed sacks." },
+  { id: "trader",  name: "Cloth Trader",  capacityBonus: 8, desc: "A shop in Mirpur Khas, sold in haste. Knows how to pack a bundle tight." },
+  { id: "teacher", name: "Schoolteacher", capacityBonus: 0, desc: "Respected in town, but never one for heavy lifting." },
 ];
 
 const SUPPLY_ITEMS = [
-  { id: "food",    name: "Food",        unit: "lbs",     price: 0.20 },
-  { id: "water",   name: "Water",       unit: "jars",    price: 0.35 },
-  { id: "medicine",name: "Medicine",    unit: "kits",    price: 5.00 },
-  { id: "parts",   name: "Repair Cloth",unit: "sets",    price: 8.00 },
-  { id: "lantern", name: "Lantern Oil", unit: "flasks",  price: 1.50 },
+  { id: "food",    name: "Food",        unit: "lbs",    weight: 0.25 },
+  { id: "water",   name: "Water",       unit: "jars",   weight: 1 },
+  { id: "medicine",name: "Medicine",    unit: "kits",   weight: 2 },
+  { id: "parts",   name: "Repair Cloth",unit: "sets",   weight: 1.5 },
+  { id: "lantern", name: "Lantern Oil", unit: "flasks", weight: 1 },
+];
+
+const NUM_SATCHELS = 4;
+const SATCHEL_CAPACITY = 20;
+const TOTAL_CAPACITY = NUM_SATCHELS * SATCHEL_CAPACITY;
+
+const PARTY_TEMPLATE = [
+  { name: "Suresh", susceptibility: 1.0 },
+  { name: "Dadi",   susceptibility: 1.6 },
+  { name: "Amil",   susceptibility: 1.3 },
+  { name: "Nisha",  susceptibility: 1.0 },
 ];
 
 const LANDMARKS = [
@@ -48,7 +59,7 @@ const RANDOM_EVENTS = [
     body: "Word passes back through the column: a family further up the road has fallen ill overnight.",
     choices: [
       { label: "Share medicine", requires: { medicine: 1 }, apply: (s) => { s.inventory.medicine -= 1; s.log("The fever is caught early.", "good"); } },
-      { label: "Keep your distance and move on", apply: (s) => { s.damagePartyHealth(8); s.log("The illness spreads before you can outrun it.", "bad"); } },
+      { label: "Keep your distance and move on", apply: (s) => { s.damagePartyHealth(8, { illness: true }); s.log("The illness spreads before you can outrun it.", "bad"); } },
     ],
   },
   {

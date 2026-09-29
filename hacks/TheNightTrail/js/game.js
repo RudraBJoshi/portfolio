@@ -1,7 +1,5 @@
 const state = {
-  leaderName: "",
   occupation: null,
-  money: 0,
   inventory: { food: 0, water: 0, medicine: 0, parts: 0, lantern: 0 },
   party: [],
   day: 1,
@@ -20,11 +18,14 @@ const state = {
     log.scrollTop = log.scrollHeight;
   },
 
-  damagePartyHealth(amount) {
+  damagePartyHealth(amount, { illness = false } = {}) {
     for (const member of this.party) {
       if (member.health <= 0) continue;
-      member.health = Math.max(0, Math.min(100, member.health - amount));
-      if (member.health === 0) this.log(`${member.name} did not survive the night.`, "bad");
+      const variance = 0.7 + Math.random() * 0.6;
+      const susceptFactor = illness ? member.susceptibility : 1;
+      const change = Math.round(amount * variance * susceptFactor);
+      member.health = Math.max(0, Math.min(100, member.health - change));
+      if (member.health === 0) this.log(`${member.name} did not survive the journey.`, "bad");
     }
   },
 };
@@ -40,10 +41,9 @@ function renderOccupations() {
   OCCUPATIONS.forEach((occ) => {
     const card = document.createElement("div");
     card.className = "card";
-    card.innerHTML = `<h4>${occ.name}</h4><p>${occ.desc}</p><p>Starting cash: $${occ.money}</p>`;
+    card.innerHTML = `<h4>${occ.name}</h4><p>${occ.desc}</p><p>+${occ.capacityBonus} satchel space</p>`;
     card.addEventListener("click", () => {
       state.occupation = occ;
-      state.money = occ.money;
       list.querySelectorAll(".card").forEach((c) => c.classList.remove("selected"));
       card.classList.add("selected");
       document.getElementById("btn-to-outfit").disabled = false;
@@ -52,8 +52,23 @@ function renderOccupations() {
   });
 }
 
+function outfitCapacity() {
+  return TOTAL_CAPACITY + (state.occupation ? state.occupation.capacityBonus : 0);
+}
+
+function outfitUsed() {
+  return SUPPLY_ITEMS.reduce((sum, item) => sum + (state.inventory[item.id] || 0) * item.weight, 0);
+}
+
+function renderOutfitHeader() {
+  const cap = outfitCapacity();
+  const used = outfitUsed();
+  document.getElementById("outfit-used").textContent = used.toFixed(1);
+  document.getElementById("outfit-total").textContent = cap;
+}
+
 function renderOutfit() {
-  document.getElementById("outfit-money").textContent = state.money.toFixed(2);
+  renderOutfitHeader();
   const list = document.getElementById("outfit-list");
   list.innerHTML = "";
   SUPPLY_ITEMS.forEach((item) => {
@@ -62,7 +77,7 @@ function renderOutfit() {
     card.className = "card";
     card.innerHTML = `
       <h4>${item.name}</h4>
-      <p>$${item.price.toFixed(2)} / ${item.unit}</p>
+      <p>${item.weight} space / ${item.unit}</p>
       <div class="qty-row">
         <button type="button" data-delta="-10">−10</button>
         <button type="button" data-delta="-1">−1</button>
@@ -75,19 +90,18 @@ function renderOutfit() {
       btn.addEventListener("click", () => {
         const delta = parseInt(btn.dataset.delta, 10);
         if (delta > 0) {
-          const affordable = Math.floor(state.money / item.price);
-          const amount = Math.min(delta, affordable);
+          const remaining = outfitCapacity() - outfitUsed();
+          const roomFor = Math.floor(remaining / item.weight);
+          const amount = Math.min(delta, roomFor);
           if (amount <= 0) return;
-          state.money -= amount * item.price;
           state.inventory[item.id] += amount;
         } else {
           const amount = Math.min(-delta, state.inventory[item.id]);
           if (amount <= 0) return;
-          state.money += amount * item.price;
           state.inventory[item.id] -= amount;
         }
         qtySpan.textContent = state.inventory[item.id];
-        document.getElementById("outfit-money").textContent = state.money.toFixed(2);
+        renderOutfitHeader();
       });
     });
     list.appendChild(card);
@@ -95,11 +109,7 @@ function renderOutfit() {
 }
 
 function depart() {
-  state.party = [
-    { name: state.leaderName || "You", health: 100 },
-    { name: "Family Elder", health: 100 },
-    { name: "Younger Sibling", health: 100 },
-  ];
+  state.party = PARTY_TEMPLATE.map((m) => ({ name: m.name, susceptibility: m.susceptibility, health: 100 }));
   state.day = 1;
   state.miles = 0;
   state.landmarkIndex = 0;
@@ -108,8 +118,8 @@ function depart() {
   document.getElementById("trail-log").innerHTML = "";
   document.getElementById("screen-trail").classList.add("active");
   showScreen("screen-trail");
-  document.getElementById("stats-leader").textContent = `${state.leaderName}'s Family`;
-  state.log("August, 1947. Mirpur Khas is behind you now. Three satchels, packed light — one each. You set out on foot under starlight, east toward the Thar and whatever waits on the other side of the new border.", "milestone");
+  document.getElementById("stats-leader").textContent = "Suresh's Family";
+  state.log("August, 1947. Mirpur Khas is behind you now. Four satchels, packed light — one each. Suresh, Dadi, Amil, and Nisha set out on foot under starlight, east toward the Thar and whatever waits on the other side of the new border.", "milestone");
   renderStats();
 }
 
@@ -161,8 +171,8 @@ function travelDay() {
     state.inventory.food -= foodNeeded;
   } else {
     state.inventory.food = 0;
-    state.damagePartyHealth(8);
-    state.log("Supplies run short. The party goes hungry.", "bad");
+    state.damagePartyHealth(8, { illness: true });
+    state.log("Supplies run short. The family goes hungry.", "bad");
   }
   state.damagePartyHealth(-rationInfo.healthDelta);
 
@@ -231,9 +241,7 @@ function endGame(won, message) {
 }
 
 function resetState() {
-  state.leaderName = "";
   state.occupation = null;
-  state.money = 0;
   state.inventory = { food: 0, water: 0, medicine: 0, parts: 0, lantern: 0 };
   state.party = [];
   state.day = 1;
@@ -249,10 +257,6 @@ document.getElementById("btn-start").addEventListener("click", () => {
   showScreen("screen-setup");
 });
 
-document.getElementById("input-name").addEventListener("input", (e) => {
-  state.leaderName = e.target.value;
-});
-
 document.getElementById("btn-to-outfit").addEventListener("click", () => {
   renderOutfit();
   showScreen("screen-outfit");
@@ -265,7 +269,7 @@ document.getElementById("action-continue").addEventListener("click", travelDay);
 document.getElementById("action-rest").addEventListener("click", () => {
   state.damagePartyHealth(-10);
   state.day += 1;
-  state.log("The party rests through the day, regaining strength.", "good");
+  state.log("The family rests through the day, regaining strength.", "good");
   renderStats();
 });
 
@@ -287,6 +291,5 @@ document.getElementById("action-pace").addEventListener("click", () => {
 
 document.getElementById("btn-restart").addEventListener("click", () => {
   resetState();
-  document.getElementById("input-name").value = "";
   showScreen("screen-title");
 });
