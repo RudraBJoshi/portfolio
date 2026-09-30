@@ -27,11 +27,13 @@ The whole family always travels together — choosing a character on the setup s
 
 ## The packing mechanic
 
-There's no money — outfitting is gated purely by weight. Each of the 4 satchels holds `SATCHEL_CAPACITY` (20 lbs), for `TOTAL_CAPACITY` of 80 lbs, plus the chosen character's `capacityBonus`. Every supply item in `SUPPLY_ITEMS` has a `weight` in real pounds per unit (water and lantern oil are heavier per unit than food or repair cloth); the +1/+10 and −1/−10 buttons on the outfitting screen are capped by remaining weight, not budget, so packing is a real trade-off between food, water, medicine, repair cloth, and lantern oil.
+There's no money — outfitting is gated purely by weight. The 4 satchels hold uneven amounts, set by `SATCHEL_CAPACITIES` in `data.js` — `[135, 50, 50, 15]` lbs (Satchel 1 is the main adult-sized pack, 2-3 are the twins' bags, 4 is what Dadi alone can manage), summing to a `TOTAL_CAPACITY` of 250 lbs, plus the chosen character's `capacityBonus` (applied to Satchel 1). Every supply item in `SUPPLY_ITEMS` has a `weight` in real pounds per unit (water and lantern oil are heavier per unit than food or repair cloth); the +1/+10 and −1/−10 buttons on the outfitting screen are capped by remaining weight, not budget, so packing is a real trade-off between food, water, medicine, repair cloth, and lantern oil. The packing visualization (`renderSatchelVisual` in `game.js`) fills each satchel in order and scales each bar's height to its real capacity, so Satchel 4 visibly looks like the small bag it is.
 
 ## Health and susceptibility
 
 `PARTY_TEMPLATE` in `data.js` gives each family member a `susceptibility` multiplier (Dadi 1.6, Amil 1.3, Suresh and Nisha 1.0) — this stacks with the chosen character's difficulty multiplier above. `damagePartyHealth(amount, { illness })` in `game.js` applies a random per-person variance on every hit, and multiplies by `susceptibility` when `illness: true` is passed (currently: the fever event and food-shortage damage) — so sickness doesn't hit the whole family evenly, and members don't all decline or die on the same day.
+
+Whichever character you're playing as is the one that matters: `playedCharacterDied()` in `game.js` checks specifically for that member (matched by name against `state.character`), and ends the game the moment they die — even if the rest of the family is still alive. If someone else dies, the journey continues; the game only ends outright when either the played character or the whole family is gone.
 
 ## Extending
 

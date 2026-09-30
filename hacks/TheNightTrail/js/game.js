@@ -9,6 +9,7 @@ const state = {
   landmarkIndex: 0,
   restBlocked: false,
   waterPumpEventFired: false,
+  peopleHelped: 0,
   over: false,
 
   log(message, cls) {
@@ -75,12 +76,18 @@ function renderOutfitHeader() {
   renderSatchelVisual();
 }
 
+const SATCHEL_BAR_MAX_HEIGHT = 150;
+const SATCHEL_BAR_MIN_HEIGHT = 28;
+
 function renderSatchelVisual() {
   const container = document.getElementById("satchel-visual");
   if (!container) return;
   container.innerHTML = "";
 
-  const perSatchel = outfitCapacity() / NUM_SATCHELS;
+  const bonus = state.character ? state.character.capacityBonus : 0;
+  const satchelCaps = SATCHEL_CAPACITIES.map((cap, i) => (i === 0 ? cap + bonus : cap));
+  const maxCap = Math.max(...satchelCaps);
+
   const chunks = SUPPLY_ITEMS
     .map((item) => ({ id: item.id, label: item.name, amount: (state.inventory[item.id] || 0) * item.weight }))
     .filter((c) => c.amount > 0.001);
@@ -88,19 +95,20 @@ function renderSatchelVisual() {
   let chunkIndex = 0;
   let chunkRemaining = chunks.length ? chunks[0].amount : 0;
 
-  for (let s = 0; s < NUM_SATCHELS; s++) {
+  satchelCaps.forEach((capacity, s) => {
     const satchelDiv = document.createElement("div");
     satchelDiv.className = "satchel";
 
     const bar = document.createElement("div");
     bar.className = "satchel-bar";
+    bar.style.height = `${Math.max(SATCHEL_BAR_MIN_HEIGHT, Math.round((capacity / maxCap) * SATCHEL_BAR_MAX_HEIGHT))}px`;
 
-    let remainingInSatchel = perSatchel;
+    let remainingInSatchel = capacity;
     while (remainingInSatchel > 0.001 && chunkIndex < chunks.length) {
       const take = Math.min(remainingInSatchel, chunkRemaining);
       const seg = document.createElement("div");
       seg.className = `satchel-seg satchel-seg-${chunks[chunkIndex].id}`;
-      seg.style.height = `${(take / perSatchel) * 100}%`;
+      seg.style.height = `${(take / capacity) * 100}%`;
       seg.title = chunks[chunkIndex].label;
       bar.appendChild(seg);
 
@@ -114,12 +122,12 @@ function renderSatchelVisual() {
 
     const label = document.createElement("div");
     label.className = "satchel-label";
-    label.textContent = `Satchel ${s + 1}`;
+    label.textContent = `Satchel ${s + 1} (${capacity} lbs)`;
 
     satchelDiv.appendChild(bar);
     satchelDiv.appendChild(label);
     container.appendChild(satchelDiv);
-  }
+  });
 }
 
 function renderSatchelLegend() {
@@ -205,6 +213,21 @@ function renderStats() {
   updateTrainAvailability();
 }
 
+function isAlive(name) {
+  const member = state.party.find((m) => m.name === name);
+  return !!member && member.health > 0;
+}
+
+function playedCharacterDied() {
+  if (!state.character) return false;
+  const member = state.party.find((m) => m.name === state.character.name);
+  return !!member && member.health <= 0;
+}
+
+function playedCharacterDeathMessage() {
+  return `${state.character.name} did not survive the journey. This is where their story ends, even though others in the family remain.`;
+}
+
 function atUmerkot() {
   const here = LANDMARKS[state.landmarkIndex];
   return !!here && here.name === REST_LANDMARK_NAME;
@@ -247,6 +270,7 @@ function showEventModal(event) {
     btn.addEventListener("click", () => {
       choice.apply(state);
       if (state.over) return;
+      if (playedCharacterDied()) return endGame(false, playedCharacterDeathMessage());
       showScreen("screen-trail");
       renderStats();
       if (state.party.every((m) => m.health <= 0)) endGame(false, "The family did not make it to Jodhpur.");
@@ -290,6 +314,7 @@ function travelDay() {
 
   const alive = state.party.filter((m) => m.health > 0);
   if (alive.length === 0) return endGame(false, "The family did not make it through the night.");
+  if (playedCharacterDied()) return endGame(false, playedCharacterDeathMessage());
 
   const rationInfo = RATION_LEVELS[state.ration];
   const foodNeeded = rationInfo.foodPerPerson * alive.length;
@@ -332,6 +357,10 @@ function travelDay() {
     return endGame(true, `After ${state.day} days on the road, the family reaches Jodhpur. Sindh is behind you now, but you arrived together.`);
   }
 
+  if (playedCharacterDied()) {
+    return endGame(false, playedCharacterDeathMessage());
+  }
+
   if (state.party.every((m) => m.health <= 0)) {
     return endGame(false, "The family did not make it to Jodhpur.");
   }
@@ -360,6 +389,9 @@ function endGame(won, message) {
   state.over = true;
   document.getElementById("end-title").textContent = won ? "A New Home" : "The Journey Ends Here";
   document.getElementById("end-body").textContent = message;
+  document.getElementById("end-helped").textContent = state.peopleHelped > 0
+    ? `Along the way, you helped ${state.peopleHelped} ${state.peopleHelped === 1 ? "person" : "people"}.`
+    : "You made this journey without stopping to help anyone else.";
   document.getElementById("end-roster").innerHTML = state.party.map((m) => {
     const status = m.health > 0 ? "Survived" : "Did not survive";
     const cls = m.health > 0 ? "good" : "bad";
@@ -379,6 +411,7 @@ function resetState() {
   state.landmarkIndex = 0;
   state.restBlocked = false;
   state.waterPumpEventFired = false;
+  state.peopleHelped = 0;
   state.over = false;
 }
 
@@ -426,7 +459,7 @@ document.getElementById("action-continue").addEventListener("click", travelDay);
 
 document.getElementById("action-rest").addEventListener("click", () => {
   if (!atUmerkot() || state.restBlocked) return;
-  if (Math.random() < REST_DANGER_CHANCE) {
+  if (isAlive("Nisha") && Math.random() < REST_DANGER_CHANCE) {
     triggerNishaDangerEvent();
     return;
   }

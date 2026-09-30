@@ -64,9 +64,10 @@ const SUPPLY_ITEMS = [
   { id: "lantern", name: "Lantern Oil", unit: "flasks", weight: 1.5 },
 ];
 
-const NUM_SATCHELS = 4;
-const SATCHEL_CAPACITY = 20;
-const TOTAL_CAPACITY = NUM_SATCHELS * SATCHEL_CAPACITY;
+// Uneven on purpose: Satchel 1 is the main adult-sized pack, Satchels 2-3 are
+// the twins' bags, and Satchel 4 is what Dadi alone can manage.
+const SATCHEL_CAPACITIES = [135, 50, 50, 15];
+const TOTAL_CAPACITY = SATCHEL_CAPACITIES.reduce((sum, c) => sum + c, 0);
 
 const PARTY_TEMPLATE = [
   { name: "Suresh", role: "father, the doctor", susceptibility: 1.0 },
@@ -85,6 +86,8 @@ const LANDMARKS = [
 ];
 
 const TOTAL_MILES = LANDMARKS[LANDMARKS.length - 1].miles;
+
+const HELP_REWARD_CHANCE = 0.2;
 
 const RANDOM_EVENTS = [
   {
@@ -168,6 +171,69 @@ const RANDOM_EVENTS = [
       { label: "Let it go and keep moving", apply: (s) => { const lost = Math.min(s.inventory.water, 6 + Math.floor(Math.random() * 5)); s.inventory.water -= lost; s.log(`There's no time to mourn spilled water. ${lost} jars soak into the sand before you can stop them.`, "bad"); } },
     ],
   },
+  {
+    id: "waterPumpStranger",
+    title: "The Man at the Water Pump",
+    body: "An old man sits slumped against the pump, too weak to work the handle himself. No one else has stopped.",
+    choices: [
+      {
+        label: "Share water and help him up",
+        requires: { water: 2 },
+        apply: (s) => {
+          s.inventory.water -= 2;
+          s.peopleHelped += 1;
+          if (Math.random() < HELP_REWARD_CHANCE) {
+            const f = 3 + Math.floor(Math.random() * 5);
+            s.inventory.food += f;
+            s.log(`Suresh helps the man to his feet and shares water from your jars. Grateful, he presses ${f} lbs of food into your hands before you go.`, "good");
+          } else {
+            s.log("Suresh helps the man to his feet and shares water from your jars. He has nothing to give back but his thanks, and that has to be enough.", "good");
+          }
+        },
+      },
+      { label: "Keep walking", apply: (s) => { s.log("You keep walking. There are so many who need help — you cannot stop for all of them.", "bad"); } },
+    ],
+  },
+  {
+    id: "sickChildColumn",
+    title: "A Sick Child in the Column",
+    body: "A family nearby is desperate — their youngest has a fever, and they have no medicine left to bring it down.",
+    choices: [
+      {
+        label: "Share medicine",
+        requires: { medicine: 1 },
+        apply: (s) => {
+          s.inventory.medicine -= 1;
+          s.peopleHelped += 1;
+          if (Math.random() < HELP_REWARD_CHANCE) {
+            const o = 2 + Math.floor(Math.random() * 3);
+            s.inventory.lantern += o;
+            s.log(`The fever breaks by morning. The father presses ${o} flasks of lantern oil on you — it's all he has to offer.`, "good");
+          } else {
+            s.log("The fever breaks by morning. The family has nothing to give back, only relief, and it will have to be enough.", "good");
+          }
+        },
+      },
+      { label: "You need what you have", apply: (s) => { s.log("You keep the medicine. Your own family may need it before this is over.", "bad"); } },
+    ],
+  },
+  {
+    id: "widowOnRoad",
+    title: "A Widow on the Road",
+    body: "A woman walks alone, carrying nothing but a small bundle. By the look of her, she hasn't eaten in days.",
+    choices: [
+      {
+        label: "Give her some food",
+        requires: { food: 5 },
+        apply: (s) => {
+          s.inventory.food -= 5;
+          s.peopleHelped += 1;
+          s.log("You share what food you can. She thanks you quietly and walks on alone. You expect nothing back, and get nothing back — and that's alright.", "good");
+        },
+      },
+      { label: "You can't spare it", apply: (s) => { s.log("You have little enough for your own family. You walk on, and don't look back.", "bad"); } },
+    ],
+  },
 ];
 
 const RATION_LEVELS = {
@@ -184,7 +250,7 @@ const PACE_LEVELS = {
 
 const BORDER_LANDMARK_NAME = "Munabao — the border";
 const REST_LANDMARK_NAME = "Umerkot";
-const REST_DANGER_CHANCE = 0.3;
+const REST_DANGER_CHANCE = 0.12;
 
 const NISHA_DANGER_EVENT = {
   title: "Nisha Is in Danger",

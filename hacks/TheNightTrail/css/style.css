@@ -247,6 +247,7 @@ input[type="text"] {
 
 #satchel-visual {
   display: flex;
+  align-items: flex-end;
   gap: 10px;
   margin: 14px 0;
 }
@@ -256,12 +257,12 @@ input[type="text"] {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-end;
   gap: 6px;
 }
 
 .satchel-bar {
   width: 100%;
-  height: 110px;
   border: 1px solid var(--panel-border);
   border-radius: 6px 6px 10px 10px;
   background: #0a0e1f;
