@@ -329,13 +329,39 @@ input[type="text"] {
 .card h4 {
   margin: 0 0 6px;
   color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .card p {
-  margin: 0;
+  margin: 0 0 6px;
   color: var(--muted);
   font-size: 0.9rem;
 }
+
+.card p:last-child {
+  margin-bottom: 0;
+}
+
+.card-role {
+  color: var(--text);
+  font-style: italic;
+}
+
+.difficulty-badge {
+  font-size: 0.7rem;
+  font-weight: normal;
+  letter-spacing: 0.5px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+}
+
+.difficulty-easy        { color: var(--ok); }
+.difficulty-medium      { color: var(--accent); }
+.difficulty-medium-hard { color: var(--c-lantern); }
+.difficulty-hard        { color: var(--danger); }
 
 .qty-row {
   display: flex;
@@ -510,11 +536,36 @@ input[type="text"] {
   background: var(--panel);
   border: 1px solid var(--panel-border);
   border-radius: 10px;
-  padding: 32px;
+  padding: clamp(24px, 3vw, 40px);
+  justify-content: center;
 }
 
 #screen-end h2 {
   color: var(--accent);
+}
+
+#end-roster {
+  list-style: none;
+  padding: 0;
+  margin: 20px auto 28px;
+  max-width: 420px;
+  width: 100%;
+  overflow-y: auto;
+}
+
+#end-roster li {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 4px;
+  border-bottom: 1px dashed var(--panel-border);
+}
+
+#end-roster .good {
+  color: var(--ok);
+}
+
+#end-roster .bad {
+  color: var(--danger);
 }
 
 @media (max-width: 760px) {

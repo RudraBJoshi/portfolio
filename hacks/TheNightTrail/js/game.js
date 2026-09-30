@@ -1,5 +1,5 @@
 const state = {
-  occupation: null,
+  character: null,
   inventory: { food: 0, water: 0, medicine: 0, parts: 0, lantern: 0 },
   party: [],
   day: 1,
@@ -7,6 +7,8 @@ const state = {
   pace: "steady",
   ration: "filling",
   landmarkIndex: 0,
+  restBlocked: false,
+  waterPumpEventFired: false,
   over: false,
 
   log(message, cls) {
@@ -19,11 +21,12 @@ const state = {
   },
 
   damagePartyHealth(amount, { illness = false } = {}) {
+    const difficultyFactor = (amount > 0 && this.character) ? this.character.damageMultiplier : 1;
     for (const member of this.party) {
       if (member.health <= 0) continue;
       const variance = 0.7 + Math.random() * 0.6;
       const susceptFactor = illness ? member.susceptibility : 1;
-      const change = Math.round(amount * variance * susceptFactor);
+      const change = Math.round(amount * variance * susceptFactor * difficultyFactor);
       member.health = Math.max(0, Math.min(100, member.health - change));
       if (member.health === 0) this.log(`${member.name} did not survive the journey.`, "bad");
     }
@@ -35,30 +38,29 @@ function showScreen(id) {
   document.getElementById(id).classList.add("active");
 }
 
-function renderOccupations() {
+function renderCharacters() {
   const list = document.getElementById("occupation-list");
   list.innerHTML = "";
-  OCCUPATIONS.forEach((occ) => {
+  CHARACTERS.forEach((char) => {
     const card = document.createElement("div");
     card.className = "card";
-    card.innerHTML = `<h4>${occ.name}</h4><p>${occ.desc}</p><p>+${occ.capacityBonus} lbs carrying capacity</p>`;
+    card.innerHTML = `
+      <h4>${char.name} <span class="difficulty-badge difficulty-${char.difficulty.toLowerCase().replace(/[^a-z]/g, "-")}">${char.difficulty}</span></h4>
+      <p class="card-role">${char.role}</p>
+      <p>${char.desc}</p>
+      <p>${char.capacityBonus >= 0 ? "+" : ""}${char.capacityBonus} lbs carrying capacity</p>`;
     card.addEventListener("click", () => {
-      state.occupation = occ;
+      state.character = char;
       list.querySelectorAll(".card").forEach((c) => c.classList.remove("selected"));
       card.classList.add("selected");
       document.getElementById("btn-to-outfit").disabled = false;
     });
     list.appendChild(card);
   });
-  if (OCCUPATIONS.length === 1) {
-    state.occupation = OCCUPATIONS[0];
-    list.querySelector(".card").classList.add("selected");
-    document.getElementById("btn-to-outfit").disabled = false;
-  }
 }
 
 function outfitCapacity() {
-  return TOTAL_CAPACITY + (state.occupation ? state.occupation.capacityBonus : 0);
+  return TOTAL_CAPACITY + (state.character ? state.character.capacityBonus : 0);
 }
 
 function outfitUsed() {
@@ -180,7 +182,7 @@ function depart() {
   document.getElementById("trail-log").innerHTML = "";
   document.getElementById("screen-trail").classList.add("active");
   showScreen("screen-trail");
-  document.getElementById("stats-leader").textContent = "Suresh's Family";
+  document.getElementById("stats-leader").textContent = `Suresh's Family — seen through ${state.character.name}'s eyes (${state.character.difficulty})`;
   state.log("August, 1947. Mirpur Khas is behind you now. Four satchels, packed light — one each. Dr. Suresh, his mother Dadi, and his twins Amil and Nisha set out on foot under starlight, east toward the Thar and whatever waits on the other side of the new border.", "milestone");
   renderStats();
 }
@@ -209,10 +211,43 @@ function atUmerkot() {
 
 function updateRestAvailability() {
   const restBtn = document.getElementById("action-rest");
-  restBtn.disabled = !atUmerkot();
-  restBtn.title = atUmerkot()
-    ? "Rashid Uncle will take you in for the day."
-    : "Only safe to rest at Rashid Uncle's house, in Umerkot.";
+  restBtn.disabled = !atUmerkot() || state.restBlocked;
+  restBtn.title = state.restBlocked
+    ? "There's no safe rest left here. Time to move on."
+    : atUmerkot()
+      ? "Rashid Uncle will take you in for the day."
+      : "Only safe to rest at Rashid Uncle's house, in Umerkot.";
+}
+
+function showEventModal(event) {
+  document.getElementById("event-title").textContent = event.title;
+  document.getElementById("event-body").textContent = event.body;
+  const choicesEl = document.getElementById("event-choices");
+  choicesEl.innerHTML = "";
+
+  event.choices.forEach((choice) => {
+    const btn = document.createElement("button");
+    btn.textContent = choice.label;
+    const meetsRequirement = !choice.requires || Object.entries(choice.requires).every(([key, amt]) => state.inventory[key] >= amt);
+    btn.disabled = !meetsRequirement;
+    btn.addEventListener("click", () => {
+      choice.apply(state);
+      showScreen("screen-trail");
+      renderStats();
+      if (state.party.every((m) => m.health <= 0)) endGame(false, "The family did not make it to Jodhpur.");
+    });
+    choicesEl.appendChild(btn);
+  });
+
+  showScreen("screen-event");
+}
+
+function triggerNishaDangerEvent() {
+  showEventModal(NISHA_DANGER_EVENT);
+}
+
+function triggerWaterPumpEvent() {
+  showEventModal(WATER_PUMP_EVENT);
 }
 
 function updateMapMarker() {
@@ -250,6 +285,16 @@ function travelDay() {
     state.damagePartyHealth(8, { illness: true });
     state.log("Supplies run short. The family goes hungry.", "bad");
   }
+
+  const waterNeeded = rationInfo.waterPerPerson * alive.length;
+  if (state.inventory.water >= waterNeeded) {
+    state.inventory.water -= waterNeeded;
+  } else {
+    state.inventory.water = 0;
+    state.damagePartyHealth(8, { illness: true });
+    state.log("The jars run dry. The family goes thirsty under the desert sun.", "bad");
+  }
+
   state.damagePartyHealth(-rationInfo.healthDelta);
 
   const paceInfo = PACE_LEVELS[state.pace];
@@ -278,6 +323,12 @@ function travelDay() {
 
   renderStats();
 
+  if (!state.waterPumpEventFired && state.miles >= WATER_PUMP_MILE) {
+    state.waterPumpEventFired = true;
+    triggerWaterPumpEvent();
+    return;
+  }
+
   if (Math.random() < 0.4) {
     triggerRandomEvent();
   } else {
@@ -287,37 +338,23 @@ function travelDay() {
 
 function triggerRandomEvent() {
   const event = RANDOM_EVENTS[Math.floor(Math.random() * RANDOM_EVENTS.length)];
-  document.getElementById("event-title").textContent = event.title;
-  document.getElementById("event-body").textContent = event.body;
-  const choicesEl = document.getElementById("event-choices");
-  choicesEl.innerHTML = "";
-
-  event.choices.forEach((choice) => {
-    const btn = document.createElement("button");
-    btn.textContent = choice.label;
-    const meetsRequirement = !choice.requires || Object.entries(choice.requires).every(([key, amt]) => state.inventory[key] >= amt);
-    btn.disabled = !meetsRequirement;
-    btn.addEventListener("click", () => {
-      choice.apply(state);
-      showScreen("screen-trail");
-      renderStats();
-      if (state.party.every((m) => m.health <= 0)) endGame(false, "The family did not make it to Jodhpur.");
-    });
-    choicesEl.appendChild(btn);
-  });
-
-  showScreen("screen-event");
+  showEventModal(event);
 }
 
 function endGame(won, message) {
   state.over = true;
   document.getElementById("end-title").textContent = won ? "A New Home" : "The Journey Ends Here";
   document.getElementById("end-body").textContent = message;
+  document.getElementById("end-roster").innerHTML = state.party.map((m) => {
+    const status = m.health > 0 ? "Survived" : "Did not survive";
+    const cls = m.health > 0 ? "good" : "bad";
+    return `<li><span>${m.name}${m.role ? ` — ${m.role}` : ""}</span><span class="${cls}">${status}</span></li>`;
+  }).join("");
   showScreen("screen-end");
 }
 
 function resetState() {
-  state.occupation = null;
+  state.character = null;
   state.inventory = { food: 0, water: 0, medicine: 0, parts: 0, lantern: 0 };
   state.party = [];
   state.day = 1;
@@ -325,6 +362,8 @@ function resetState() {
   state.pace = "steady";
   state.ration = "filling";
   state.landmarkIndex = 0;
+  state.restBlocked = false;
+  state.waterPumpEventFired = false;
   state.over = false;
 }
 
@@ -356,7 +395,7 @@ document.getElementById("intro-next").addEventListener("click", () => {
     introIndex += 1;
     renderIntroSlide();
   } else {
-    renderOccupations();
+    renderCharacters();
     showScreen("screen-setup");
   }
 });
@@ -371,7 +410,11 @@ document.getElementById("btn-depart").addEventListener("click", depart);
 document.getElementById("action-continue").addEventListener("click", travelDay);
 
 document.getElementById("action-rest").addEventListener("click", () => {
-  if (!atUmerkot()) return;
+  if (!atUmerkot() || state.restBlocked) return;
+  if (Math.random() < REST_DANGER_CHANCE) {
+    triggerNishaDangerEvent();
+    return;
+  }
   state.damagePartyHealth(-10);
   state.day += 1;
   state.log("Rashid Uncle takes you in for the day. The family rests behind his walls, regaining strength.", "good");

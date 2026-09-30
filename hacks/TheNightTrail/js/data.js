@@ -1,5 +1,24 @@
-const OCCUPATIONS = [
-  { id: "doctor", name: "Doctor", capacityBonus: 6, desc: "Mirpur Khas's doctor. Used to packing a medical bag quickly and carrying it far." },
+const CHARACTERS = [
+  {
+    id: "suresh", name: "Suresh", role: "Father, the doctor", difficulty: "Easy",
+    capacityBonus: 8, damageMultiplier: 0.7,
+    desc: "Steady hands, calm under pressure. Years of treating the sick have hardened him against the worst the road can do. Lasts the longest.",
+  },
+  {
+    id: "nisha", name: "Nisha", role: "Daughter", difficulty: "Medium",
+    capacityBonus: 2, damageMultiplier: 1.0,
+    desc: "Quiet and watchful, neither the strongest nor the frailest of the family. A balanced telling of the journey.",
+  },
+  {
+    id: "amil", name: "Amil", role: "Son", difficulty: "Medium-Hard",
+    capacityBonus: 0, damageMultiplier: 1.2,
+    desc: "Restless and quick on his feet, but the road wears on him faster than it should. Weaker than Nisha, not as frail as Dadi.",
+  },
+  {
+    id: "dadi", name: "Dadi", role: "Grandmother", difficulty: "Hard",
+    capacityBonus: -6, damageMultiplier: 1.5,
+    desc: "Her joints ache before the sun is even up, and she can't carry as much as the others. Every mile costs more. The hardest way to make this journey.",
+  },
 ];
 
 const INTRO_SLIDES = [
@@ -109,8 +128,8 @@ const RANDOM_EVENTS = [
     title: "A Village Well",
     body: "A village along the road opens its well to the passing families — neighbors helping strangers where they can, whatever the times.",
     choices: [
-      { label: "Draw water and thank them", apply: (s) => { const w = 4 + Math.floor(Math.random() * 6); const f = 5 + Math.floor(Math.random() * 10); s.inventory.water += w; s.inventory.food += f; s.log(`They fill your jars and share what food they can spare. +${w} water, +${f} lbs food.`, "good"); } },
-      { label: "Take only what you need and move on quickly", apply: (s) => { const w = 2; s.inventory.water += w; s.log(`You draw a little water and keep moving. +${w} water.`, "good"); } },
+      { label: "Draw water and thank them", apply: (s) => { const w = 6 + Math.floor(Math.random() * 8); const f = 5 + Math.floor(Math.random() * 10); s.inventory.water += w; s.inventory.food += f; s.log(`They fill your jars and share what food they can spare. +${w} water, +${f} lbs food.`, "good"); } },
+      { label: "Take only what you need and move on quickly", apply: (s) => { const w = 3; s.inventory.water += w; s.log(`You draw a little water and keep moving. +${w} water.`, "good"); } },
     ],
   },
   {
@@ -131,12 +150,21 @@ const RANDOM_EVENTS = [
       { label: "Keep your heads down and push through quickly", apply: (s) => { const lost = Math.min(s.inventory.food, 5 + Math.floor(Math.random() * 10)); s.inventory.food -= lost; s.damagePartyHealth(5); s.log(`You shoulder through the crowd. A hand grabs at a satchel before you break free — ${lost} lbs of food torn loose in the scramble.`, "bad"); } },
     ],
   },
+  {
+    id: "rain",
+    title: "Rain Over the Desert",
+    body: "Dark clouds break over the Thar — a rare desert rain drums against the satchels, and the dry ground drinks it in almost as fast as you can catch it.",
+    choices: [
+      { label: "Catch what you can in the jars", apply: (s) => { const w = 8 + Math.floor(Math.random() * 8); s.inventory.water += w; s.log(`You fill every jar you can before the clouds pass. +${w} water.`, "good"); } },
+      { label: "Let the children rest under it a moment first", apply: (s) => { const w = 4 + Math.floor(Math.random() * 5); s.inventory.water += w; s.damagePartyHealth(-5); s.log(`A moment of relief in the rain, and a little water besides. +${w} water.`, "good"); } },
+    ],
+  },
 ];
 
 const RATION_LEVELS = {
-  filling: { label: "Filling", foodPerPerson: 3, healthDelta: 1 },
-  meager:  { label: "Meager",  foodPerPerson: 2, healthDelta: 0 },
-  bare:    { label: "Bare Bones", foodPerPerson: 1, healthDelta: -2 },
+  filling: { label: "Filling", foodPerPerson: 2,   waterPerPerson: 5, healthDelta: 1 },
+  meager:  { label: "Meager",  foodPerPerson: 1.5, waterPerPerson: 4, healthDelta: 0 },
+  bare:    { label: "Bare Bones", foodPerPerson: 1, waterPerPerson: 3, healthDelta: -2 },
 };
 
 const PACE_LEVELS = {
@@ -147,6 +175,54 @@ const PACE_LEVELS = {
 
 const BORDER_LANDMARK_NAME = "Munabao — the border";
 const REST_LANDMARK_NAME = "Umerkot";
+const REST_DANGER_CHANCE = 0.3;
+
+const NISHA_DANGER_EVENT = {
+  title: "Nisha Is in Danger",
+  body: "Nisha has slipped off to talk with a neighbor's family — Muslim friends of Rashid Uncle's. Word travels fast in a house this close to the road, and voices are rising outside.",
+  choices: [
+    {
+      label: "Stay and wait it out",
+      apply: (s) => {
+        s.restBlocked = true;
+        s.day += 1;
+        s.damagePartyHealth(18);
+        s.log("The night passes in fear rather than rest. Rashid Uncle calms the voices outside, but it costs the family dearly. There will be no more peace to find here.", "bad");
+      },
+    },
+    {
+      label: "Leave at once",
+      apply: (s) => {
+        s.restBlocked = true;
+        s.log("You gather the satchels and slip out before the voices reach the door. No rest gained — but everyone is safe.", "good");
+      },
+    },
+  ],
+};
+
+const WATER_PUMP_MILE = 75; // halfway between Mirpur Khas (0) and Umerkot (150)
+
+const WATER_PUMP_EVENT = {
+  title: "Fighting at the Water Pump",
+  body: "A crowd has gathered around a village pump, and patience has run out. Voices turn to shoving, then worse, as families scramble for what water is left.",
+  choices: [
+    {
+      label: "Push into the fight for water",
+      apply: (s) => {
+        const w = 6 + Math.floor(Math.random() * 6);
+        s.damagePartyHealth(10);
+        s.inventory.water += w;
+        s.log(`You come away bruised, but with ${w} more jars of water than you had.`, "bad");
+      },
+    },
+    {
+      label: "Pull back and leave it",
+      apply: (s) => {
+        s.log("You pull the children back and keep walking. Whatever's left at that pump isn't worth the risk.", "good");
+      },
+    },
+  ],
+};
 
 // Pixel positions are keyed to the game's (pacing-adjusted) mile markers so the
 // dot still lands on each landmark exactly when it's announced in the log, but
