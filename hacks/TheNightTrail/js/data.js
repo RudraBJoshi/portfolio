@@ -2,6 +2,41 @@ const OCCUPATIONS = [
   { id: "doctor", name: "Doctor", capacityBonus: 6, desc: "Mirpur Khas's doctor. Used to packing a medical bag quickly and carrying it far." },
 ];
 
+const INTRO_SLIDES = [
+  {
+    heading: "August 1947",
+    body: "For nearly 200 years, the British ruled India. Now, after decades of struggle, that rule is finally ending.",
+  },
+  {
+    heading: "A Line Is Drawn",
+    body: "But independence comes with a price. Britain has decided to split the land in two: a new country called Pakistan for its Muslim-majority regions, and India for the rest.",
+  },
+  {
+    heading: "Sir Cyril Radcliffe",
+    body: "The border is drawn by a British lawyer who had never set foot in India before this year, working from maps in just a few weeks. It cuts through provinces, villages, and families almost overnight.",
+  },
+  {
+    heading: "Mirpur Khas",
+    body: "Mirpur Khas, in the province of Sindh, falls on the Pakistan side of the new line. For Suresh's Hindu family, the only home they have ever known now belongs to a different country.",
+  },
+  {
+    heading: "The Largest Migration in History",
+    body: "In the weeks around independence, an estimated 15 million people will cross the new border in both directions — Hindus and Sikhs moving toward India, Muslims moving toward Pakistan. Many will not survive the journey.",
+  },
+  {
+    heading: "A Choice",
+    body: "Suresh, the town's doctor, must decide: stay and hope the danger passes, or take his mother and his twin children across the Thar Desert toward safety in India.",
+  },
+  {
+    heading: "Not by Train",
+    body: "The railway would be faster. But trains have become a target for violence from every side, and word is spreading of trains that never reach their destination safely. Suresh won't risk it — the family will go on foot instead, joining a slower caravan of other families making the same journey out of Sindh.",
+  },
+  {
+    heading: "This Is Their Story",
+    body: "A short, fictionalized journey inspired by these events and by Veera Hiranandani's novel The Night Diary.",
+  },
+];
+
 const SUPPLY_ITEMS = [
   { id: "food",    name: "Food",        unit: "lbs",    weight: 1 },
   { id: "water",   name: "Water",       unit: "jars",   weight: 2 },
@@ -113,8 +148,16 @@ const PACE_LEVELS = {
 const BORDER_LANDMARK_NAME = "Munabao — the border";
 const REST_LANDMARK_NAME = "Umerkot";
 
+// Pixel positions are keyed to the game's (pacing-adjusted) mile markers so the
+// dot still lands on each landmark exactly when it's announced in the log, but
+// Khokhrapar/Munabao/Barmer are placed along the Umerkot-to-Jodhpur line using
+// their real relative distances (Umerkot->Khokhrapar ~70mi, ->Munabao ~75mi,
+// ->Barmer ~140mi, ->Jodhpur ~275mi), not the rebalanced in-game mile gaps.
 const MAP_WAYPOINTS = [
-  { miles: 0,   x: 0.252, y: 0.418 },
-  { miles: 150, x: 0.294, y: 0.400 },
-  { miles: TOTAL_MILES, x: 0.388, y: 0.356 },
+  { miles: 0,   x: 0.252, y: 0.418 }, // Mirpur Khas
+  { miles: 150, x: 0.294, y: 0.400 }, // Umerkot
+  { miles: 165, x: 0.318, y: 0.389 }, // Khokhrapar
+  { miles: 170, x: 0.320, y: 0.388 }, // Munabao — the border
+  { miles: 220, x: 0.342, y: 0.378 }, // Barmer
+  { miles: TOTAL_MILES, x: 0.388, y: 0.356 }, // Jodhpur
 ];

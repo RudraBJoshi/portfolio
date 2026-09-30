@@ -328,9 +328,37 @@ function resetState() {
   state.over = false;
 }
 
+let introIndex = 0;
+
+function renderIntroSlide() {
+  const slide = INTRO_SLIDES[introIndex];
+  document.getElementById("intro-heading").textContent = slide.heading;
+  document.getElementById("intro-body").textContent = slide.body;
+  document.getElementById("intro-progress").textContent = `${introIndex + 1} / ${INTRO_SLIDES.length}`;
+  document.getElementById("intro-back").disabled = introIndex === 0;
+  document.getElementById("intro-next").textContent = introIndex === INTRO_SLIDES.length - 1 ? "Begin the Journey" : "Continue";
+}
+
 document.getElementById("btn-start").addEventListener("click", () => {
-  renderOccupations();
-  showScreen("screen-setup");
+  introIndex = 0;
+  renderIntroSlide();
+  showScreen("screen-intro");
+});
+
+document.getElementById("intro-back").addEventListener("click", () => {
+  if (introIndex === 0) return;
+  introIndex -= 1;
+  renderIntroSlide();
+});
+
+document.getElementById("intro-next").addEventListener("click", () => {
+  if (introIndex < INTRO_SLIDES.length - 1) {
+    introIndex += 1;
+    renderIntroSlide();
+  } else {
+    renderOccupations();
+    showScreen("screen-setup");
+  }
 });
 
 document.getElementById("btn-to-outfit").addEventListener("click", () => {

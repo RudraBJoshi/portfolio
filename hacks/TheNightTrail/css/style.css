@@ -116,6 +116,57 @@ button:disabled {
   padding: 24px;
 }
 
+.intro-wrap {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  align-items: stretch;
+}
+
+#intro-map {
+  flex: 1 1 320px;
+  max-width: 420px;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  border: 1px solid var(--panel-border);
+  align-self: center;
+}
+
+.intro-panel {
+  flex: 1 1 320px;
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 10px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 260px;
+}
+
+.intro-progress {
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin: 0 0 8px;
+}
+
+.intro-panel h2 {
+  margin: 0 0 12px;
+  color: var(--accent);
+}
+
+.intro-panel p:not(.intro-progress) {
+  line-height: 1.5;
+}
+
+.intro-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 20px;
+}
+
 label {
   display: block;
   margin-bottom: 6px;
