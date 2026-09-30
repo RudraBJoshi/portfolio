@@ -19,14 +19,19 @@
   box-sizing: border-box;
 }
 
+html {
+  font-size: clamp(15px, 0.6vw + 13px, 19px);
+  height: 100%;
+}
+
 body {
   margin: 0;
-  min-height: 100vh;
+  height: 100%;
   background: var(--bg);
   color: var(--text);
   font-family: 'Georgia', 'Times New Roman', serif;
   position: relative;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 #stars {
@@ -49,9 +54,14 @@ body {
 #app {
   position: relative;
   z-index: 1;
-  max-width: 900px;
+  max-width: 1200px;
+  height: 100vh;
+  height: 100dvh;
   margin: 0 auto;
-  padding: 32px 20px 80px;
+  padding: clamp(16px, 3vh, 32px) clamp(16px, 4vw, 48px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .screen {
@@ -59,7 +69,11 @@ body {
 }
 
 .screen.active {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
   animation: fade-in 0.3s ease-in;
 }
 
@@ -71,7 +85,7 @@ body {
 h1 {
   text-align: center;
   letter-spacing: 4px;
-  font-size: 2.6rem;
+  font-size: clamp(2.6rem, 4vw + 1rem, 4.4rem);
   margin-bottom: 4px;
   color: var(--accent);
   text-shadow: 0 0 20px rgba(111, 140, 255, 0.4);
@@ -80,6 +94,7 @@ h1 {
 .tagline {
   text-align: center;
   color: var(--muted);
+  font-size: clamp(1rem, 0.6vw + 0.85rem, 1.3rem);
   margin-bottom: 32px;
 }
 
@@ -88,7 +103,7 @@ button {
   color: var(--text);
   border: 1px solid var(--panel-border);
   border-radius: 6px;
-  padding: 10px 18px;
+  padding: 0.7rem 1.4rem;
   font-family: inherit;
   font-size: 1rem;
   cursor: pointer;
@@ -109,62 +124,96 @@ button:disabled {
   text-align: center;
 }
 
+#screen-title.active {
+  align-items: center;
+  justify-content: center;
+}
+
+#screen-title #btn-start {
+  font-size: 1.15rem;
+  padding: 0.9rem 2rem;
+}
+
 #screen-setup, #screen-outfit {
   background: var(--panel);
   border: 1px solid var(--panel-border);
   border-radius: 10px;
-  padding: 24px;
+  padding: clamp(20px, 3vw, 36px);
+  min-height: 0;
+}
+
+#screen-setup > *:not(.card-list), #screen-outfit > *:not(.card-list) {
+  flex: 0 0 auto;
+}
+
+#screen-intro.active {
+  justify-content: center;
 }
 
 .intro-wrap {
   display: flex;
-  gap: 20px;
+  gap: 32px;
   flex-wrap: wrap;
   align-items: stretch;
+  width: 100%;
+  min-height: 0;
+  max-height: 100%;
 }
 
 #intro-map {
-  flex: 1 1 320px;
-  max-width: 420px;
+  flex: 1 1 380px;
+  max-width: 560px;
   width: 100%;
   height: auto;
-  border-radius: 10px;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 12px;
   border: 1px solid var(--panel-border);
   align-self: center;
 }
 
 .intro-panel {
-  flex: 1 1 320px;
+  flex: 1 1 380px;
   background: var(--panel);
   border: 1px solid var(--panel-border);
-  border-radius: 10px;
-  padding: 24px;
+  border-radius: 12px;
+  padding: clamp(20px, 3vw, 44px);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: 260px;
+  min-height: 0;
+  max-height: 100%;
+  overflow-y: auto;
 }
 
 .intro-progress {
   color: var(--muted);
-  font-size: 0.8rem;
-  margin: 0 0 8px;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  margin: 0 0 10px;
 }
 
 .intro-panel h2 {
-  margin: 0 0 12px;
+  margin: 0 0 16px;
   color: var(--accent);
+  font-size: clamp(1.6rem, 1.6vw + 1.1rem, 2.4rem);
 }
 
 .intro-panel p:not(.intro-progress) {
-  line-height: 1.5;
+  font-size: clamp(1.05rem, 0.4vw + 0.95rem, 1.3rem);
+  line-height: 1.6;
 }
 
 .intro-actions {
   display: flex;
   justify-content: space-between;
-  gap: 10px;
-  margin-top: 20px;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.intro-actions button {
+  font-size: 1.05rem;
+  padding: 0.75rem 1.6rem;
 }
 
 label {
@@ -251,8 +300,12 @@ input[type="text"] {
 .card-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  align-content: start;
   gap: 12px;
   margin: 16px 0 24px;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 .card {
@@ -305,22 +358,20 @@ input[type="text"] {
 }
 
 #screen-trail {
-  display: none;
   gap: 20px;
 }
 
 #screen-trail.active {
-  display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;
 }
 
 #stats-panel {
-  flex: 0 0 220px;
+  flex: 0 0 260px;
   background: var(--panel);
   border: 1px solid var(--panel-border);
   border-radius: 10px;
-  padding: 16px;
-  height: fit-content;
+  padding: 20px;
+  overflow-y: auto;
 }
 
 #stats-panel h3 {
@@ -345,22 +396,31 @@ input[type="text"] {
 #trail-main {
   flex: 1 1 400px;
   min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  gap: 16px;
 }
 
 #map-wrap {
   position: relative;
+  flex: 0 0 auto;
   width: 100%;
+  max-width: 420px;
+  aspect-ratio: 1190 / 904;
+  max-height: 28vh;
+  margin: 0 auto;
   line-height: 0;
   border-radius: 10px;
   overflow: hidden;
   border: 1px solid var(--panel-border);
-  margin-bottom: 16px;
 }
 
 #trail-map {
   width: 100%;
-  height: auto;
+  height: 100%;
   display: block;
+  object-fit: cover;
   filter: saturate(0.9) brightness(0.95);
 }
 
@@ -380,10 +440,10 @@ input[type="text"] {
   background: var(--panel);
   border: 1px solid var(--panel-border);
   border-radius: 10px;
-  padding: 16px;
-  height: 280px;
+  padding: 18px;
+  flex: 1 1 auto;
+  min-height: 0;
   overflow-y: auto;
-  margin-bottom: 16px;
 }
 
 #trail-log p {
@@ -407,6 +467,7 @@ input[type="text"] {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
+  flex: 0 0 auto;
 }
 
 #screen-event {
@@ -427,8 +488,8 @@ input[type="text"] {
   background: var(--panel);
   border: 1px solid var(--panel-border);
   border-radius: 10px;
-  padding: 24px;
-  max-width: 420px;
+  padding: clamp(24px, 3vw, 36px);
+  max-width: 520px;
   width: 90%;
 }
 
@@ -454,4 +515,37 @@ input[type="text"] {
 
 #screen-end h2 {
   color: var(--accent);
+}
+
+@media (max-width: 760px) {
+  #screen-trail.active {
+    flex-direction: column;
+  }
+
+  #stats-panel {
+    flex: 0 0 auto;
+    max-height: 32%;
+  }
+
+  #trail-main {
+    flex: 1 1 auto;
+  }
+
+  #map-wrap {
+    max-height: 16vh;
+  }
+
+  .intro-wrap {
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+
+  #intro-map {
+    flex: 0 0 auto;
+    max-height: 30vh;
+  }
+
+  .intro-panel {
+    flex: 1 1 auto;
+  }
 }
