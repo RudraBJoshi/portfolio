@@ -153,8 +153,18 @@ button:disabled {
   min-height: 0;
 }
 
-#screen-setup > *:not(.card-list), #screen-outfit > *:not(.card-list) {
+#screen-setup > *:not(.card-list) {
   flex: 0 0 auto;
+}
+
+#screen-outfit > *:not(#outfit-scroll) {
+  flex: 0 0 auto;
+}
+
+#outfit-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 #screen-intro.active {
@@ -249,7 +259,7 @@ input[type="text"] {
   display: flex;
   align-items: flex-end;
   gap: 10px;
-  margin: 14px 0;
+  margin: 8px 0;
 }
 
 .satchel {
@@ -291,7 +301,7 @@ input[type="text"] {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   font-size: 0.8rem;
   color: var(--muted);
 }
@@ -314,7 +324,10 @@ input[type="text"] {
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   align-content: start;
   gap: 12px;
-  margin: 16px 0 24px;
+  margin: 12px 0 16px;
+}
+
+#occupation-list {
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;

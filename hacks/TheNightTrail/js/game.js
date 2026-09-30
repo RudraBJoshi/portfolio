@@ -9,6 +9,7 @@ const state = {
   landmarkIndex: 0,
   restBlocked: false,
   waterPumpEventFired: false,
+  umerkotGiftGiven: false,
   peopleHelped: 0,
   over: false,
 
@@ -76,16 +77,21 @@ function renderOutfitHeader() {
   renderSatchelVisual();
 }
 
-const SATCHEL_BAR_MAX_HEIGHT = 150;
-const SATCHEL_BAR_MIN_HEIGHT = 28;
+const SATCHEL_BAR_MIN_HEIGHT = 18;
 
 function renderSatchelVisual() {
   const container = document.getElementById("satchel-visual");
   if (!container) return;
   container.innerHTML = "";
 
+  // Cap the tallest bar to a fraction of the viewport, not a flat pixel value,
+  // so this visualization can't crowd out the actual packing controls below it
+  // on shorter screens.
+  const barMaxHeight = Math.max(60, Math.min(120, window.innerHeight * 0.14));
+
   const bonus = state.character ? state.character.capacityBonus : 0;
-  const satchelCaps = SATCHEL_CAPACITIES.map((cap, i) => (i === 0 ? cap + bonus : cap));
+  const bonusIndex = state.character ? state.character.satchelIndex : 0;
+  const satchelCaps = SATCHEL_CAPACITIES.map((cap, i) => (i === bonusIndex ? cap + bonus : cap));
   const maxCap = Math.max(...satchelCaps);
 
   const chunks = SUPPLY_ITEMS
@@ -101,7 +107,7 @@ function renderSatchelVisual() {
 
     const bar = document.createElement("div");
     bar.className = "satchel-bar";
-    bar.style.height = `${Math.max(SATCHEL_BAR_MIN_HEIGHT, Math.round((capacity / maxCap) * SATCHEL_BAR_MAX_HEIGHT))}px`;
+    bar.style.height = `${Math.max(SATCHEL_BAR_MIN_HEIGHT, Math.round((capacity / maxCap) * barMaxHeight))}px`;
 
     let remainingInSatchel = capacity;
     while (remainingInSatchel > 0.001 && chunkIndex < chunks.length) {
@@ -202,7 +208,7 @@ function renderStats() {
     <li><span>Pace</span><span>${PACE_LEVELS[state.pace].label}</span></li>
     <li><span>Rations</span><span>${RATION_LEVELS[state.ration].label}</span></li>
     <li><span>Food</span><span>${Math.floor(state.inventory.food)} lbs</span></li>
-    <li><span>Water</span><span>${state.inventory.water} jars</span></li>
+    <li><span>Water</span><span>${Math.floor(state.inventory.water)} jars</span></li>
     <li><span>Medicine</span><span>${state.inventory.medicine}</span></li>
     <li><span>Parts</span><span>${state.inventory.parts}</span></li>
     <li><span>Lantern Oil</span><span>${state.inventory.lantern}</span></li>
@@ -411,6 +417,7 @@ function resetState() {
   state.landmarkIndex = 0;
   state.restBlocked = false;
   state.waterPumpEventFired = false;
+  state.umerkotGiftGiven = false;
   state.peopleHelped = 0;
   state.over = false;
 }
@@ -465,7 +472,16 @@ document.getElementById("action-rest").addEventListener("click", () => {
   }
   state.damagePartyHealth(-10);
   state.day += 1;
-  state.log("Rashid Uncle takes you in for the day. The family rests behind his walls, regaining strength.", "good");
+  if (!state.umerkotGiftGiven) {
+    state.umerkotGiftGiven = true;
+    const f = 10 + Math.floor(Math.random() * 16);
+    const w = 1 + Math.floor(Math.random() * 3);
+    state.inventory.food += f;
+    state.inventory.water += w;
+    state.log(`Rashid Uncle takes you in for the day. The family rests behind his walls, regaining strength. Before you leave, he presses ${f} lbs of food and ${w} jars of water into your hands. "For the road," he says.`, "good");
+  } else {
+    state.log("Rashid Uncle takes you in for the day. The family rests behind his walls, regaining strength.", "good");
+  }
   renderStats();
 });
 

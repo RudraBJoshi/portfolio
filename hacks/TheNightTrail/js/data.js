@@ -1,22 +1,25 @@
+// satchelIndex ties each character's capacityBonus to the satchel they
+// themselves carry (see SATCHEL_CAPACITIES below), not always Satchel 1 —
+// so Dadi's penalty shrinks her own small bag, not Suresh's main pack.
 const CHARACTERS = [
   {
     id: "suresh", name: "Suresh", role: "Father, the doctor", difficulty: "Easy",
-    capacityBonus: 8, damageMultiplier: 0.7,
+    capacityBonus: 8, damageMultiplier: 0.7, satchelIndex: 0,
     desc: "Steady hands, calm under pressure. Years of treating the sick have hardened him against the worst the road can do. Lasts the longest.",
   },
   {
     id: "nisha", name: "Nisha", role: "Daughter", difficulty: "Medium",
-    capacityBonus: 2, damageMultiplier: 1.0,
+    capacityBonus: 2, damageMultiplier: 1.0, satchelIndex: 2,
     desc: "Quiet and watchful, neither the strongest nor the frailest of the family. A balanced telling of the journey.",
   },
   {
     id: "amil", name: "Amil", role: "Son", difficulty: "Medium-Hard",
-    capacityBonus: 0, damageMultiplier: 1.2,
+    capacityBonus: 0, damageMultiplier: 1.2, satchelIndex: 1,
     desc: "Restless and quick on his feet, but the road wears on him faster than it should. Weaker than Nisha, not as frail as Dadi.",
   },
   {
     id: "dadi", name: "Dadi", role: "Grandmother", difficulty: "Hard",
-    capacityBonus: -6, damageMultiplier: 1.5,
+    capacityBonus: -6, damageMultiplier: 1.5, satchelIndex: 3,
     desc: "Her joints ache before the sun is even up, and she can't carry as much as the others. Every mile costs more. The hardest way to make this journey.",
   },
 ];
@@ -95,7 +98,7 @@ const RANDOM_EVENTS = [
     title: "The Sun Turns Cruel",
     body: "Midday heat catches the column before shade can be found. Throats are dry and tempers short.",
     choices: [
-      { label: "Share water from the jars", requires: { water: 2 }, apply: (s) => { s.inventory.water -= 2; s.log("The water holds everyone together a little longer.", "good"); } },
+      { label: "Share water from the jars", requires: { water: 1 }, apply: (s) => { s.inventory.water -= 1; s.log("The water holds everyone together a little longer.", "good"); } },
       { label: "Push on and ration what's left", apply: (s) => { s.damagePartyHealth(6); s.log("The heat takes its toll on the weakest among you.", "bad"); } },
     ],
   },
@@ -131,8 +134,8 @@ const RANDOM_EVENTS = [
     title: "A Village Well",
     body: "A village along the road opens its well to the passing families — neighbors helping strangers where they can, whatever the times.",
     choices: [
-      { label: "Draw water and thank them", apply: (s) => { const w = 6 + Math.floor(Math.random() * 8); const f = 5 + Math.floor(Math.random() * 10); s.inventory.water += w; s.inventory.food += f; s.log(`They fill your jars and share what food they can spare. +${w} water, +${f} lbs food.`, "good"); } },
-      { label: "Take only what you need and move on quickly", apply: (s) => { const w = 3; s.inventory.water += w; s.log(`You draw a little water and keep moving. +${w} water.`, "good"); } },
+      { label: "Draw water and thank them", apply: (s) => { const w = 1 + Math.floor(Math.random() * 3); const f = 5 + Math.floor(Math.random() * 10); s.inventory.water += w; s.inventory.food += f; s.log(`They fill your jars and share what food they can spare. +${w} water, +${f} lbs food.`, "good"); } },
+      { label: "Take only what you need and move on quickly", apply: (s) => { const w = 1; s.inventory.water += w; s.log(`You draw a little water and keep moving. +${w} water.`, "good"); } },
     ],
   },
   {
@@ -158,8 +161,8 @@ const RANDOM_EVENTS = [
     title: "Rain Over the Desert",
     body: "Dark clouds break over the Thar — a rare desert rain drums against the satchels, and the dry ground drinks it in almost as fast as you can catch it.",
     choices: [
-      { label: "Catch what you can in the jars", apply: (s) => { const w = 8 + Math.floor(Math.random() * 8); s.inventory.water += w; s.log(`You fill every jar you can before the clouds pass. +${w} water.`, "good"); } },
-      { label: "Let the children rest under it a moment first", apply: (s) => { const w = 4 + Math.floor(Math.random() * 5); s.inventory.water += w; s.damagePartyHealth(-5); s.log(`A moment of relief in the rain, and a little water besides. +${w} water.`, "good"); } },
+      { label: "Catch what you can in the jars", apply: (s) => { const w = 2 + Math.floor(Math.random() * 3); s.inventory.water += w; s.log(`You fill every jar you can before the clouds pass. +${w} water.`, "good"); } },
+      { label: "Let the children rest under it a moment first", apply: (s) => { const w = 1 + Math.floor(Math.random() * 2); s.inventory.water += w; s.damagePartyHealth(-5); s.log(`A moment of relief in the rain, and a little water besides. +${w} water.`, "good"); } },
     ],
   },
   {
@@ -167,8 +170,8 @@ const RANDOM_EVENTS = [
     title: "Amil Spills the Water",
     body: "A jar slips from Amil's hands on the loose stones, and water darkens the sand before anyone can catch it. \"I'm sorry,\" he says, already scrambling after it.",
     choices: [
-      { label: "Stop and salvage what you can", apply: (s) => { const lost = Math.min(s.inventory.water, 2 + Math.floor(Math.random() * 3)); s.inventory.water -= lost; s.pace = "slow"; s.log(`You save most of it, but the delay costs you — ${lost} jars are gone, and the family falls behind pace.`, "bad"); } },
-      { label: "Let it go and keep moving", apply: (s) => { const lost = Math.min(s.inventory.water, 6 + Math.floor(Math.random() * 5)); s.inventory.water -= lost; s.log(`There's no time to mourn spilled water. ${lost} jars soak into the sand before you can stop them.`, "bad"); } },
+      { label: "Stop and salvage what you can", apply: (s) => { s.pace = "slow"; s.log("You catch the jar before it's lost, but the delay costs you — the family falls behind pace.", "bad"); } },
+      { label: "Let it go and keep moving", apply: (s) => { const lost = Math.min(s.inventory.water, 1); s.inventory.water -= lost; s.log("There's no time to mourn spilled water. The jar soaks into the sand before you can stop it.", "bad"); } },
     ],
   },
   {
@@ -178,9 +181,9 @@ const RANDOM_EVENTS = [
     choices: [
       {
         label: "Share water and help him up",
-        requires: { water: 2 },
+        requires: { water: 1 },
         apply: (s) => {
-          s.inventory.water -= 2;
+          s.inventory.water -= 1;
           s.peopleHelped += 1;
           if (Math.random() < HELP_REWARD_CHANCE) {
             const f = 3 + Math.floor(Math.random() * 5);
@@ -236,10 +239,13 @@ const RANDOM_EVENTS = [
   },
 ];
 
+// Water rate matches The Night Diary: a jar sipped carefully lasts a person
+// about 2 weeks (1/14 per day), stretching further the harder it's rationed.
+// Food stays at real dry-ration figures, ~0.6-1.5 lbs/person/day.
 const RATION_LEVELS = {
-  filling: { label: "Filling", foodPerPerson: 2,   waterPerPerson: 5, healthDelta: 1 },
-  meager:  { label: "Meager",  foodPerPerson: 1.5, waterPerPerson: 4, healthDelta: 0 },
-  bare:    { label: "Bare Bones", foodPerPerson: 1, waterPerPerson: 3, healthDelta: -2 },
+  filling: { label: "Filling", foodPerPerson: 1.5, waterPerPerson: 1 / 14, healthDelta: 1 },
+  meager:  { label: "Meager",  foodPerPerson: 1,   waterPerPerson: 1 / 18, healthDelta: 0 },
+  bare:    { label: "Bare Bones", foodPerPerson: 0.6, waterPerPerson: 1 / 25, healthDelta: -2 },
 };
 
 const PACE_LEVELS = {
@@ -284,7 +290,7 @@ const WATER_PUMP_EVENT = {
     {
       label: "Push into the fight for water",
       apply: (s) => {
-        const w = 6 + Math.floor(Math.random() * 6);
+        const w = 1 + Math.floor(Math.random() * 3);
         s.damagePartyHealth(10);
         s.inventory.water += w;
         s.log(`You come away bruised, but with ${w} more jars of water than you had.`, "bad");
