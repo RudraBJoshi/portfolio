@@ -23,10 +23,10 @@ const PARTY_TEMPLATE = [
 
 const LANDMARKS = [
   { name: "Mirpur Khas", miles: 0 },
-  { name: "Umerkot",     miles: 25 },
-  { name: "Khokhrapar",  miles: 95 },
-  { name: "Munabao — the border", miles: 100 },
-  { name: "Barmer",      miles: 165 },
+  { name: "Umerkot",     miles: 150 },
+  { name: "Khokhrapar",  miles: 165 },
+  { name: "Munabao — the border", miles: 170 },
+  { name: "Barmer",      miles: 220 },
   { name: "Jodhpur",     miles: 300 },
 ];
 
@@ -87,6 +87,15 @@ const RANDOM_EVENTS = [
       { label: "Sleep in shifts and hope for the best", apply: (s) => { const lost = Math.min(s.inventory.food, 10 + Math.floor(Math.random() * 15)); s.inventory.food -= lost; s.log(`By morning, ${lost} lbs of food are missing from your packs.`, "bad"); } },
     ],
   },
+  {
+    id: "hostileCrowd",
+    title: "A Crowd at the Crossroads",
+    body: "Where the road narrows, a crowd has gathered, shouting at the families passing through. Fear moves down the line ahead of you like a current.",
+    choices: [
+      { label: "Suresh steps forward — he's tended half this district as its doctor", apply: (s) => { s.damagePartyHealth(3); s.log("A few in the crowd recognize him. Someone lowers their voice, and the line is waved through — shaken, but unhurt.", "good"); } },
+      { label: "Keep your heads down and push through quickly", apply: (s) => { const lost = Math.min(s.inventory.food, 5 + Math.floor(Math.random() * 10)); s.inventory.food -= lost; s.damagePartyHealth(5); s.log(`You shoulder through the crowd. A hand grabs at a satchel before you break free — ${lost} lbs of food torn loose in the scramble.`, "bad"); } },
+    ],
+  },
 ];
 
 const RATION_LEVELS = {
@@ -102,9 +111,10 @@ const PACE_LEVELS = {
 };
 
 const BORDER_LANDMARK_NAME = "Munabao — the border";
+const REST_LANDMARK_NAME = "Umerkot";
 
 const MAP_WAYPOINTS = [
   { miles: 0,   x: 0.252, y: 0.418 },
-  { miles: 25,  x: 0.294, y: 0.400 },
+  { miles: 150, x: 0.294, y: 0.400 },
   { miles: TOTAL_MILES, x: 0.388, y: 0.356 },
 ];

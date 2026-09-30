@@ -70,10 +70,67 @@ function renderOutfitHeader() {
   const used = outfitUsed();
   document.getElementById("outfit-used").textContent = used.toFixed(1);
   document.getElementById("outfit-total").textContent = cap;
+  renderSatchelVisual();
+}
+
+function renderSatchelVisual() {
+  const container = document.getElementById("satchel-visual");
+  if (!container) return;
+  container.innerHTML = "";
+
+  const perSatchel = outfitCapacity() / NUM_SATCHELS;
+  const chunks = SUPPLY_ITEMS
+    .map((item) => ({ id: item.id, label: item.name, amount: (state.inventory[item.id] || 0) * item.weight }))
+    .filter((c) => c.amount > 0.001);
+
+  let chunkIndex = 0;
+  let chunkRemaining = chunks.length ? chunks[0].amount : 0;
+
+  for (let s = 0; s < NUM_SATCHELS; s++) {
+    const satchelDiv = document.createElement("div");
+    satchelDiv.className = "satchel";
+
+    const bar = document.createElement("div");
+    bar.className = "satchel-bar";
+
+    let remainingInSatchel = perSatchel;
+    while (remainingInSatchel > 0.001 && chunkIndex < chunks.length) {
+      const take = Math.min(remainingInSatchel, chunkRemaining);
+      const seg = document.createElement("div");
+      seg.className = `satchel-seg satchel-seg-${chunks[chunkIndex].id}`;
+      seg.style.height = `${(take / perSatchel) * 100}%`;
+      seg.title = chunks[chunkIndex].label;
+      bar.appendChild(seg);
+
+      remainingInSatchel -= take;
+      chunkRemaining -= take;
+      if (chunkRemaining <= 0.001) {
+        chunkIndex += 1;
+        chunkRemaining = chunkIndex < chunks.length ? chunks[chunkIndex].amount : 0;
+      }
+    }
+
+    const label = document.createElement("div");
+    label.className = "satchel-label";
+    label.textContent = `Satchel ${s + 1}`;
+
+    satchelDiv.appendChild(bar);
+    satchelDiv.appendChild(label);
+    container.appendChild(satchelDiv);
+  }
+}
+
+function renderSatchelLegend() {
+  const legend = document.getElementById("satchel-legend");
+  if (!legend) return;
+  legend.innerHTML = SUPPLY_ITEMS.map((item) => `
+    <span class="legend-item"><span class="legend-swatch satchel-seg-${item.id}"></span>${item.name}</span>
+  `).join("");
 }
 
 function renderOutfit() {
   renderOutfitHeader();
+  renderSatchelLegend();
   const list = document.getElementById("outfit-list");
   list.innerHTML = "";
   SUPPLY_ITEMS.forEach((item) => {
@@ -142,6 +199,20 @@ function renderStats() {
     ${state.party.map((m) => `<li><span>${m.name}${m.role ? ` — ${m.role}` : ""}</span><span>${m.health > 0 ? m.health + "%" : "lost"}</span></li>`).join("")}
   `;
   updateMapMarker();
+  updateRestAvailability();
+}
+
+function atUmerkot() {
+  const here = LANDMARKS[state.landmarkIndex];
+  return !!here && here.name === REST_LANDMARK_NAME;
+}
+
+function updateRestAvailability() {
+  const restBtn = document.getElementById("action-rest");
+  restBtn.disabled = !atUmerkot();
+  restBtn.title = atUmerkot()
+    ? "Rashid Uncle will take you in for the day."
+    : "Only safe to rest at Rashid Uncle's house, in Umerkot.";
 }
 
 function updateMapMarker() {
@@ -272,9 +343,10 @@ document.getElementById("btn-depart").addEventListener("click", depart);
 document.getElementById("action-continue").addEventListener("click", travelDay);
 
 document.getElementById("action-rest").addEventListener("click", () => {
+  if (!atUmerkot()) return;
   state.damagePartyHealth(-10);
   state.day += 1;
-  state.log("The family rests through the day, regaining strength.", "good");
+  state.log("Rashid Uncle takes you in for the day. The family rests behind his walls, regaining strength.", "good");
   renderStats();
 });
 
