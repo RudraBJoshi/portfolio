@@ -159,6 +159,15 @@ const RANDOM_EVENTS = [
       { label: "Let the children rest under it a moment first", apply: (s) => { const w = 4 + Math.floor(Math.random() * 5); s.inventory.water += w; s.damagePartyHealth(-5); s.log(`A moment of relief in the rain, and a little water besides. +${w} water.`, "good"); } },
     ],
   },
+  {
+    id: "amilSpill",
+    title: "Amil Spills the Water",
+    body: "A jar slips from Amil's hands on the loose stones, and water darkens the sand before anyone can catch it. \"I'm sorry,\" he says, already scrambling after it.",
+    choices: [
+      { label: "Stop and salvage what you can", apply: (s) => { const lost = Math.min(s.inventory.water, 2 + Math.floor(Math.random() * 3)); s.inventory.water -= lost; s.pace = "slow"; s.log(`You save most of it, but the delay costs you — ${lost} jars are gone, and the family falls behind pace.`, "bad"); } },
+      { label: "Let it go and keep moving", apply: (s) => { const lost = Math.min(s.inventory.water, 6 + Math.floor(Math.random() * 5)); s.inventory.water -= lost; s.log(`There's no time to mourn spilled water. ${lost} jars soak into the sand before you can stop them.`, "bad"); } },
+    ],
+  },
 ];
 
 const RATION_LEVELS = {
@@ -219,6 +228,33 @@ const WATER_PUMP_EVENT = {
       label: "Pull back and leave it",
       apply: (s) => {
         s.log("You pull the children back and keep walking. Whatever's left at that pump isn't worth the risk.", "good");
+      },
+    },
+  ],
+};
+
+const TRAIN_LANDMARK_NAMES = ["Khokhrapar", "Munabao — the border"];
+
+const TRAIN_EVENT = {
+  title: "The Railway at the Border",
+  body: "A train idles at the siding, bound across the line into India. It could carry you past the worst of this crossing in a single night — or it could be exactly the kind of train the radio warned about, back in Mirpur Khas. Half the trains get through. Half don't.",
+  choices: [
+    {
+      label: "Risk the train",
+      apply: (s) => {
+        if (Math.random() < 0.5) {
+          s.miles = TOTAL_MILES;
+          endGame(true, "You gambled everything on the train, and it carried you clean across the border in the dark. By morning you are in Jodhpur — the rest of the journey never happened, and somehow, impossibly, you are whole.");
+        } else {
+          s.party.forEach((m) => { m.health = 0; });
+          endGame(false, "The train never reaches the other side. What was left of the family's journey ends here, somewhere along the line, in the dark.");
+        }
+      },
+    },
+    {
+      label: "Stay on foot",
+      apply: (s) => {
+        s.log("You watch the train pull away without you. The road continues, slower but sure, beneath your own feet.", "good");
       },
     },
   ],

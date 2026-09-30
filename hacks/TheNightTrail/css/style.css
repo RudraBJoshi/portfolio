@@ -51,6 +51,17 @@ body {
   z-index: 0;
 }
 
+#version-tag {
+  position: fixed;
+  top: 10px;
+  left: 12px;
+  z-index: 2;
+  font-size: 0.7rem;
+  color: var(--muted);
+  letter-spacing: 0.5px;
+  pointer-events: none;
+}
+
 #app {
   position: relative;
   z-index: 1;
@@ -494,6 +505,23 @@ input[type="text"] {
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
   flex: 0 0 auto;
+}
+
+.risk-button {
+  grid-column: 1 / -1;
+  background: rgba(255, 107, 107, 0.12);
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.risk-button:hover:not(:disabled) {
+  background: var(--danger);
+  color: #06081a;
+}
+
+.risk-button:disabled {
+  color: var(--muted);
+  border-color: var(--panel-border);
 }
 
 #screen-event {

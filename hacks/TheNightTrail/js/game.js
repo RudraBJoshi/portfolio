@@ -202,6 +202,7 @@ function renderStats() {
   `;
   updateMapMarker();
   updateRestAvailability();
+  updateTrainAvailability();
 }
 
 function atUmerkot() {
@@ -219,6 +220,19 @@ function updateRestAvailability() {
       : "Only safe to rest at Rashid Uncle's house, in Umerkot.";
 }
 
+function atBorderCrossing() {
+  const here = LANDMARKS[state.landmarkIndex];
+  return !!here && TRAIN_LANDMARK_NAMES.includes(here.name);
+}
+
+function updateTrainAvailability() {
+  const trainBtn = document.getElementById("action-train");
+  trainBtn.disabled = !atBorderCrossing();
+  trainBtn.title = atBorderCrossing()
+    ? "A 50/50 gamble: win, and you skip straight to Jodhpur. Lose, and the journey ends here."
+    : "Only an option at the border crossing itself, near Khokhrapar and Munabao.";
+}
+
 function showEventModal(event) {
   document.getElementById("event-title").textContent = event.title;
   document.getElementById("event-body").textContent = event.body;
@@ -232,6 +246,7 @@ function showEventModal(event) {
     btn.disabled = !meetsRequirement;
     btn.addEventListener("click", () => {
       choice.apply(state);
+      if (state.over) return;
       showScreen("screen-trail");
       renderStats();
       if (state.party.every((m) => m.health <= 0)) endGame(false, "The family did not make it to Jodhpur.");
@@ -419,6 +434,11 @@ document.getElementById("action-rest").addEventListener("click", () => {
   state.day += 1;
   state.log("Rashid Uncle takes you in for the day. The family rests behind his walls, regaining strength.", "good");
   renderStats();
+});
+
+document.getElementById("action-train").addEventListener("click", () => {
+  if (!atBorderCrossing()) return;
+  showEventModal(TRAIN_EVENT);
 });
 
 document.getElementById("action-ration").addEventListener("click", () => {
