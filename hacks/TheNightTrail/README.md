@@ -23,7 +23,7 @@ then visit `http://localhost:8000`.
 
 ## The packing mechanic
 
-There's no money — outfitting is gated purely by space. Each of the 4 satchels holds `SATCHEL_CAPACITY` (20) units, for `TOTAL_CAPACITY` of 80, plus a small `capacityBonus` from the chosen occupation. Every supply item in `SUPPLY_ITEMS` has a `weight` (space per unit); the +1/+10 and −1/−10 buttons on the outfitting screen are capped by remaining space, not budget, so packing is a real trade-off between food, water, medicine, repair cloth, and lantern oil.
+There's no money — outfitting is gated purely by weight. Each of the 4 satchels holds `SATCHEL_CAPACITY` (20 lbs), for `TOTAL_CAPACITY` of 80 lbs, plus a small `capacityBonus` from the chosen occupation. Every supply item in `SUPPLY_ITEMS` has a `weight` in real pounds per unit (water and lantern oil are heavier per unit than food or repair cloth); the +1/+10 and −1/−10 buttons on the outfitting screen are capped by remaining weight, not budget, so packing is a real trade-off between food, water, medicine, repair cloth, and lantern oil.
 
 ## Health and susceptibility
 

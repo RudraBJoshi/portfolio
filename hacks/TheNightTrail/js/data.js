@@ -3,11 +3,11 @@ const OCCUPATIONS = [
 ];
 
 const SUPPLY_ITEMS = [
-  { id: "food",    name: "Food",        unit: "lbs",    weight: 0.25 },
-  { id: "water",   name: "Water",       unit: "jars",   weight: 1 },
-  { id: "medicine",name: "Medicine",    unit: "kits",   weight: 2 },
-  { id: "parts",   name: "Repair Cloth",unit: "sets",   weight: 1.5 },
-  { id: "lantern", name: "Lantern Oil", unit: "flasks", weight: 1 },
+  { id: "food",    name: "Food",        unit: "lbs",    weight: 1 },
+  { id: "water",   name: "Water",       unit: "jars",   weight: 2 },
+  { id: "medicine",name: "Medicine",    unit: "kits",   weight: 1 },
+  { id: "parts",   name: "Repair Cloth",unit: "sets",   weight: 0.5 },
+  { id: "lantern", name: "Lantern Oil", unit: "flasks", weight: 1.5 },
 ];
 
 const NUM_SATCHELS = 4;

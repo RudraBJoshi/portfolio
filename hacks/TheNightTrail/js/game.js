@@ -41,7 +41,7 @@ function renderOccupations() {
   OCCUPATIONS.forEach((occ) => {
     const card = document.createElement("div");
     card.className = "card";
-    card.innerHTML = `<h4>${occ.name}</h4><p>${occ.desc}</p><p>+${occ.capacityBonus} satchel space</p>`;
+    card.innerHTML = `<h4>${occ.name}</h4><p>${occ.desc}</p><p>+${occ.capacityBonus} lbs carrying capacity</p>`;
     card.addEventListener("click", () => {
       state.occupation = occ;
       list.querySelectorAll(".card").forEach((c) => c.classList.remove("selected"));
@@ -139,7 +139,7 @@ function renderOutfit() {
     card.className = "card";
     card.innerHTML = `
       <h4>${item.name}</h4>
-      <p>${item.weight} space / ${item.unit}</p>
+      <p>${item.weight} lbs / ${item.unit}</p>
       <div class="qty-row">
         <button type="button" data-delta="-10">−10</button>
         <button type="button" data-delta="-1">−1</button>
