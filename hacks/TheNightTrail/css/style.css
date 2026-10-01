@@ -1,5 +1,10 @@
 :root {
   --bg: #070a17;
+  /* The journey's own backdrop, once the title/intro photo fades out: ember
+     and ash (the burning home left behind) sinking into the established
+     night-navy (the desert crossing ahead) — top to bottom tracks the story. */
+  --bg-ember: #220d0f;
+  --bg-ash: #1a130f;
   --panel: #10162b;
   --panel-border: #2a3358;
   --text: #dce3f5;
@@ -27,7 +32,7 @@ html {
 body {
   margin: 0;
   height: 100%;
-  background: var(--bg);
+  background: linear-gradient(165deg, var(--bg-ember) 0%, var(--bg-ash) 38%, var(--bg) 78%);
   color: var(--text);
   font-family: 'Georgia', 'Times New Roman', serif;
   position: relative;
@@ -147,7 +152,12 @@ button:disabled {
   pointer-events: none;
 }
 
-body:has(#screen-title.active) #title-bg {
+/* Visible through the whole pre-game flow (title, intro, setup, outfitting);
+   fades out once the actual trail gameplay begins. */
+body:has(#screen-title.active) #title-bg,
+body:has(#screen-intro.active) #title-bg,
+body:has(#screen-setup.active) #title-bg,
+body:has(#screen-outfit.active) #title-bg {
   opacity: 1;
 }
 
