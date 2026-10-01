@@ -73,24 +73,27 @@ const EPILOGUE_SLIDES = [
   {
     heading: "1947: The First War",
     tag: "Revolution and Reflection",
-    body: "Within months of independence, India and Pakistan are at war — over Kashmir, a princely state neither side will let go. It is the first of several wars the two countries will fight across the rest of the century, each one tracing back, in part, to the line drawn in August 1947.",
+    body: "Within months of independence, India and Pakistan are already at war — over Kashmir, a princely state neither side will let go of. The same two-nation ideology that drew the line through Suresh's family's road now draws soldiers to a mountain border. The violence of Partition doesn't end at the crossing; it becomes policy, becomes army, becomes the first of several wars the two countries will fight across the rest of the century.",
   },
   {
     heading: "1965: The Second War",
-    body: "Seventeen years later, the two countries go to war again, still over Kashmir. A ceasefire is brokered and a peace agreement signed in the Soviet city of Tashkent — but not a peace that lasts.",
+    tag: "Revolution and Reflection",
+    body: "Seventeen years later, the two countries go to war again, still over Kashmir, still over the same line. A ceasefire is brokered and a peace agreement signed in the Soviet city of Tashkent — paper that holds for a while, then doesn't. The ideology that split a subcontinent into us and them has, by now, outlived the generation that walked through Partition itself.",
   },
   {
     heading: "1999: Kargil",
-    body: "By 1999, both India and Pakistan possess nuclear weapons. That summer, fighting breaks out in the mountains above Kargil, in Indian-administered Kashmir — a reminder that the border drawn in 1947 is still, more than fifty years on, a line people are willing to die defending.",
+    tag: "Revolution and Reflection",
+    body: "By 1999, both India and Pakistan possess nuclear weapons. That summer, fighting breaks out in the mountains above Kargil, in Indian-administered Kashmir — soldiers dying over high, cold ground, a reminder that more than fifty years on, the line drawn in 1947 is still one people are ordered, and willing, to kill and die defending.",
   },
   {
     heading: "2025: Operation Sindoor",
-    body: "In May 2025, after a militant attack on tourists in Jammu and Kashmir, India strikes targets inside Pakistan. The operation takes its name from sindoor, the red vermilion worn by married Hindu women — for the wives the attack suddenly widowed. A ceasefire follows within days. The line endures.",
+    tag: "Revolution and Reflection",
+    body: "In May 2025, after a militant attack on tourists in Jammu and Kashmir, India strikes targets inside Pakistan. The operation takes its name from sindoor, the red vermilion worn by married Hindu women — for the wives the attack suddenly widowed. Interpersonal violence becomes institutional retaliation becomes, again, a ceasefire within days. The pattern set in August 1947 repeats itself, smaller each time, never finished.",
   },
   {
     heading: "A Line That Hasn't Closed",
     tag: "Revolution and Reflection",
-    body: "More than seventy-five years after Partition, the border that sent Suresh's family walking into the Thar Desert is still being fought over, still being crossed, still shaping lives on both sides. Nisha's story is one family's, fictional and small. In one form or another, it happened to millions — and the line they crossed is still being drawn.",
+    body: "More than seventy-five years after Partition, the border that sent Suresh's family walking into the Thar Desert by night is still being fought over, still being crossed, still ending lives on both sides. The ideology that justified one line has justified every war since. Nisha's story is one family's, fictional and small. In one form or another, it happened to millions — and the oppression Partition set in motion, ideological, institutional, interpersonal, and the quiet internalized kind that outlives the headlines, never fully closed the line it drew.",
   },
 ];
 
