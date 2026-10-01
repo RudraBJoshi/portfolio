@@ -83,7 +83,7 @@ const EPILOGUE_SLIDES = [
   {
     heading: "1999: Kargil",
     tag: "Revolution and Reflection",
-    body: "By 1999, both India and Pakistan possess nuclear weapons. That summer, fighting breaks out in the mountains above Kargil, in Indian-administered Kashmir — soldiers dying over high, cold ground, a reminder that more than fifty years on, the line drawn in 1947 is still one people are ordered, and willing, to kill and die defending.",
+    body: "By 1999, both India and Pakistan possess nuclear weapons. That summer, fighting breaks out in the mountains above Kargil, in Indian-administered Kashmir — ordinary soldiers, following institutional orders, killing and dying over high, cold ground for a line drawn by people long since dead. More than fifty years on, the ideology of 1947 is no longer even argued over; it has been internalized as simply how things are, worth any cost to defend.",
   },
   {
     heading: "2025: Operation Sindoor",
