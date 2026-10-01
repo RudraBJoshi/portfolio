@@ -644,6 +644,24 @@ input[type="text"] {
   overflow-y: auto;
 }
 
+#end-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.secondary-button {
+  background: transparent;
+  border-color: var(--c-lantern);
+  color: var(--c-lantern);
+}
+
+.secondary-button:hover:not(:disabled) {
+  background: var(--c-lantern);
+  color: #06081a;
+}
+
 #end-roster li {
   display: flex;
   justify-content: space-between;

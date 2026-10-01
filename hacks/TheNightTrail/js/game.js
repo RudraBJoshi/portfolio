@@ -543,37 +543,58 @@ function resetState() {
   state.over = false;
 }
 
-let introIndex = 0;
+// The same click-through slide screen drives both the pre-game intro and the
+// post-game historical epilogue — only the deck, the mode, and what happens
+// after the last slide differ.
+let slideIndex = 0;
+let activeSlideDeck = INTRO_SLIDES;
+let slideDeckMode = "intro"; // "intro" | "epilogue"
 
-function renderIntroSlide() {
-  const slide = INTRO_SLIDES[introIndex];
+function renderActiveSlide() {
+  const slide = activeSlideDeck[slideIndex];
   document.getElementById("intro-tag").textContent = slide.tag || "";
   document.getElementById("intro-heading").textContent = slide.heading;
   document.getElementById("intro-body").textContent = slide.body;
-  document.getElementById("intro-progress").textContent = `${introIndex + 1} / ${INTRO_SLIDES.length}`;
-  document.getElementById("intro-back").disabled = introIndex === 0;
-  document.getElementById("intro-next").textContent = introIndex === INTRO_SLIDES.length - 1 ? "Begin the Journey" : "Continue";
+  document.getElementById("intro-progress").textContent = `${slideIndex + 1} / ${activeSlideDeck.length}`;
+  document.getElementById("intro-back").disabled = slideIndex === 0;
+  const isLast = slideIndex === activeSlideDeck.length - 1;
+  document.getElementById("intro-next").textContent = isLast
+    ? (slideDeckMode === "intro" ? "Begin the Journey" : "Return to Start")
+    : "Continue";
 }
 
 document.getElementById("btn-start").addEventListener("click", () => {
-  introIndex = 0;
-  renderIntroSlide();
+  activeSlideDeck = INTRO_SLIDES;
+  slideDeckMode = "intro";
+  slideIndex = 0;
+  renderActiveSlide();
+  showScreen("screen-intro");
+});
+
+document.getElementById("btn-epilogue").addEventListener("click", () => {
+  activeSlideDeck = EPILOGUE_SLIDES;
+  slideDeckMode = "epilogue";
+  slideIndex = 0;
+  renderActiveSlide();
   showScreen("screen-intro");
 });
 
 document.getElementById("intro-back").addEventListener("click", () => {
-  if (introIndex === 0) return;
-  introIndex -= 1;
-  renderIntroSlide();
+  if (slideIndex === 0) return;
+  slideIndex -= 1;
+  renderActiveSlide();
 });
 
 document.getElementById("intro-next").addEventListener("click", () => {
-  if (introIndex < INTRO_SLIDES.length - 1) {
-    introIndex += 1;
-    renderIntroSlide();
-  } else {
+  if (slideIndex < activeSlideDeck.length - 1) {
+    slideIndex += 1;
+    renderActiveSlide();
+  } else if (slideDeckMode === "intro") {
     renderCharacters();
     showScreen("screen-setup");
+  } else {
+    resetState();
+    showScreen("screen-title");
   }
 });
 
