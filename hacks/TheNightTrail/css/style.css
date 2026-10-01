@@ -133,6 +133,13 @@ button:disabled {
 
 #screen-title {
   text-align: center;
+  position: relative;
+  border-radius: 14px;
+  border: 1px solid var(--panel-border);
+  background-image: linear-gradient(rgba(7, 10, 23, 0.55), rgba(7, 10, 23, 0.88)), url(../images/background.png);
+  background-size: cover;
+  background-position: center 40%;
+  overflow: hidden;
 }
 
 #screen-title.active {
@@ -372,6 +379,24 @@ input[type="text"] {
 .card-role {
   color: var(--text);
   font-style: italic;
+}
+
+.study-tag {
+  display: none;
+  font-size: 0.7rem;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--c-lantern);
+  color: var(--c-lantern);
+  background: rgba(255, 209, 102, 0.08);
+  margin-bottom: 10px;
+}
+
+.study-tag:not(:empty) {
+  display: inline-block;
 }
 
 .difficulty-badge {

@@ -8,7 +8,9 @@ const state = {
   ration: "filling",
   landmarkIndex: 0,
   restBlocked: false,
+  knifeEventFired: false,
   waterPumpEventFired: false,
+  trainLootersEventFired: false,
   umerkotGiftGiven: false,
   peopleHelped: 0,
   over: false,
@@ -62,7 +64,9 @@ function renderCharacters() {
 }
 
 function outfitCapacity() {
-  return TOTAL_CAPACITY + (state.character ? state.character.capacityBonus : 0);
+  const bonus = state.character ? state.character.capacityBonus : 0;
+  const mortarPenalty = state.character && state.character.id === "nisha" ? KAZI_MORTAR_WEIGHT : 0;
+  return TOTAL_CAPACITY + bonus - mortarPenalty;
 }
 
 function outfitUsed() {
@@ -90,8 +94,9 @@ function renderSatchelVisual() {
   const barMaxHeight = Math.max(60, Math.min(120, window.innerHeight * 0.14));
 
   const bonus = state.character ? state.character.capacityBonus : 0;
+  const mortarPenalty = state.character && state.character.id === "nisha" ? KAZI_MORTAR_WEIGHT : 0;
   const bonusIndex = state.character ? state.character.satchelIndex : 0;
-  const satchelCaps = SATCHEL_CAPACITIES.map((cap, i) => (i === bonusIndex ? cap + bonus : cap));
+  const satchelCaps = SATCHEL_CAPACITIES.map((cap, i) => (i === bonusIndex ? cap + bonus - mortarPenalty : cap));
   const maxCap = Math.max(...satchelCaps);
 
   const chunks = SUPPLY_ITEMS
@@ -263,6 +268,7 @@ function updateTrainAvailability() {
 }
 
 function showEventModal(event) {
+  document.getElementById("event-tag").textContent = event.tag || "";
   document.getElementById("event-title").textContent = event.title;
   document.getElementById("event-body").textContent = event.body;
   const choicesEl = document.getElementById("event-choices");
@@ -293,6 +299,57 @@ function triggerNishaDangerEvent() {
 
 function triggerWaterPumpEvent() {
   showEventModal(WATER_PUMP_EVENT);
+}
+
+function triggerKnifeEvent() {
+  showEventModal(KNIFE_EVENT);
+}
+
+function trainLootersResolve(opening) {
+  if (playedCharacterDied()) return endGame(false, playedCharacterDeathMessage());
+  if (state.party.every((m) => m.health <= 0)) return endGame(false, "The family did not make it to Jodhpur.");
+  state.miles = TOTAL_MILES;
+  endGame(true, jodhpurEndingBody(opening));
+}
+
+function triggerTrainLootersEvent() {
+  const dadiAlive = isAlive("Dadi");
+  const event = {
+    title: "The Last Train to Jodhpur",
+    tag: "Breaking Point",
+    body: dadiAlive
+      ? "At Barmer, the family boards a crowded train bound for Jodhpur — Dadi so weak now that Suresh and Amil have to lift her onto the car. The train lurches into motion, and word moves down the line: looters have been working trains like this one, stripping refugee families of whatever they still carry."
+      : "At Barmer, what's left of the family boards a crowded train bound for Jodhpur. The train lurches into motion, and word moves down the line: looters have been working trains like this one, stripping refugee families of whatever they still carry.",
+    choices: [
+      {
+        label: "Keep watch and hold what's yours",
+        apply: (s) => {
+          s.damagePartyHealth(16);
+          s.log("You stay alert through the night, trading off who sleeps. No one touches your satchels — but when the looters are turned away, it doesn't end quietly.", "bad");
+          trainLootersResolve("Battered but holding together, the train carries what's left of the family into Jodhpur as the sun comes up.");
+        },
+      },
+      {
+        label: "Let them take what they want",
+        apply: (s) => {
+          const foodLost = Math.min(s.inventory.food, 5 + Math.floor(Math.random() * 10));
+          const waterLost = Math.min(s.inventory.water, 1);
+          s.inventory.food -= foodLost;
+          s.inventory.water -= waterLost;
+          let message = `You let the looters pass through the car and take what they will. ${foodLost} lbs of food and ${waterLost} jar of water are gone.`;
+          if (Math.random() < 0.3) {
+            s.damagePartyHealth(10);
+            message += " It isn't enough for them — someone is shoved hard against the window before the car empties out.";
+          } else {
+            message += " No one is hurt.";
+          }
+          s.log(message, "bad");
+          trainLootersResolve("Lighter than you left Barmer, but all together, the train carries the family into Jodhpur as the sun comes up.");
+        },
+      },
+    ],
+  };
+  showEventModal(event);
 }
 
 function updateMapMarker() {
@@ -360,7 +417,7 @@ function travelDay() {
   }
 
   if (state.miles >= TOTAL_MILES) {
-    return endGame(true, `After ${state.day} days on the road, the family reaches Jodhpur. Sindh is behind you now, but you arrived together.`);
+    return endGame(true, jodhpurEndingBody(`After ${state.day} days on the road, the family reaches Jodhpur.`));
   }
 
   if (playedCharacterDied()) {
@@ -373,9 +430,21 @@ function travelDay() {
 
   renderStats();
 
+  if (!state.knifeEventFired && isAlive("Nisha") && state.miles >= KNIFE_EVENT_MILE) {
+    state.knifeEventFired = true;
+    triggerKnifeEvent();
+    return;
+  }
+
   if (!state.waterPumpEventFired && state.miles >= WATER_PUMP_MILE) {
     state.waterPumpEventFired = true;
     triggerWaterPumpEvent();
+    return;
+  }
+
+  if (!state.trainLootersEventFired && state.miles >= TRAIN_LOOTERS_MILE) {
+    state.trainLootersEventFired = true;
+    triggerTrainLootersEvent();
     return;
   }
 
@@ -391,8 +460,13 @@ function triggerRandomEvent() {
   showEventModal(event);
 }
 
+function jodhpurEndingBody(opening) {
+  return `${opening} Suresh's brother is waiting with a flat already arranged — old and dusty, nothing like home, but theirs for now. Slowly, there is a routine again: school, cooking lentils, the small ordinary motions of a life. Nisha keeps her mother's jewelry close and finds something like healing in the kitchen, the way Kazi once taught her. She misses Mirpur Khas every day. She also, carefully, begins again.`;
+}
+
 function endGame(won, message) {
   state.over = true;
+  document.getElementById("end-tag").textContent = won ? "Resistance & Revolution" : "";
   document.getElementById("end-title").textContent = won ? "A New Home" : "The Journey Ends Here";
   document.getElementById("end-body").textContent = message;
   document.getElementById("end-helped").textContent = state.peopleHelped > 0
@@ -416,7 +490,9 @@ function resetState() {
   state.ration = "filling";
   state.landmarkIndex = 0;
   state.restBlocked = false;
+  state.knifeEventFired = false;
   state.waterPumpEventFired = false;
+  state.trainLootersEventFired = false;
   state.umerkotGiftGiven = false;
   state.peopleHelped = 0;
   state.over = false;
@@ -426,6 +502,7 @@ let introIndex = 0;
 
 function renderIntroSlide() {
   const slide = INTRO_SLIDES[introIndex];
+  document.getElementById("intro-tag").textContent = slide.tag || "";
   document.getElementById("intro-heading").textContent = slide.heading;
   document.getElementById("intro-body").textContent = slide.body;
   document.getElementById("intro-progress").textContent = `${introIndex + 1} / ${INTRO_SLIDES.length}`;

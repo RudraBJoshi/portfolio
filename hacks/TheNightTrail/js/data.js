@@ -10,7 +10,7 @@ const CHARACTERS = [
   {
     id: "nisha", name: "Nisha", role: "Daughter", difficulty: "Medium",
     capacityBonus: 2, damageMultiplier: 1.0, satchelIndex: 2,
-    desc: "Quiet and watchful, neither the strongest nor the frailest of the family. A balanced telling of the journey.",
+    desc: "Quiet and watchful, neither the strongest nor the frailest of the family. A balanced telling of the journey. She has packed Kazi's stone mortar — less room for supplies, but she knows how to use it to catch rain.",
   },
   {
     id: "amil", name: "Amil", role: "Son", difficulty: "Medium-Hard",
@@ -31,7 +31,8 @@ const INTRO_SLIDES = [
   },
   {
     heading: "A Line Is Drawn",
-    body: "But independence comes with a price. Britain has decided to split the land in two: a new country called Pakistan for its Muslim-majority regions, and India for the rest.",
+    tag: "Institutional Oppression",
+    body: "But independence comes with a price. Britain has decided to split the land in two: a new country called Pakistan for its Muslim-majority regions, and India for the rest. The decision is made by governments, not by the families who will have to live with it.",
   },
   {
     heading: "Sir Cyril Radcliffe",
@@ -47,7 +48,8 @@ const INTRO_SLIDES = [
   },
   {
     heading: "A Choice",
-    body: "Suresh, the town's doctor, must decide: stay and hope the danger passes, or take his mother and his twin children across the Thar Desert toward safety in India.",
+    tag: "Breaking Point",
+    body: "Suresh, the town's doctor, must decide: stay and hope the danger passes, or take his mother and his twin children across the Thar Desert toward safety in India. There is no version of this choice that feels safe. Staying is a risk. Leaving home may be a bigger one.",
   },
   {
     heading: "Not by Train",
@@ -71,6 +73,11 @@ const SUPPLY_ITEMS = [
 // the twins' bags, and Satchel 4 is what Dadi alone can manage.
 const SATCHEL_CAPACITIES = [135, 50, 50, 15];
 const TOTAL_CAPACITY = SATCHEL_CAPACITIES.reduce((sum, c) => sum + c, 0);
+
+// Playing as Nisha, she carries Kazi's stone mortar in her own satchel —
+// less room for supplies, but it lets her catch extra water when it rains.
+const KAZI_MORTAR_WEIGHT = 3;
+const KAZI_MORTAR_RAIN_BONUS = 3;
 
 const PARTY_TEMPLATE = [
   { name: "Suresh", role: "father, the doctor", susceptibility: 1.0 },
@@ -161,7 +168,14 @@ const RANDOM_EVENTS = [
     title: "Rain Over the Desert",
     body: "Dark clouds break over the Thar — a rare desert rain drums against the satchels, and the dry ground drinks it in almost as fast as you can catch it.",
     choices: [
-      { label: "Catch what you can in the jars", apply: (s) => { const w = 2 + Math.floor(Math.random() * 3); s.inventory.water += w; s.log(`You fill every jar you can before the clouds pass. +${w} water.`, "good"); } },
+      { label: "Catch what you can in the jars", apply: (s) => {
+        const usingMortar = s.character && s.character.id === "nisha";
+        const w = 2 + Math.floor(Math.random() * 3) + (usingMortar ? KAZI_MORTAR_RAIN_BONUS : 0);
+        s.inventory.water += w;
+        s.log(usingMortar
+          ? `Nisha sets Kazi's mortar out in the open and the rain fills it fast. +${w} water.`
+          : `You fill every jar you can before the clouds pass. +${w} water.`, "good");
+      } },
       { label: "Let the children rest under it a moment first", apply: (s) => { const w = 1 + Math.floor(Math.random() * 2); s.inventory.water += w; s.damagePartyHealth(-5); s.log(`A moment of relief in the rain, and a little water besides. +${w} water.`, "good"); } },
     ],
   },
@@ -281,6 +295,26 @@ const NISHA_DANGER_EVENT = {
   ],
 };
 
+const KNIFE_EVENT_MILE = 40;
+
+// Deliberately a single choice, not two. Nisha is selectively mute in the
+// book and cannot speak or resist in this moment — giving the player a real
+// option here would undo the point. The "choice" is living through it.
+const KNIFE_EVENT = {
+  title: "A Knife in the Dark",
+  tag: "Breaking Point · Internalized Oppression",
+  body: "Suresh has gone ahead to scout the road. A man steps out of the shadows, a knife shaking in his hand. His family was killed by Hindus, he says, voice raw with grief and rage — and now here is Nisha in front of him. She opens her mouth. No sound comes. It hasn't, not really, since everything changed. She cannot run. She cannot speak. In this moment she is certain of only one thing: that she is a burden the family would be better off without.",
+  choices: [
+    {
+      label: "Nisha cannot speak",
+      apply: (s) => {
+        s.damagePartyHealth(6);
+        s.log("Suresh returns just in time, stepping between them. He speaks quietly of loss — his own, and the man's — until the knife finally lowers. The man leaves without a word. Nisha says nothing of it, then or for a long time after.", "bad");
+      },
+    },
+  ],
+};
+
 const WATER_PUMP_MILE = 75; // halfway between Mirpur Khas (0) and Umerkot (150)
 
 const WATER_PUMP_EVENT = {
@@ -307,6 +341,13 @@ const WATER_PUMP_EVENT = {
 
 const TRAIN_LANDMARK_NAMES = ["Khokhrapar", "Munabao — the border"];
 
+// The canonical ending, not a gamble: once the family reaches Barmer, they
+// board a train for the final leg into Jodhpur. Unlike TRAIN_EVENT above
+// (an optional, invented risk at the border), this one always ends the
+// journey — the book doesn't lose the family here, just costs them something
+// on the way. See triggerTrainLootersEvent() in game.js.
+const TRAIN_LOOTERS_MILE = 220; // Barmer
+
 const TRAIN_EVENT = {
   title: "The Railway at the Border",
   body: "A train idles at the siding, bound across the line into India. It could carry you past the worst of this crossing in a single night — or it could be exactly the kind of train the radio warned about, back in Mirpur Khas. Half the trains get through. Half don't.",
@@ -316,7 +357,7 @@ const TRAIN_EVENT = {
       apply: (s) => {
         if (Math.random() < 0.5) {
           s.miles = TOTAL_MILES;
-          endGame(true, "You gambled everything on the train, and it carried you clean across the border in the dark. By morning you are in Jodhpur — the rest of the journey never happened, and somehow, impossibly, you are whole.");
+          endGame(true, jodhpurEndingBody("You gambled everything on the train, and it carried you clean across the border in the dark. By morning you are in Jodhpur — the rest of the journey never happened, and somehow, impossibly, you are whole."));
         } else {
           s.party.forEach((m) => { m.health = 0; });
           endGame(false, "The train never reaches the other side. What was left of the family's journey ends here, somewhere along the line, in the dark.");
