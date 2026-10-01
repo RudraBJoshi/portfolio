@@ -134,8 +134,13 @@ const HELP_REWARD_CHANCE = 0.2;
 
 // Character-specific event weighting, stacking on top of their stat nerfs
 // (damageMultiplier/capacityBonus/susceptibility) rather than replacing them.
-const DADI_STRAP_TEAR_WEIGHT = 3; // her satchel is more likely to give out
-const AMIL_FEVER_WEIGHT = 3;      // he's more likely to come down sick
+// Each has a "party" weight (applies whenever that member is alive, no matter
+// who you're playing as — they're just frailer) and a steeper "played" weight
+// for when you're specifically living through it as them.
+const DADI_STRAP_TEAR_PARTY_WEIGHT = 2;
+const DADI_STRAP_TEAR_WEIGHT = 5; // her satchel is far more likely to give out
+const AMIL_FEVER_PARTY_WEIGHT = 2;
+const AMIL_FEVER_WEIGHT = 5;      // he's far more likely to come down sick
 
 const RANDOM_EVENTS = [
   {

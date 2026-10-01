@@ -475,7 +475,7 @@ function travelDay() {
     return;
   }
 
-  if (Math.random() < 0.4) {
+  if (Math.random() < 0.5) {
     triggerRandomEvent();
   } else {
     state.log(currentLandmarkLabel());
@@ -487,9 +487,14 @@ function pickWeightedRandomEvent() {
     let w = 1;
     // Stack on top of the existing nerfs (damageMultiplier/capacityBonus):
     // Dadi's weak satchel straps and Amil's weaker constitution should come
-    // up more often, not just hit harder when they do.
-    if (playingAsDadi() && e.id === "strapTear") w *= DADI_STRAP_TEAR_WEIGHT;
-    if (playingAsAmil() && e.id === "fever") w *= AMIL_FEVER_WEIGHT;
+    // up more often, not just hit harder when they do — and they're frail
+    // for the whole family's journey, not just when you're playing as them.
+    if (e.id === "strapTear" && isAlive("Dadi")) {
+      w *= playingAsDadi() ? DADI_STRAP_TEAR_WEIGHT : DADI_STRAP_TEAR_PARTY_WEIGHT;
+    }
+    if (e.id === "fever" && isAlive("Amil")) {
+      w *= playingAsAmil() ? AMIL_FEVER_WEIGHT : AMIL_FEVER_PARTY_WEIGHT;
+    }
     return w;
   });
   const total = weights.reduce((sum, w) => sum + w, 0);
@@ -564,6 +569,9 @@ function renderActiveSlide() {
 }
 
 document.getElementById("btn-start").addEventListener("click", () => {
+  if (document.documentElement.requestFullscreen) {
+    document.documentElement.requestFullscreen().catch(() => {});
+  }
   activeSlideDeck = INTRO_SLIDES;
   slideDeckMode = "intro";
   slideIndex = 0;

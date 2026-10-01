@@ -49,6 +49,8 @@ There's no money — outfitting is gated purely by weight. The 4 satchels hold u
 
 `PARTY_TEMPLATE` in `data.js` gives each family member a `susceptibility` multiplier (Dadi 1.6, Amil 1.3, Suresh and Nisha 1.0) — this stacks with the chosen character's difficulty multiplier above. `damagePartyHealth(amount, { illness })` in `game.js` applies a random per-person variance on every hit, and multiplies by `susceptibility` when `illness: true` is passed (currently: the fever event and food-shortage damage) — so sickness doesn't hit the whole family evenly, and members don't all decline or die on the same day.
 
+Dadi and Amil are frail for the whole journey, not just when you're playing as them: `pickWeightedRandomEvent()` in `game.js` weights the satchel-strap-tear and fever events up whenever Dadi/Amil are alive in the party at all (`DADI_STRAP_TEAR_PARTY_WEIGHT`/`AMIL_FEVER_PARTY_WEIGHT`, both 2x), and weights them up much further specifically when you're playing as that character (`DADI_STRAP_TEAR_WEIGHT`/`AMIL_FEVER_WEIGHT`, both 5x) — so Amil typically gets sick 2-3 times over a run regardless of who you picked, and it's a near-constant threat if you picked him yourself. The overall chance of a random event firing on any given travel day is also 50% (`travelDay()` in `game.js`).
+
 Whichever character you're playing as is the one that matters: `playedCharacterDied()` in `game.js` checks specifically for that member (matched by name against `state.character`), and ends the game the moment they die — even if the rest of the family is still alive. If someone else dies, the journey continues; the game only ends outright when either the played character or the whole family is gone.
 
 ## Extending
