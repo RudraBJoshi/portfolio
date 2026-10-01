@@ -300,6 +300,13 @@ const KNIFE_EVENT_MILE = 40;
 // Deliberately a single choice, not two. Nisha is selectively mute in the
 // book and cannot speak or resist in this moment — giving the player a real
 // option here would undo the point. The "choice" is living through it.
+//
+// The lasting effect is the point, not just the one-time health hit: this
+// permanently raises Nisha's susceptibility, so illness and fear hit her
+// harder for the rest of the journey — the internalized belief that she's a
+// burden doesn't go away once the knife does.
+const KNIFE_EVENT_SUSCEPTIBILITY_INCREASE = 0.35;
+
 const KNIFE_EVENT = {
   title: "A Knife in the Dark",
   tag: "Breaking Point · Internalized Oppression",
@@ -309,7 +316,12 @@ const KNIFE_EVENT = {
       label: "Nisha cannot speak",
       apply: (s) => {
         s.damagePartyHealth(6);
-        s.log("Suresh returns just in time, stepping between them. He speaks quietly of loss — his own, and the man's — until the knife finally lowers. The man leaves without a word. Nisha says nothing of it, then or for a long time after.", "bad");
+        const nisha = s.party.find((m) => m.name === "Nisha");
+        if (nisha) {
+          nisha.susceptibility += KNIFE_EVENT_SUSCEPTIBILITY_INCREASE;
+          nisha.role = "daughter — shaken, since the knife";
+        }
+        s.log("Suresh returns just in time, stepping between them. He speaks quietly of loss — his own, and the man's — until the knife finally lowers. The man leaves without a word. Nisha says nothing of it, then or for a long time after. Something in her stays flinched shut, and it doesn't open back up.", "bad");
       },
     },
   ],
