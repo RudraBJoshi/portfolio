@@ -198,6 +198,12 @@ function depart() {
   state.landmarkIndex = 0;
   state.over = false;
 
+  // Dadi's nerfs, stacking on top of her damageMultiplier/capacityBonus: she
+  // can't be pushed past a slow pace, no matter what the player picks.
+  if (state.character && state.character.id === "dadi") {
+    state.pace = "slow";
+  }
+
   document.getElementById("trail-log").innerHTML = "";
   document.getElementById("screen-trail").classList.add("active");
   showScreen("screen-trail");
@@ -222,6 +228,7 @@ function renderStats() {
   updateMapMarker();
   updateRestAvailability();
   updateTrainAvailability();
+  updatePaceAvailability();
 }
 
 function isAlive(name) {
@@ -267,6 +274,24 @@ function updateTrainAvailability() {
     : "Only an option at the border crossing itself, near Khokhrapar and Munabao.";
 }
 
+function playingAsDadi() {
+  return !!state.character && state.character.id === "dadi";
+}
+
+function playingAsAmil() {
+  return !!state.character && state.character.id === "amil";
+}
+
+function nishaLocked() {
+  return isAlive("Nisha") && state.character && state.character.id === "nisha" && state.knifeEventFired;
+}
+
+function updatePaceAvailability() {
+  const paceBtn = document.getElementById("action-pace");
+  paceBtn.disabled = playingAsDadi();
+  paceBtn.title = playingAsDadi() ? "Dadi cannot be pushed past a slow pace." : "";
+}
+
 function showEventModal(event) {
   document.getElementById("event-tag").textContent = event.tag || "";
   document.getElementById("event-title").textContent = event.title;
@@ -278,7 +303,9 @@ function showEventModal(event) {
     const btn = document.createElement("button");
     btn.textContent = choice.label;
     const meetsRequirement = !choice.requires || Object.entries(choice.requires).every(([key, amt]) => state.inventory[key] >= amt);
-    btn.disabled = !meetsRequirement;
+    const silenced = choice.social && nishaLocked();
+    btn.disabled = !meetsRequirement || silenced;
+    if (silenced) btn.title = "Nisha cannot bring herself to do this. Not since the knife.";
     btn.addEventListener("click", () => {
       choice.apply(state);
       if (state.over) return;
@@ -316,7 +343,7 @@ function triggerTrainLootersEvent() {
   const dadiAlive = isAlive("Dadi");
   const event = {
     title: "The Last Train to Jodhpur",
-    tag: "Breaking Point",
+    tag: "Breaking Point · Oppressive Action",
     body: dadiAlive
       ? "At Barmer, the family boards a crowded train bound for Jodhpur — Dadi so weak now that Suresh and Amil have to lift her onto the car. The train lurches into motion, and word moves down the line: looters have been working trains like this one, stripping refugee families of whatever they still carry."
       : "At Barmer, what's left of the family boards a crowded train bound for Jodhpur. The train lurches into motion, and word moves down the line: looters have been working trains like this one, stripping refugee families of whatever they still carry.",
@@ -455,18 +482,36 @@ function travelDay() {
   }
 }
 
+function pickWeightedRandomEvent() {
+  const weights = RANDOM_EVENTS.map((e) => {
+    let w = 1;
+    // Stack on top of the existing nerfs (damageMultiplier/capacityBonus):
+    // Dadi's weak satchel straps and Amil's weaker constitution should come
+    // up more often, not just hit harder when they do.
+    if (playingAsDadi() && e.id === "strapTear") w *= DADI_STRAP_TEAR_WEIGHT;
+    if (playingAsAmil() && e.id === "fever") w *= AMIL_FEVER_WEIGHT;
+    return w;
+  });
+  const total = weights.reduce((sum, w) => sum + w, 0);
+  let roll = Math.random() * total;
+  for (let i = 0; i < RANDOM_EVENTS.length; i++) {
+    if (roll < weights[i]) return RANDOM_EVENTS[i];
+    roll -= weights[i];
+  }
+  return RANDOM_EVENTS[RANDOM_EVENTS.length - 1];
+}
+
 function triggerRandomEvent() {
-  const event = RANDOM_EVENTS[Math.floor(Math.random() * RANDOM_EVENTS.length)];
-  showEventModal(event);
+  showEventModal(pickWeightedRandomEvent());
 }
 
 function jodhpurEndingBody(opening) {
-  return `${opening} Suresh's brother is waiting with a flat already arranged — old and dusty, nothing like home, but theirs for now. Slowly, there is a routine again: school, cooking lentils, the small ordinary motions of a life. Nisha keeps her mother's jewelry close and finds something like healing in the kitchen, the way Kazi once taught her. She misses Mirpur Khas every day. She also, carefully, begins again.`;
+  return `${opening} Suresh's brother is waiting with a flat already arranged — old and dusty, nothing like home, but theirs for now. Slowly, there is a routine again: school, cooking lentils, the small ordinary motions of a life. Nisha keeps her mother's jewelry close and finds something like healing in the kitchen, the way Kazi once taught her. She misses Mirpur Khas every day. She also, carefully, begins again. Millions of families made this same crossing, in both directions, that year — and the line drawn across their home still shapes the subcontinent today. In every new beginning like this one, something of what was lost is carried forward, and something of what was broken slowly, imperfectly, heals.`;
 }
 
 function endGame(won, message) {
   state.over = true;
-  document.getElementById("end-tag").textContent = won ? "Resistance & Revolution" : "";
+  document.getElementById("end-tag").textContent = won ? "Resistance & Revolution · Taking Action/Resistance/Healing · Revolution and Reflection" : "";
   document.getElementById("end-title").textContent = won ? "A New Home" : "The Journey Ends Here";
   document.getElementById("end-body").textContent = message;
   document.getElementById("end-helped").textContent = state.peopleHelped > 0
@@ -576,6 +621,7 @@ document.getElementById("action-ration").addEventListener("click", () => {
 });
 
 document.getElementById("action-pace").addEventListener("click", () => {
+  if (playingAsDadi()) return;
   const keys = Object.keys(PACE_LEVELS);
   const next = keys[(keys.indexOf(state.pace) + 1) % keys.length];
   state.pace = next;

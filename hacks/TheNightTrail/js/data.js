@@ -31,8 +31,13 @@ const INTRO_SLIDES = [
   },
   {
     heading: "A Line Is Drawn",
-    tag: "Institutional Oppression",
+    tag: "Institutional Oppression · Expose the Problem",
     body: "But independence comes with a price. Britain has decided to split the land in two: a new country called Pakistan for its Muslim-majority regions, and India for the rest. The decision is made by governments, not by the families who will have to live with it.",
+  },
+  {
+    heading: "An Idea Worth Killing For",
+    tag: "Ideological Oppression",
+    body: "Behind the new line is a belief: that Hindus, Sikhs, and Muslims cannot safely share one country — that each needs a nation of its own, with no room for the others. In the weeks around independence, that idea turns neighbors into enemies. In mixed villages and marginalized districts along the new border, Hindus, Sikhs, and Muslims begin killing each other for what they are, not for anything they've done.",
   },
   {
     heading: "Sir Cyril Radcliffe",
@@ -99,6 +104,11 @@ const TOTAL_MILES = LANDMARKS[LANDMARKS.length - 1].miles;
 
 const HELP_REWARD_CHANCE = 0.2;
 
+// Character-specific event weighting, stacking on top of their stat nerfs
+// (damageMultiplier/capacityBonus/susceptibility) rather than replacing them.
+const DADI_STRAP_TEAR_WEIGHT = 3; // her satchel is more likely to give out
+const AMIL_FEVER_WEIGHT = 3;      // he's more likely to come down sick
+
 const RANDOM_EVENTS = [
   {
     id: "heatstroke",
@@ -115,7 +125,15 @@ const RANDOM_EVENTS = [
     body: "One of the satchels gives out crossing rough, rocky ground — its strap frayed thin from the weight of everything you own.",
     choices: [
       { label: "Mend it with repair cloth", requires: { parts: 1 }, apply: (s) => { s.inventory.parts -= 1; s.log("You mend the strap and keep moving.", "good"); } },
-      { label: "Tie it off and go slow", apply: (s) => { s.pace = "slow"; s.log("The strap holds for now, but you walk slower, careful not to spill what's inside.", "bad"); } },
+      { label: "Tie it off and go slow", apply: (s) => {
+        s.pace = "slow";
+        const foodLost = Math.min(s.inventory.food, 4 + Math.floor(Math.random() * 8));
+        const waterLost = Math.min(s.inventory.water, 1);
+        s.inventory.food -= foodLost;
+        s.inventory.water -= waterLost;
+        s.damagePartyHealth(5);
+        s.log(`The strap gives out more than once before you make camp — ${foodLost} lbs of food and ${waterLost} jar of water spill loose along the way, and the extra strain wears on everyone.`, "bad");
+      } },
     ],
   },
   {
@@ -141,7 +159,7 @@ const RANDOM_EVENTS = [
     title: "A Village Well",
     body: "A village along the road opens its well to the passing families — neighbors helping strangers where they can, whatever the times.",
     choices: [
-      { label: "Draw water and thank them", apply: (s) => { const w = 1 + Math.floor(Math.random() * 3); const f = 5 + Math.floor(Math.random() * 10); s.inventory.water += w; s.inventory.food += f; s.log(`They fill your jars and share what food they can spare. +${w} water, +${f} lbs food.`, "good"); } },
+      { label: "Draw water and thank them", social: true, apply: (s) => { const w = 1 + Math.floor(Math.random() * 3); const f = 5 + Math.floor(Math.random() * 10); s.inventory.water += w; s.inventory.food += f; s.log(`They fill your jars and share what food they can spare. +${w} water, +${f} lbs food.`, "good"); } },
       { label: "Take only what you need and move on quickly", apply: (s) => { const w = 1; s.inventory.water += w; s.log(`You draw a little water and keep moving. +${w} water.`, "good"); } },
     ],
   },
@@ -150,17 +168,18 @@ const RANDOM_EVENTS = [
     title: "Prowlers at the Camp's Edge",
     body: "Shapes move beyond the firelight. Opportunists have been following caravans like this one, looking for unguarded packs.",
     choices: [
-      { label: "Keep watch through the night", apply: (s) => { s.damagePartyHealth(4); s.log("Nothing is taken, but no one rests easy.", "bad"); } },
-      { label: "Sleep in shifts and hope for the best", apply: (s) => { const lost = Math.min(s.inventory.food, 10 + Math.floor(Math.random() * 15)); s.inventory.food -= lost; s.log(`By morning, ${lost} lbs of food are missing from your packs.`, "bad"); } },
+      { label: "Keep watch through the night", apply: (s) => { s.damagePartyHealth(7); s.log("Nothing is taken, but no one rests easy.", "bad"); } },
+      { label: "Sleep in shifts and hope for the best", apply: (s) => { const lost = Math.min(s.inventory.food, 15 + Math.floor(Math.random() * 20)); s.inventory.food -= lost; s.log(`By morning, ${lost} lbs of food are missing from your packs.`, "bad"); } },
     ],
   },
   {
     id: "hostileCrowd",
     title: "A Crowd at the Crossroads",
+    tag: "Oppressive Action",
     body: "Where the road narrows, a crowd has gathered, shouting at the families passing through. Fear moves down the line ahead of you like a current.",
     choices: [
-      { label: "Suresh steps forward — he's tended half this district as its doctor", apply: (s) => { s.damagePartyHealth(3); s.log("A few in the crowd recognize him. Someone lowers their voice, and the line is waved through — shaken, but unhurt.", "good"); } },
-      { label: "Keep your heads down and push through quickly", apply: (s) => { const lost = Math.min(s.inventory.food, 5 + Math.floor(Math.random() * 10)); s.inventory.food -= lost; s.damagePartyHealth(5); s.log(`You shoulder through the crowd. A hand grabs at a satchel before you break free — ${lost} lbs of food torn loose in the scramble.`, "bad"); } },
+      { label: "Suresh steps forward — he's tended half this district as its doctor", social: true, apply: (s) => { s.damagePartyHealth(5); s.log("A few in the crowd recognize him. Someone lowers their voice, and the line is waved through — shaken, but unhurt.", "good"); } },
+      { label: "Keep your heads down and push through quickly", apply: (s) => { const lost = Math.min(s.inventory.food, 8 + Math.floor(Math.random() * 14)); s.inventory.food -= lost; s.damagePartyHealth(8); s.log(`You shoulder through the crowd. A hand grabs at a satchel before you break free — ${lost} lbs of food torn loose in the scramble.`, "bad"); } },
     ],
   },
   {
@@ -184,8 +203,8 @@ const RANDOM_EVENTS = [
     title: "Amil Spills the Water",
     body: "A jar slips from Amil's hands on the loose stones, and water darkens the sand before anyone can catch it. \"I'm sorry,\" he says, already scrambling after it.",
     choices: [
-      { label: "Stop and salvage what you can", apply: (s) => { s.pace = "slow"; s.log("You catch the jar before it's lost, but the delay costs you — the family falls behind pace.", "bad"); } },
-      { label: "Let it go and keep moving", apply: (s) => { const lost = Math.min(s.inventory.water, 1); s.inventory.water -= lost; s.log("There's no time to mourn spilled water. The jar soaks into the sand before you can stop it.", "bad"); } },
+      { label: "Stop and salvage what you can", apply: (s) => { s.pace = "slow"; s.damagePartyHealth(4); s.log("You catch the jar before it's lost, but the delay costs you — the family falls behind pace, and the scramble over loose stone leaves everyone winded.", "bad"); } },
+      { label: "Let it go and keep moving", apply: (s) => { const lost = Math.min(s.inventory.water, 1); s.inventory.water -= lost; s.damagePartyHealth(2); s.log("There's no time to mourn spilled water. The jar soaks into the sand before you can stop it.", "bad"); } },
     ],
   },
   {
@@ -196,6 +215,7 @@ const RANDOM_EVENTS = [
       {
         label: "Share water and help him up",
         requires: { water: 1 },
+        social: true,
         apply: (s) => {
           s.inventory.water -= 1;
           s.peopleHelped += 1;
@@ -219,6 +239,7 @@ const RANDOM_EVENTS = [
       {
         label: "Share medicine",
         requires: { medicine: 1 },
+        social: true,
         apply: (s) => {
           s.inventory.medicine -= 1;
           s.peopleHelped += 1;
@@ -242,6 +263,7 @@ const RANDOM_EVENTS = [
       {
         label: "Give her some food",
         requires: { food: 5 },
+        social: true,
         apply: (s) => {
           s.inventory.food -= 5;
           s.peopleHelped += 1;
@@ -309,8 +331,8 @@ const KNIFE_EVENT_SUSCEPTIBILITY_INCREASE = 0.35;
 
 const KNIFE_EVENT = {
   title: "A Knife in the Dark",
-  tag: "Breaking Point · Internalized Oppression",
-  body: "Suresh has gone ahead to scout the road. A man steps out of the shadows, a knife shaking in his hand. His family was killed by Hindus, he says, voice raw with grief and rage — and now here is Nisha in front of him. She opens her mouth. No sound comes. It hasn't, not really, since everything changed. She cannot run. She cannot speak. In this moment she is certain of only one thing: that she is a burden the family would be better off without.",
+  tag: "Interpersonal Oppression · Breaking Point · Internalized Oppression · Trauma/Tension",
+  body: "Suresh has gone ahead to scout the road. A Muslim man steps out of the shadows, a knife shaking in his hand. His family was killed by Hindus, he says, voice raw with grief and rage — and now here is a Hindu girl in front of him, and that is reason enough. She opens her mouth. No sound comes. It hasn't, not really, since everything changed. She cannot run. She cannot speak. In this moment she is certain of only one thing: that she is a burden the family would be better off without.",
   choices: [
     {
       label: "Nisha cannot speak",
@@ -337,7 +359,7 @@ const WATER_PUMP_EVENT = {
       label: "Push into the fight for water",
       apply: (s) => {
         const w = 1 + Math.floor(Math.random() * 3);
-        s.damagePartyHealth(10);
+        s.damagePartyHealth(14);
         s.inventory.water += w;
         s.log(`You come away bruised, but with ${w} more jars of water than you had.`, "bad");
       },

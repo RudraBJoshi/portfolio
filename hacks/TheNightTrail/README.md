@@ -4,6 +4,22 @@ An Oregon Trail-inspired browser game, following Dr. Suresh, his mother Dadi, an
 
 This is a fictionalized, respectful take on a real historical migration during the Partition of India, inspired in part by Veera Hiranandani's novel *The Night Diary*. The focus is on the hardship and resilience of the journey itself (heat, water, illness, lost supplies), not violence.
 
+## Ethnic Studies frameworks applied
+
+Two frameworks are deliberately applied throughout and labeled in-game (a gold badge on the relevant intro slide, random event, or ending — see `.study-tag` in `css/style.css`, and the `tag` field on events/slides in `data.js`/`game.js`): the **Four I's of Oppression** (Ideological, Institutional, Interpersonal, Internalized) and the **ESPSP** (Ethnic Studies Praxis Story Plot — Expose the Problem, Oppressive Action, Trauma/Tension, Taking Action/Resistance/Healing, Revolution and Reflection). Two earlier working terms, **Breaking Point** and **Resistance & Revolution**, are kept alongside the official labels rather than replaced, since both frameworks are meant to layer, not compete.
+
+| In-game moment | Tag shown |
+|---|---|
+| Intro slide: "A Line Is Drawn" (Britain's decision to partition) | Institutional Oppression · Expose the Problem |
+| Intro slide: "An Idea Worth Killing For" (the two-nation theory itself) | Ideological Oppression |
+| Intro slide: "A Choice" (Suresh decides to flee) | Breaking Point |
+| Random event: "A Crowd at the Crossroads" | Oppressive Action |
+| Random event: "The Last Train to Jodhpur" (fires once, at Barmer) | Breaking Point · Oppressive Action |
+| One-time event: "A Knife in the Dark" (a Muslim man attacks Nisha in revenge for his family's death) | Interpersonal Oppression · Breaking Point · Internalized Oppression · Trauma/Tension |
+| Win ending | Resistance & Revolution · Taking Action/Resistance/Healing · Revolution and Reflection |
+
+The knife event is also where Internalized Oppression becomes mechanical, not just narrative: it permanently raises Nisha's `susceptibility` (`KNIFE_EVENT_SUSCEPTIBILITY_INCREASE` in `data.js`), and if you're playing as her, every later event's socially-engaged choice (helping a stranger, talking a crowd down) is locked out for the rest of the game — see `nishaLocked()` and the `social: true` flag on choices in `game.js`. She isn't just written as unable to speak afterward; she mechanically can't.
+
 ## Run it
 
 Open `index.html` directly in a browser, or serve the folder:
