@@ -1,10 +1,35 @@
+// Shown once, before INTRO_SLIDES, to first-time visitors only (gated by a
+// cookie — see getCookie/setCookie in game.js). Pure mechanics, no study tags.
+const TUTORIAL_SLIDES = [
+  {
+    heading: "Before You Begin",
+    body: "The Night Trail is a short survival journey, not a puzzle with one right answer. Every choice costs something — the goal is getting your family through with as little lost as possible, not finding a way to lose nothing.",
+  },
+  {
+    heading: "Choosing Who You Play",
+    body: "On the next screen you'll pick one family member to see the journey through. That choice sets the run's difficulty — some characters take more damage from hardship than others, and a couple have their own extra struggles baked in. Whichever one you play, if they die, the journey ends, even if the rest of the family is still alive.",
+  },
+  {
+    heading: "Packing the Satchels",
+    body: "Before you set out, you'll pack four satchels with food, water, medicine, repair cloth, and lantern oil — all under a strict weight limit. There's no money and no restocking later, so what you leave behind, you leave behind for good.",
+  },
+  {
+    heading: "Rations and Pace",
+    body: "On the road, you can change how much your family eats and drinks, and how fast you travel. Richer rations and a slower pace cost more in supplies and time; moving fast and eating light gets you there sooner but wears everyone down. Running out of food or water outright hurts far worse than rationing carefully.",
+  },
+  {
+    heading: "When Trouble Finds You",
+    body: "Random events will interrupt the road — sickness, theft, storms, people who need help. Many choices are gated by what you packed: no medicine on hand means you can't always take the safer option. Choose carefully — this is a story about Partition, and not every hardship has a clean way out.",
+  },
+];
+
 // satchelIndex ties each character's capacityBonus to the satchel they
 // themselves carry (see SATCHEL_CAPACITIES below), not always Satchel 1 —
 // so Dadi's penalty shrinks her own small bag, not Suresh's main pack.
 const CHARACTERS = [
   {
     id: "suresh", name: "Suresh", role: "Father, the doctor", difficulty: "Easy",
-    capacityBonus: 8, damageMultiplier: 0.7, satchelIndex: 0,
+    capacityBonus: 8, damageMultiplier: 0.85, satchelIndex: 0,
     desc: "Steady hands, calm under pressure. Years of treating the sick have hardened him against the worst the road can do. Lasts the longest.",
   },
   {
@@ -133,7 +158,7 @@ const LANDMARKS = [
 
 const TOTAL_MILES = LANDMARKS[LANDMARKS.length - 1].miles;
 
-const HELP_REWARD_CHANCE = 0.2;
+const HELP_REWARD_CHANCE = 0.15;
 
 // Character-specific event weighting, stacking on top of their stat nerfs
 // (damageMultiplier/capacityBonus/susceptibility) rather than replacing them.
@@ -151,8 +176,8 @@ const RANDOM_EVENTS = [
     title: "The Sun Turns Cruel",
     body: "Midday heat catches the column before shade can be found. Throats are dry and tempers short.",
     choices: [
-      { label: "Share water from the jars", requires: { water: 1 }, apply: (s) => { s.inventory.water -= 1; s.log("The water holds everyone together a little longer.", "good"); } },
-      { label: "Push on and ration what's left", apply: (s) => { s.damagePartyHealth(6); s.log("The heat takes its toll on the weakest among you.", "bad"); } },
+      { label: "Share water from the jars", requires: { water: 2 }, apply: (s) => { s.inventory.water -= 2; s.log("The water holds everyone together a little longer.", "good"); } },
+      { label: "Push on and ration what's left", apply: (s) => { s.damagePartyHealth(8); s.log("The heat takes its toll on the weakest among you.", "bad"); } },
     ],
   },
   {
@@ -160,14 +185,14 @@ const RANDOM_EVENTS = [
     title: "A Satchel Strap Tears",
     body: "One of the satchels gives out crossing rough, rocky ground — its strap frayed thin from the weight of everything you own.",
     choices: [
-      { label: "Mend it with repair cloth", requires: { parts: 1 }, apply: (s) => { s.inventory.parts -= 1; s.log("You mend the strap and keep moving.", "good"); } },
+      { label: "Mend it with repair cloth", requires: { parts: 2 }, apply: (s) => { s.inventory.parts -= 2; s.log("You mend the strap and keep moving.", "good"); } },
       { label: "Tie it off and go slow", apply: (s) => {
         s.pace = "slow";
         const foodLost = Math.min(s.inventory.food, 4 + Math.floor(Math.random() * 8));
         const waterLost = Math.min(s.inventory.water, 1);
         s.inventory.food -= foodLost;
         s.inventory.water -= waterLost;
-        s.damagePartyHealth(5);
+        s.damagePartyHealth(7);
         s.log(`The strap gives out more than once before you make camp — ${foodLost} lbs of food and ${waterLost} jar of water spill loose along the way, and the extra strain wears on everyone.`, "bad");
       } },
     ],
@@ -177,8 +202,8 @@ const RANDOM_EVENTS = [
     title: "Sickness in the Column",
     body: "Word passes back through the column: a family further up the road has fallen ill overnight.",
     choices: [
-      { label: "Share medicine", requires: { medicine: 1 }, apply: (s) => { s.inventory.medicine -= 1; s.log("The fever is caught early.", "good"); } },
-      { label: "Keep your distance and move on", apply: (s) => { s.damagePartyHealth(8, { illness: true }); s.log("The illness spreads before you can outrun it.", "bad"); } },
+      { label: "Share medicine", requires: { medicine: 2 }, apply: (s) => { s.inventory.medicine -= 2; s.log("The fever is caught early.", "good"); } },
+      { label: "Keep your distance and move on", apply: (s) => { s.damagePartyHealth(11, { illness: true }); s.log("The illness spreads before you can outrun it.", "bad"); } },
     ],
   },
   {
@@ -186,7 +211,7 @@ const RANDOM_EVENTS = [
     title: "Dust Storm Over the Thar",
     body: "The wind rises and swallows the horizon in sand. The path forward disappears.",
     choices: [
-      { label: "Burn lantern oil and press on carefully", requires: { lantern: 1 }, apply: (s) => { s.inventory.lantern -= 1; s.log("You keep the caravan together and find the road again.", "good"); } },
+      { label: "Burn lantern oil and press on carefully", requires: { lantern: 2 }, apply: (s) => { s.inventory.lantern -= 2; s.log("You keep the caravan together and find the road again.", "good"); } },
       { label: "Shelter until the storm passes", apply: (s) => { s.day += 1; s.log("A day lost waiting out the storm.", "bad"); } },
     ],
   },
@@ -204,7 +229,7 @@ const RANDOM_EVENTS = [
     title: "Prowlers at the Camp's Edge",
     body: "Shapes move beyond the firelight. Opportunists have been following caravans like this one, looking for unguarded packs.",
     choices: [
-      { label: "Keep watch through the night", apply: (s) => { s.damagePartyHealth(7); s.log("Nothing is taken, but no one rests easy.", "bad"); } },
+      { label: "Keep watch through the night", apply: (s) => { s.damagePartyHealth(9); s.log("Nothing is taken, but no one rests easy.", "bad"); } },
       { label: "Sleep in shifts and hope for the best", apply: (s) => { const lost = Math.min(s.inventory.food, 15 + Math.floor(Math.random() * 20)); s.inventory.food -= lost; s.log(`By morning, ${lost} lbs of food are missing from your packs.`, "bad"); } },
     ],
   },
@@ -215,7 +240,7 @@ const RANDOM_EVENTS = [
     body: "Where the road narrows, a crowd has gathered, shouting at the families passing through. Fear moves down the line ahead of you like a current.",
     choices: [
       { label: "Suresh steps forward — he's tended half this district as its doctor", social: true, apply: (s) => { s.damagePartyHealth(5); s.log("A few in the crowd recognize him. Someone lowers their voice, and the line is waved through — shaken, but unhurt.", "good"); } },
-      { label: "Keep your heads down and push through quickly", apply: (s) => { const lost = Math.min(s.inventory.food, 8 + Math.floor(Math.random() * 14)); s.inventory.food -= lost; s.damagePartyHealth(8); s.log(`You shoulder through the crowd. A hand grabs at a satchel before you break free — ${lost} lbs of food torn loose in the scramble.`, "bad"); } },
+      { label: "Keep your heads down and push through quickly", apply: (s) => { const lost = Math.min(s.inventory.food, 8 + Math.floor(Math.random() * 14)); s.inventory.food -= lost; s.damagePartyHealth(10); s.log(`You shoulder through the crowd. A hand grabs at a satchel before you break free — ${lost} lbs of food torn loose in the scramble.`, "bad"); } },
     ],
   },
   {
@@ -239,8 +264,8 @@ const RANDOM_EVENTS = [
     title: "Amil Spills the Water",
     body: "A jar slips from Amil's hands on the loose stones, and water darkens the sand before anyone can catch it. \"I'm sorry,\" he says, already scrambling after it.",
     choices: [
-      { label: "Stop and salvage what you can", apply: (s) => { s.pace = "slow"; s.damagePartyHealth(4); s.log("You catch the jar before it's lost, but the delay costs you — the family falls behind pace, and the scramble over loose stone leaves everyone winded.", "bad"); } },
-      { label: "Let it go and keep moving", apply: (s) => { const lost = Math.min(s.inventory.water, 1); s.inventory.water -= lost; s.damagePartyHealth(2); s.log("There's no time to mourn spilled water. The jar soaks into the sand before you can stop it.", "bad"); } },
+      { label: "Stop and salvage what you can", apply: (s) => { s.pace = "slow"; s.damagePartyHealth(5); s.log("You catch the jar before it's lost, but the delay costs you — the family falls behind pace, and the scramble over loose stone leaves everyone winded.", "bad"); } },
+      { label: "Let it go and keep moving", apply: (s) => { const lost = Math.min(s.inventory.water, 1); s.inventory.water -= lost; s.damagePartyHealth(3); s.log("There's no time to mourn spilled water. The jar soaks into the sand before you can stop it.", "bad"); } },
     ],
   },
   {
@@ -314,21 +339,24 @@ const RANDOM_EVENTS = [
 // Water rate matches The Night Diary: a jar sipped carefully lasts a person
 // about 2 weeks (1/14 per day), stretching further the harder it's rationed.
 // Food stays at real dry-ration figures, ~0.6-1.5 lbs/person/day.
+// Filling rations and a slow pace no longer heal for free (they used to stack
+// to +2 health/day doing nothing, which quietly undid most of the difficulty
+// tuning elsewhere) — the best you can do by resting easy is hold steady.
 const RATION_LEVELS = {
-  filling: { label: "Filling", foodPerPerson: 1.5, waterPerPerson: 1 / 14, healthDelta: 1 },
+  filling: { label: "Filling", foodPerPerson: 1.5, waterPerPerson: 1 / 14, healthDelta: 0 },
   meager:  { label: "Meager",  foodPerPerson: 1,   waterPerPerson: 1 / 18, healthDelta: 0 },
-  bare:    { label: "Bare Bones", foodPerPerson: 0.6, waterPerPerson: 1 / 25, healthDelta: -2 },
+  bare:    { label: "Bare Bones", foodPerPerson: 0.6, waterPerPerson: 1 / 25, healthDelta: -3 },
 };
 
 const PACE_LEVELS = {
-  slow:    { label: "Slow",    milesPerDay: 8,  healthDelta: 1 },
+  slow:    { label: "Slow",    milesPerDay: 8,  healthDelta: 0 },
   steady:  { label: "Steady",  milesPerDay: 14, healthDelta: 0 },
-  grueling:{ label: "Grueling",milesPerDay: 22, healthDelta: -2 },
+  grueling:{ label: "Grueling",milesPerDay: 22, healthDelta: -3 },
 };
 
 const BORDER_LANDMARK_NAME = "Munabao — the border";
 const REST_LANDMARK_NAME = "Umerkot";
-const REST_DANGER_CHANCE = 0.12;
+const REST_DANGER_CHANCE = 0.18;
 
 const NISHA_DANGER_EVENT = {
   title: "Nisha Is in Danger",
@@ -395,7 +423,7 @@ const WATER_PUMP_EVENT = {
       label: "Push into the fight for water",
       apply: (s) => {
         const w = 1 + Math.floor(Math.random() * 3);
-        s.damagePartyHealth(14);
+        s.damagePartyHealth(17);
         s.inventory.water += w;
         s.log(`You come away bruised, but with ${w} more jars of water than you had.`, "bad");
       },

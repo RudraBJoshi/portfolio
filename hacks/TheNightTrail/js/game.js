@@ -412,7 +412,7 @@ function travelDay() {
     state.inventory.food -= foodNeeded;
   } else {
     state.inventory.food = 0;
-    state.damagePartyHealth(8, { illness: true });
+    state.damagePartyHealth(11, { illness: true });
     state.log("Supplies run short. The family goes hungry.", "bad");
   }
 
@@ -421,7 +421,7 @@ function travelDay() {
     state.inventory.water -= waterNeeded;
   } else {
     state.inventory.water = 0;
-    state.damagePartyHealth(8, { illness: true });
+    state.damagePartyHealth(11, { illness: true });
     state.log("The jars run dry. The family goes thirsty under the desert sun.", "bad");
   }
 
@@ -475,7 +475,7 @@ function travelDay() {
     return;
   }
 
-  if (Math.random() < 0.5) {
+  if (Math.random() < 0.6) {
     triggerRandomEvent();
   } else {
     state.log(currentLandmarkLabel());
@@ -548,12 +548,24 @@ function resetState() {
   state.over = false;
 }
 
-// The same click-through slide screen drives both the pre-game intro and the
-// post-game historical epilogue — only the deck, the mode, and what happens
-// after the last slide differ.
+function getCookie(name) {
+  const match = document.cookie.match(new RegExp("(?:^|; )" + name + "=([^;]*)"));
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
+function setCookie(name, value, days) {
+  const expires = new Date(Date.now() + days * 864e5).toUTCString();
+  document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/`;
+}
+
+const TUTORIAL_SEEN_COOKIE = "nighttrail_seen_tutorial";
+
+// The same click-through slide screen drives the first-time tutorial, the
+// pre-game intro, and the post-game historical epilogue — only the deck, the
+// mode, and what happens after the last slide differ.
 let slideIndex = 0;
 let activeSlideDeck = INTRO_SLIDES;
-let slideDeckMode = "intro"; // "intro" | "epilogue"
+let slideDeckMode = "intro"; // "tutorial" | "intro" | "epilogue"
 
 function renderActiveSlide() {
   const slide = activeSlideDeck[slideIndex];
@@ -564,19 +576,36 @@ function renderActiveSlide() {
   document.getElementById("intro-back").disabled = slideIndex === 0;
   const isLast = slideIndex === activeSlideDeck.length - 1;
   document.getElementById("intro-next").textContent = isLast
-    ? (slideDeckMode === "intro" ? "Begin the Journey" : "Return to Start")
+    ? (slideDeckMode === "intro" ? "Begin the Journey" : slideDeckMode === "tutorial" ? "Continue to the Story" : "Return to Start")
     : "Continue";
+  document.getElementById("intro-skip-tutorial").style.display = slideDeckMode === "tutorial" ? "inline-block" : "none";
+}
+
+function enterIntroDeck() {
+  activeSlideDeck = INTRO_SLIDES;
+  slideDeckMode = "intro";
+  slideIndex = 0;
+  renderActiveSlide();
 }
 
 document.getElementById("btn-start").addEventListener("click", () => {
   if (document.documentElement.requestFullscreen) {
     document.documentElement.requestFullscreen().catch(() => {});
   }
-  activeSlideDeck = INTRO_SLIDES;
-  slideDeckMode = "intro";
-  slideIndex = 0;
-  renderActiveSlide();
+  if (getCookie(TUTORIAL_SEEN_COOKIE)) {
+    enterIntroDeck();
+  } else {
+    activeSlideDeck = TUTORIAL_SLIDES;
+    slideDeckMode = "tutorial";
+    slideIndex = 0;
+    renderActiveSlide();
+  }
   showScreen("screen-intro");
+});
+
+document.getElementById("intro-skip-tutorial").addEventListener("click", () => {
+  setCookie(TUTORIAL_SEEN_COOKIE, "1", 365);
+  enterIntroDeck();
 });
 
 document.getElementById("btn-epilogue").addEventListener("click", () => {
@@ -597,6 +626,9 @@ document.getElementById("intro-next").addEventListener("click", () => {
   if (slideIndex < activeSlideDeck.length - 1) {
     slideIndex += 1;
     renderActiveSlide();
+  } else if (slideDeckMode === "tutorial") {
+    setCookie(TUTORIAL_SEEN_COOKIE, "1", 365);
+    enterIntroDeck();
   } else if (slideDeckMode === "intro") {
     renderCharacters();
     showScreen("screen-setup");
