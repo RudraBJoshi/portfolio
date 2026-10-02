@@ -12,6 +12,8 @@ const state = {
   waterPumpEventFired: false,
   trainLootersEventFired: false,
   umerkotGiftGiven: false,
+  campRestOneFired: false,
+  campRestTwoFired: false,
   peopleHelped: 0,
   over: false,
 
@@ -475,6 +477,22 @@ function travelDay() {
     return;
   }
 
+  if (!state.campRestOneFired && state.miles >= CAMP_REST_ONE_MILE) {
+    state.campRestOneFired = true;
+    state.damagePartyHealth(-CAMP_REST_HEAL);
+    state.log("A farmer along the road waves the column into his barn for a few hours — no questions asked, no payment wanted. Small comfort, but it helps.", "good");
+    renderStats();
+    return;
+  }
+
+  if (!state.campRestTwoFired && state.miles >= CAMP_REST_TWO_MILE) {
+    state.campRestTwoFired = true;
+    state.damagePartyHealth(-CAMP_REST_HEAL);
+    state.log("The column pauses at a dry riverbed as the sun climbs, resting in whatever shade the banks offer before the night's walk resumes.", "good");
+    renderStats();
+    return;
+  }
+
   if (Math.random() < 0.6) {
     triggerRandomEvent();
   } else {
@@ -544,6 +562,8 @@ function resetState() {
   state.waterPumpEventFired = false;
   state.trainLootersEventFired = false;
   state.umerkotGiftGiven = false;
+  state.campRestOneFired = false;
+  state.campRestTwoFired = false;
   state.peopleHelped = 0;
   state.over = false;
 }

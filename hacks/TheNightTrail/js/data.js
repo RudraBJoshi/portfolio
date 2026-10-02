@@ -413,6 +413,16 @@ const KNIFE_EVENT = {
   ],
 };
 
+// Two small, free camp rests along the way — not Rashid Uncle's, no gift, no
+// risk, no extra day spent, just a modest breather to take the edge off a
+// harder road. Each fires once, automatically, the first time you cross it.
+// CAMP_REST_TWO_MILE sits 25 miles before TRAIN_LOOTERS_MILE (220, where the
+// journey resolves at Barmer) — more than even Grueling pace's 22mi/day, so
+// it can't be skipped over in a single travel day no matter the pace chosen.
+const CAMP_REST_ONE_MILE = 95;
+const CAMP_REST_TWO_MILE = 195;
+const CAMP_REST_HEAL = 5;
+
 const WATER_PUMP_MILE = 75; // halfway between Mirpur Khas (0) and Umerkot (150)
 
 const WATER_PUMP_EVENT = {
