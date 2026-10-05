@@ -58,7 +58,7 @@ const INTRO_SLIDES = [
     heading: "A Line Is Drawn",
     date: "Mirpur Khas, August 1947",
     tag: "Institutional Oppression · Expose the Problem · The System Exposed",
-    body: "Independence comes with a price. The British have decided to split the land in two: Pakistan for the Muslim-majority regions, and India for the rest. Papa says governments made this decision, not the families who will have to live with it. The Indian Independence Act, passed by the British Parliament, directly caused the division into two countries (Britannica School, “Partition of India”; Congressional Research Service, IF13000).",
+    body: "Independence comes with a price. The British have decided to split the land in two: Pakistan for the Muslim-majority regions, and India for the rest. Papa says governments made this decision, not the families who will have to live with it. The Indian Independence Act, passed by the British Parliament, directly caused the division into two countries (Wikipedia, “Partition of India”).",
   },
   {
     heading: "An Idea Worth Killing For",
@@ -69,7 +69,7 @@ const INTRO_SLIDES = [
   {
     heading: "Sir Cyril Radcliffe",
     date: "Mirpur Khas, August 1947",
-    body: "Papa read in the newspaper that the border was drawn by a British lawyer who had never set foot in India before this year. He worked from maps, in just a few weeks. The line cuts through provinces, villages, and families almost overnight. Nobody asked us.",
+    body: "Papa read in the newspaper that the border was drawn by a British lawyer who had never been east of Paris and was given about five weeks to draw the line (Wikipedia, “Cyril Radcliffe”). The line cuts through provinces, villages, and families almost overnight. Nobody asked us.",
   },
   {
     heading: "Mirpur Khas",
@@ -79,7 +79,7 @@ const INTRO_SLIDES = [
   {
     heading: "The Largest Migration in History",
     date: "Mirpur Khas, August 1947",
-    body: "Papa says about 15 million people will cross the new border in both directions. Hindus and Sikhs are moving toward India, and Muslims toward Pakistan. Many will not survive the journey.",
+    body: "Papa says between 12 and 20 million people will be displaced along religious lines as the new border is drawn (Wikipedia, “Partition of India”). Hindus and Sikhs are moving toward India, and Muslims toward Pakistan. Many will not survive the journey.",
   },
   {
     heading: "A Choice",
@@ -90,7 +90,7 @@ const INTRO_SLIDES = [
   {
     heading: "Not by Train",
     date: "Mirpur Khas, August 1947",
-    body: "The railway would be faster, but trains have become targets for violence from every side, and word is spreading about trains that never reach their destination. Papa won’t risk it. We will walk, joining a slow caravan of families leaving Sindh.",
+    body: "The railway would be faster, but trains have become targets for violence from every side (Wikipedia, “1947 Amritsar train massacre”; Wikipedia, “1947 Kamoke train massacre”), and word is spreading about trains that never reach their destination. Papa won’t risk it. We will walk, joining a slow caravan of families leaving Sindh.",
   },
   {
     heading: "This Is Their Story",
@@ -106,29 +106,30 @@ const EPILOGUE_SLIDES = [
     heading: "1947: The First War",
     date: "1947",
     tag: "Revolution and Reflection · Mirror to Society",
-    body: "Only months after we crossed, India and Pakistan are at war over Kashmir, a princely state neither side will let go of (Britannica, “Kashmir”). The same two-nation idea that drew our line now draws soldiers to a mountain border. The violence of Partition did not end at the crossing. It became policy, then army, then war.",
+    body: "Only months after we crossed, India and Pakistan are at war over Kashmir, a princely state neither side will let go of (Wikipedia, “Indo-Pakistani war of 1947–1948”). The same two-nation idea that drew our line now draws soldiers to a mountain border. The violence of Partition did not end at the crossing. It became policy, then army, then war.",
   },
   {
     heading: "1965: The Second War",
     date: "1965",
     tag: "Revolution and Reflection · Mirror to Society",
-    body: "Eighteen years later, the two countries are at war again, still over Kashmir and still over the same line. A ceasefire is brokered, and a peace agreement is signed in Tashkent (Britannica, “Tashkent Declaration”). It holds for a while, then it doesn’t. The idea that split a subcontinent into us and them has outlived the generation that walked through Partition.",
+    body: "Eighteen years later, the two countries are at war again, still over Kashmir and still over the same line. A UN ceasefire ends the fighting, and a peace agreement is signed in Tashkent, brokered by the Soviet Union (Wikipedia, “Tashkent Declaration”). It holds for a while, then it doesn’t. The idea that split a subcontinent into us and them has outlived the generation that walked through Partition.",
   },
   {
     heading: "1999: Kargil",
     date: "1999",
     tag: "Revolution and Reflection · Mirror to Society",
-    body: "By 1999 both India and Pakistan possess nuclear weapons. That summer, fighting breaks out in the mountains above Kargil (Britannica, “Kargil War”). Ordinary soldiers, following orders, die over high, cold ground for a line drawn by people long dead. The ideology of 1947 is no longer even argued over. It has become simply how things are, worth any cost to defend.",
+    body: "By 1999 both India and Pakistan possess nuclear weapons. That summer, fighting breaks out in the mountains above Kargil (Wikipedia, “Kargil War”). Ordinary soldiers, following orders, die over high, cold ground for a line drawn by people long dead. The ideology of 1947 is no longer even argued over. It has become simply how things are, worth any cost to defend.",
   },
   {
     heading: "2025: Operation Sindoor",
     date: "2025",
     tag: "Revolution and Reflection · Mirror to Society",
-    body: "In April 2025, 26 civilians were killed in an attack on tourists in the Baisaran Valley near Pahalgam, Jammu and Kashmir (Al Jazeera, April 2025). India attributed the attack to terrorists, and in May it struck alleged terrorist targets inside Pakistan. The operation takes its name from sindoor, the red vermilion worn by married Hindu women, for the wives the attack suddenly widowed. Violence becomes retaliation becomes, again, a ceasefire within days. The pattern set in August 1947 repeats itself, smaller each time, never finished.",
+    body: "In April 2025, 26 civilians were killed in an attack on tourists in the Baisaran Valley near Pahalgam, Jammu and Kashmir, where gunmen asked victims their religion before shooting them (Al Jazeera, April 23, 2025; France 24, April 30, 2025). India attributed the attack to terrorists and on May 7 struck alleged terrorist targets inside Pakistan (Wikipedia, “Operation Sindoor”; Congressional Research Service, IF13000). The operation takes its name from sindoor, the red vermilion worn by married Hindu women, for the wives the attack suddenly widowed. Violence becomes retaliation becomes, again, a ceasefire within days. The pattern set in August 1947 repeats itself, smaller each time, never finished.",
   },
   {
     heading: "A Line That Hasn't Closed",
     date: "Years later",
+    analysis: "What this shows about human nature: when differences of culture, ethnicity, or religion are prominent, people tend to divide themselves into superior and inferior groups. The warning is never to let a government or outside force divide people by religion, and the hope is to find unity in our community and make diversity a priority.",
     tag: "Revolution and Reflection · Mirror to Society",
     body: "More than seventy-five years after Partition, the border that sent us walking into the Thar Desert by night is still being fought over, still being crossed, still ending lives on both sides. The ideology that justified one line has justified every war since. This is one family’s story, fictional and small. In one form or another, it happened to millions, and the oppression Partition set in motion, ideological, institutional, interpersonal, and the quiet internalized kind, never fully closed the line it drew.",
   },
@@ -136,13 +137,22 @@ const EPILOGUE_SLIDES = [
 
 const CITATIONS = [
   "Encyclopaedia Britannica, School Edition. “Partition of India.” https://school.eb.com/levels/high/article/partition-of-India/640159",
-  "Congressional Research Service. IF13000. https://www.congress.gov/crs-product/IF13000",
-  "Encyclopaedia Britannica. “Kashmir.” https://www.britannica.com/place/Kashmir-region-Indian-subcontinent/The-Kashmir-problem",
-  "Encyclopaedia Britannica. “Tashkent Declaration (1966).” https://www.britannica.com/event/Tashkent-Agreement",
-  "Encyclopaedia Britannica. “Kargil War (1999).” https://www.britannica.com/event/Kargil-War",
+  "Congressional Research Service. “India-Pakistan Conflict in Spring 2025,” IF13000, May 13, 2025. https://www.congress.gov/crs-product/IF13000",
+  "Wikipedia. “Partition of India.” https://en.wikipedia.org/wiki/Partition_of_India",
+  "Wikipedia. “Cyril Radcliffe.” https://en.wikipedia.org/wiki/Cyril_Radcliffe",
+  "Wikipedia. “Indo-Pakistani war of 1947–1948.” https://en.wikipedia.org/wiki/Indo-Pakistani_war_of_1947%E2%80%931948",
+  "Wikipedia. “Tashkent Declaration.” https://en.wikipedia.org/wiki/Tashkent_Declaration",
+  "Wikipedia. “Kargil War.” https://en.wikipedia.org/wiki/Kargil_War",
+  "Wikipedia. “Mirpur Khas.” https://en.wikipedia.org/wiki/Mirpur_Khas",
+  "Wikipedia. “1947 Amritsar train massacre.” https://en.wikipedia.org/wiki/1947_Amritsar_train_massacre",
+  "Wikipedia. “1947 Kamoke train massacre.” https://en.wikipedia.org/wiki/1947_Kamoke_train_massacre",
   "Al Jazeera. “‘Act of war’: What happened in Kashmir attack that killed 26 tourists?” April 23, 2025. https://www.aljazeera.com/news/2025/4/23/act-of-war-what-happened-in-kashmir-attack-that-killed-26-tourists",
+  "France 24. “‘Are you a Hindu?’: Kashmir attack survivors say gunmen asked their religion before opening fire.” April 30, 2025. https://www.france24.com/en/asia-pacific/20250430-are-you-a-hindu-kashmir-attack-survivors-say-gunmen-asked-religion-before-opening-fire-pakistan-india",
+  "Wikipedia. “Operation Sindoor.” https://en.wikipedia.org/wiki/Operation_Sindoor",
   "Hiranandani, Veera. The Night Diary.",
 ];
+
+const RESISTANCE_ANALYSIS = "Resistance here is quiet and personal. Nisha does not defeat the forces that split her family, but she keeps her mother’s jewelry, cooks with Kazi’s methods, and returns to school and lentils. Each ordinary act refuses the idea that the home and family she lost are lost for good.";
 
 const SUPPLY_ITEMS = [
   { id: "food",    name: "Food",        unit: "lbs",    weight: 1 },
@@ -522,8 +532,10 @@ const TRAIN_EVENT = {
 // proportion to each landmark's place in the journey.
 const ROUTE_WIDTH = 792;
 const ROUTE_HEIGHT = 320;
+// The railway follows the dotted route from Barmer to Jodhpur (route.png pixels).
+const RAIL_POINTS = [[386, 125], [392.7, 124], [399.3, 123], [406, 122], [412.7, 121], [419.3, 120], [426, 119], [432.1, 118.1], [438.3, 117.3], [444.4, 116.4], [450.6, 115.6], [456.7, 114.7], [462.9, 113.9], [469, 113], [475.2, 112.6], [481.4, 112.1], [487.7, 111.7], [493.9, 111.2], [500.1, 110.8], [506.3, 110.3], [512.6, 109.9], [518.8, 109.4], [525, 109]];
 // Pixel path of the dotted route in route.png (792x320), used to move the family marker along the curve.
-const ROUTE_PATH = [[166, 170], [172, 174.1], [178, 174.4], [184, 174.7], [190, 175], [196, 176.1], [202, 179.5], [208, 181], [214, 182], [220, 182], [226, 181.7], [232, 181.9], [241, 188], [247, 171.6], [253, 168.3], [259, 165.2], [265, 164.8], [271, 164.3], [277, 163.9], [283, 163.5], [289, 163], [295, 162.6], [301, 162.2], [307, 161.8], [313, 146], [320, 143], [326, 136.4], [332, 134], [338, 132.8], [344, 129.5], [350, 128.8], [356, 128.6], [362, 128.4], [368, 128.2], [374, 128.1], [380, 127.9], [386, 125], [392, 119.3], [398, 116.6], [404, 114.2], [410, 113.2], [416, 112.3], [422, 112.1], [428, 112.3], [434, 112.2], [440, 112], [446, 111.8], [452, 111.2], [458, 111.2], [464, 111.2], [470, 111.2], [476, 111.2], [482, 111.2], [488, 111.1], [494, 110.9], [500, 110.8], [506, 110.3], [512, 110.2], [518, 110.1], [525, 109]];
+const ROUTE_PATH = [[166, 170], [172, 172.2], [178, 174.5], [184, 176.8], [190, 179], [196.2, 180], [202.5, 181], [208.8, 182], [215, 183], [221.5, 184.2], [228, 185.5], [234.5, 186.8], [241, 188], [245.8, 182.5], [250.5, 177], [255.2, 171.5], [260, 166], [266, 162.8], [272, 159.6], [278, 156.4], [284, 153.2], [290, 150], [297.7, 148.7], [305.3, 147.3], [313, 146], [320, 143], [327, 140.5], [334, 138], [341, 135.5], [348, 133], [354.3, 131.7], [360.7, 130.3], [367, 129], [373.3, 127.7], [379.7, 126.3], [386, 125], [392.7, 124], [399.3, 123], [406, 122], [412.7, 121], [419.3, 120], [426, 119], [432.1, 118.1], [438.3, 117.3], [444.4, 116.4], [450.6, 115.6], [456.7, 114.7], [462.9, 113.9], [469, 113], [475.2, 112.6], [481.4, 112.1], [487.7, 111.7], [493.9, 111.2], [500.1, 110.8], [506.3, 110.3], [512.6, 109.9], [518.8, 109.4], [525, 109]];
 
 const MAP_WAYPOINTS = [
   { miles: 0,   x: 0.210, y: 0.531 }, // Mirpur Khas

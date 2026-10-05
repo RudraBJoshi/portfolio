@@ -653,6 +653,23 @@ input[type="text"] {
   font-size: 15px;
 }
 
+#map-train {
+  position: absolute;
+  width: 26px;
+  height: 10px;
+  transform: translate(-50%, -50%);
+  display: none;
+  border-radius: 2px;
+  border: 1px solid #14100b;
+  background: repeating-linear-gradient(90deg, #ffd166 0 3px, #2a2118 3px 6px);
+  transition: left 0.06s linear, top 0.06s linear;
+  z-index: 2;
+}
+
+#map-train.riding {
+  display: block;
+}
+
 #map-marker::after {
   content: "";
   position: absolute;

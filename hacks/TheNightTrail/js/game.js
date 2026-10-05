@@ -348,11 +348,46 @@ function triggerKnifeEvent() {
   showEventModal(KNIFE_EVENT);
 }
 
+function playTrainRide(onDone) {
+  const train = document.getElementById("map-train");
+  const marker = document.getElementById("map-marker");
+  const points = RAIL_POINTS;
+  train.classList.add("riding");
+  marker.style.transition = "none";
+  let k = 0;
+  const step = () => {
+    const [x, y] = points[k];
+    const left = `${(x / ROUTE_WIDTH) * 100}%`;
+    const top = `${(y / ROUTE_HEIGHT) * 100}%`;
+    train.style.left = left;
+    train.style.top = top;
+    marker.style.left = left;
+    marker.style.top = top;
+    k++;
+    if (k < points.length) {
+      setTimeout(step, 60);
+    } else {
+      train.classList.remove("riding");
+      marker.style.transition = "";
+      onDone();
+    }
+  };
+  step();
+}
+
 function trainLootersResolve(opening) {
   if (playedCharacterDied()) return endGame(false, playedCharacterDeathMessage());
   if (state.party.every((m) => m.health <= 0)) return endGame(false, "The family did not make it to Jodhpur.");
-  state.miles = TOTAL_MILES;
-  endGame(true, jodhpurEndingBody(opening));
+  state.log("The train pulls out of Barmer toward Jodhpur.", "milestone");
+  document.querySelectorAll("#trail-actions button").forEach((b) => { b.disabled = true; });
+  playTrainRide(() => {
+    document.querySelectorAll("#trail-actions button").forEach((b) => { b.disabled = false; });
+    updateRestAvailability();
+    updateTrainAvailability();
+    updatePaceAvailability();
+    state.miles = TOTAL_MILES;
+    endGame(true, jodhpurEndingBody(opening));
+  });
 }
 
 function triggerTrainLootersEvent() {
@@ -618,6 +653,7 @@ function endGame(won, message) {
   document.getElementById("end-tag").textContent = won ? "Resistance & Revolution · Taking Action/Resistance/Healing · Revolution and Reflection · Mirror to Society" : "";
   document.getElementById("end-title").textContent = won ? "A New Home" : "The Journey Ends Here";
   document.getElementById("end-body").textContent = message;
+  document.getElementById("end-analysis").textContent = won ? `Literary analysis: ${RESISTANCE_ANALYSIS}` : "";
   document.getElementById("end-helped").textContent = state.peopleHelped > 0
     ? `Along the way, you helped ${state.peopleHelped} ${state.peopleHelped === 1 ? "person" : "people"}.`
     : "You made this journey without stopping to help anyone else.";
