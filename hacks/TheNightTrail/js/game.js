@@ -220,8 +220,8 @@ function depart() {
   document.getElementById("map-marker").className = `map-marker-${state.character.id}`;
   document.getElementById("screen-trail").classList.add("active");
   showScreen("screen-trail");
-  document.getElementById("stats-leader").textContent = `Suresh's Family — seen through ${state.character.name}'s eyes (${state.character.difficulty})`;
-  state.log("August, 1947. Mirpur Khas is behind you now. Four satchels, packed light — one each. Dr. Suresh, his mother Dadi, and his twins Amil and Nisha set out on foot under starlight, east toward the Thar and whatever waits on the other side of the new border.", "milestone");
+  document.getElementById("stats-leader").textContent = `Suresh's Family, seen through ${state.character.name}'s eyes (${state.character.difficulty})`;
+  state.log("August, 1947. Mirpur Khas is behind you now. Four satchels, packed light, one each. Dr. Suresh, his mother Dadi, and his twins Amil and Nisha set out on foot under starlight, east toward the Thar and whatever waits on the other side of the new border.", "milestone");
   state.log(`Literary analysis: ${DEPARTURE_ANALYSIS}`, "analysis");
   renderStats();
 }
@@ -237,7 +237,7 @@ function renderStats() {
     <li><span>Medicine</span><span>${state.inventory.medicine}</span></li>
     <li><span>Parts</span><span>${state.inventory.parts}</span></li>
     <li><span>Lantern Oil</span><span>${state.inventory.lantern}</span></li>
-    ${state.party.map((m) => `<li><span>${m.name}${m.role ? ` — ${m.role}` : ""}</span><span>${m.health > 0 ? m.health + "%" : "lost"}</span></li>`).join("")}
+    ${state.party.map((m) => `<li><span>${m.name}${m.role ? `, ${m.role}` : ""}</span><span>${m.health > 0 ? m.health + "%" : "lost"}</span></li>`).join("")}
   `;
   updateMapMarker();
   updateRestAvailability();
@@ -363,14 +363,14 @@ function triggerTrainLootersEvent() {
     tag: "Breaking Point · Oppressive Action · 4 I's in Action",
     analysis: "Even the last stretch is not safe. The looters show that the violence of the journey continues after the border, and that refugees are targets for those who exploit the disorder.",
     body: dadiAlive
-      ? "At Barmer, the family boards a crowded train bound for Jodhpur — Dadi so weak now that Suresh and Amil have to lift her onto the car. The train lurches into motion, and word moves down the line: looters have been working trains like this one, stripping refugee families of whatever they still carry."
+      ? "At Barmer, the family boards a crowded train bound for Jodhpur, Dadi so weak now that Suresh and Amil have to lift her onto the car. The train lurches into motion, and word moves down the line: looters have been working trains like this one, stripping refugee families of whatever they still carry."
       : "At Barmer, what's left of the family boards a crowded train bound for Jodhpur. The train lurches into motion, and word moves down the line: looters have been working trains like this one, stripping refugee families of whatever they still carry.",
     choices: [
       {
         label: "Keep watch and hold what's yours",
         apply: (s) => {
           s.damagePartyHealth(16);
-          s.log("You stay alert through the night, trading off who sleeps. No one touches your satchels — but when the looters are turned away, it doesn't end quietly.", "bad");
+          s.log("You stay alert through the night, trading off who sleeps. No one touches your satchels, but when the looters are turned away, it doesn't end quietly.", "bad");
           trainLootersResolve("Battered but holding together, the train carries what's left of the family into Jodhpur as the sun comes up.");
         },
       },
@@ -384,7 +384,7 @@ function triggerTrainLootersEvent() {
           let message = `You let the looters pass through the car and take what they will. ${foodLost} lbs of food and ${waterLost} jar of water are gone.`;
           if (Math.random() < 0.3) {
             s.damagePartyHealth(10);
-            message += " It isn't enough for them — someone is shoved hard against the window before the car empties out.";
+            message += " It isn't enough for them, someone is shoved hard against the window before the car empties out.";
           } else {
             message += " No one is hurt.";
           }
@@ -504,7 +504,7 @@ function travelDay() {
   if (!state.campRestOneFired && state.miles >= CAMP_REST_ONE_MILE) {
     state.campRestOneFired = true;
     state.damagePartyHealth(-CAMP_REST_HEAL);
-    state.log("A farmer along the road waves the column into his barn for a few hours — no questions asked, no payment wanted. Small comfort, but it helps.", "good");
+    state.log("A farmer along the road waves the column into his barn for a few hours, no questions asked, no payment wanted. Small comfort, but it helps.", "good");
     renderStats();
     return;
   }
@@ -529,7 +529,7 @@ function pickWeightedRandomEvent() {
     let w = 1;
     // Stack on top of the existing nerfs (damageMultiplier/capacityBonus):
     // Dadi's weak satchel straps and Amil's weaker constitution should come
-    // up more often, not just hit harder when they do — and they're frail
+    // up more often, not just hit harder when they do, and they're frail
     // for the whole family's journey, not just when you're playing as them.
     if (e.id === "strapTear" && isAlive("Dadi")) {
       w *= playingAsDadi() ? DADI_STRAP_TEAR_WEIGHT : DADI_STRAP_TEAR_PARTY_WEIGHT;
@@ -553,7 +553,7 @@ function triggerRandomEvent() {
 }
 
 function jodhpurEndingBody(opening) {
-  return `${opening} Nisha's uncle is waiting with a flat already arranged — old and dusty, nothing like home, but theirs for now. Slowly, there is a routine again: school, cooking lentils, the small ordinary motions of a life. Nisha keeps her mother's jewelry close and finds something like healing in the kitchen, the way Kazi once taught her. She misses Mirpur Khas every day. She also, carefully, begins again. Millions of families made this same crossing, in both directions, that year — and the line drawn across their home still shapes the subcontinent today. In every new beginning like this one, something of what was lost is carried forward, and something of what was broken slowly, imperfectly, heals.`;
+  return `${opening} Nisha's uncle is waiting with a flat already arranged, old and dusty, nothing like home, but theirs for now. Slowly, there is a routine again: school, cooking lentils, the small ordinary motions of a life. Nisha keeps her mother's jewelry close and finds something like healing in the kitchen, the way Kazi once taught her. She misses Mirpur Khas every day. She also, carefully, begins again. Millions of families made this same crossing, in both directions, that year, and the line drawn across their home still shapes the subcontinent today. In every new beginning like this one, something of what was lost is carried forward, and something of what was broken slowly, imperfectly, heals.`;
 }
 
 function endGame(won, message) {
@@ -567,7 +567,7 @@ function endGame(won, message) {
   document.getElementById("end-roster").innerHTML = state.party.map((m) => {
     const status = m.health > 0 ? "Survived" : "Did not survive";
     const cls = m.health > 0 ? "good" : "bad";
-    return `<li><span>${m.name}${m.role ? ` — ${m.role}` : ""}</span><span class="${cls}">${status}</span></li>`;
+    return `<li><span>${m.name}${m.role ? `, ${m.role}` : ""}</span><span class="${cls}">${status}</span></li>`;
   }).join("");
   showScreen("screen-end");
 }
@@ -606,7 +606,7 @@ function setCookie(name, value, days) {
 const TUTORIAL_SEEN_COOKIE = "nighttrail_seen_tutorial";
 
 // The same click-through slide screen drives the first-time tutorial, the
-// pre-game intro, and the post-game historical epilogue — only the deck, the
+// pre-game intro, and the post-game historical epilogue, only the deck, the
 // mode, and what happens after the last slide differ.
 let slideIndex = 0;
 let activeSlideDeck = INTRO_SLIDES;

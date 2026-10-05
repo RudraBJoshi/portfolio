@@ -1,17 +1,17 @@
 // Shown once, before INTRO_SLIDES, to first-time visitors only (gated by a
-// cookie — see getCookie/setCookie in game.js). Pure mechanics, no study tags.
+// cookie, see getCookie/setCookie in game.js). Pure mechanics, no study tags.
 const TUTORIAL_SLIDES = [
   {
     heading: "Before You Begin",
-    body: "The Night Trail is a short survival journey, not a puzzle with one right answer. Every choice costs something — the goal is getting your family through with as little lost as possible, not finding a way to lose nothing.",
+    body: "The Night Trail is a short survival journey, not a puzzle with one right answer. Every choice costs something, the goal is getting your family through with as little lost as possible, not finding a way to lose nothing.",
   },
   {
     heading: "Choosing Who You Play",
-    body: "On the next screen you'll pick one family member to see the journey through. That choice sets the run's difficulty — some characters take more damage from hardship than others, and a couple have their own extra struggles baked in. Whichever one you play, if they die, the journey ends, even if the rest of the family is still alive.",
+    body: "On the next screen you'll pick one family member to see the journey through. That choice sets the run's difficulty, some characters take more damage from hardship than others, and a couple have their own extra struggles baked in. Whichever one you play, if they die, the journey ends, even if the rest of the family is still alive.",
   },
   {
     heading: "Packing the Satchels",
-    body: "Before you set out, you'll pack four satchels with food, water, medicine, repair cloth, and lantern oil — all under a strict weight limit. There's no money and no restocking later, so what you leave behind, you leave behind for good.",
+    body: "Before you set out, you'll pack four satchels with food, water, medicine, repair cloth, and lantern oil, all under a strict weight limit. There's no money and no restocking later, so what you leave behind, you leave behind for good.",
   },
   {
     heading: "Rations and Pace",
@@ -19,13 +19,12 @@ const TUTORIAL_SLIDES = [
   },
   {
     heading: "When Trouble Finds You",
-    body: "Random events will interrupt the road — sickness, theft, storms, people who need help. Many choices are gated by what you packed: no medicine on hand means you can't always take the safer option. Choose carefully — this is a story about Partition, and not every hardship has a clean way out.",
+    body: "Random events will interrupt the road, sickness, theft, storms, people who need help. Many choices are gated by what you packed: no medicine on hand means you can't always take the safer option. Choose carefully, this is a story about Partition, and not every hardship has a clean way out.",
   },
 ];
 
 // satchelIndex ties each character's capacityBonus to the satchel they
-// themselves carry (see SATCHEL_CAPACITIES below), not always Satchel 1 —
-// so Dadi's penalty shrinks her own small bag, not Suresh's main pack.
+// themselves carry (see SATCHEL_CAPACITIES below), not always Satchel 1, // so Dadi's penalty shrinks her own small bag, not Suresh's main pack.
 const CHARACTERS = [
   {
     id: "suresh", name: "Suresh", role: "Father, the doctor", difficulty: "Easy",
@@ -35,7 +34,7 @@ const CHARACTERS = [
   {
     id: "nisha", name: "Nisha", role: "Daughter", difficulty: "Medium",
     capacityBonus: 2, damageMultiplier: 1.15, satchelIndex: 2,
-    desc: "Quiet and watchful, neither the strongest nor the frailest of the family. A balanced telling of the journey. She has packed Kazi's stone mortar — less room for supplies, but she knows how to use it to catch rain.",
+    desc: "Quiet and watchful, neither the strongest nor the frailest of the family. A balanced telling of the journey. She has packed Kazi's stone mortar, less room for supplies, but she knows how to use it to catch rain.",
   },
   {
     id: "amil", name: "Amil", role: "Son", difficulty: "Medium-Hard",
@@ -62,7 +61,7 @@ const INTRO_SLIDES = [
   {
     heading: "An Idea Worth Killing For",
     tag: "Ideological Oppression · The System Exposed",
-    body: "Behind the new line is a belief: that Hindus, Sikhs, and Muslims cannot safely share one country — that each needs a nation of its own, with no room for the others. In the weeks around independence, that idea turns neighbors into enemies. In mixed villages and marginalized districts along the new border, Hindus, Sikhs, and Muslims begin killing each other for what they are, not for anything they've done.",
+    body: "Behind the new line is a belief: that Hindus, Sikhs, and Muslims cannot safely share one country, that each needs a nation of its own, with no room for the others. In the weeks around independence, that idea turns neighbors into enemies. In mixed villages and marginalized districts along the new border, Hindus, Sikhs, and Muslims begin killing each other for what they are, not for anything they've done.",
   },
   {
     heading: "Sir Cyril Radcliffe",
@@ -74,7 +73,7 @@ const INTRO_SLIDES = [
   },
   {
     heading: "The Largest Migration in History",
-    body: "In the weeks around independence, an estimated 15 million people will cross the new border in both directions — Hindus and Sikhs moving toward India, Muslims moving toward Pakistan. Many will not survive the journey.",
+    body: "In the weeks around independence, an estimated 15 million people will cross the new border in both directions, Hindus and Sikhs moving toward India, Muslims moving toward Pakistan. Many will not survive the journey.",
   },
   {
     heading: "A Choice",
@@ -83,7 +82,7 @@ const INTRO_SLIDES = [
   },
   {
     heading: "Not by Train",
-    body: "The railway would be faster. But trains have become a target for violence from every side, and word is spreading of trains that never reach their destination safely. Suresh won't risk it — the family will go on foot instead, joining a slower caravan of other families making the same journey out of Sindh.",
+    body: "The railway would be faster. But trains have become a target for violence from every side, and word is spreading of trains that never reach their destination safely. Suresh won't risk it, the family will go on foot instead, joining a slower caravan of other families making the same journey out of Sindh.",
   },
   {
     heading: "This Is Their Story",
@@ -91,34 +90,34 @@ const INTRO_SLIDES = [
   },
 ];
 
-// Reachable from the end screen ("What Came After"), not forced — the
+// Reachable from the end screen ("What Came After"), not forced, the
 // historical line doesn't close when the game does. Covers Partition's
 // aftermath only; Partition itself is the main game, not repeated here.
 const EPILOGUE_SLIDES = [
   {
     heading: "1947: The First War",
     tag: "Revolution and Reflection · Mirror to Society",
-    body: "Within months of independence, India and Pakistan are already at war — over Kashmir, a princely state neither side will let go of. The same two-nation ideology that drew the line through Suresh's family's road now draws soldiers to a mountain border. The violence of Partition doesn't end at the crossing; it becomes policy, becomes army, becomes the first of several wars the two countries will fight across the rest of the century.",
+    body: "Within months of independence, India and Pakistan are already at war, over Kashmir, a princely state neither side will let go of (Britannica, “Kashmir”). The same two-nation ideology that drew the line through Suresh's family's road now draws soldiers to a mountain border. The violence of Partition doesn't end at the crossing; it becomes policy, becomes army, becomes the first of several wars the two countries will fight across the rest of the century.",
   },
   {
     heading: "1965: The Second War",
     tag: "Revolution and Reflection · Mirror to Society",
-    body: "Eighteen years later, the two countries go to war again, still over Kashmir, still over the same line. A ceasefire is brokered and a peace agreement signed in the Soviet city of Tashkent — paper that holds for a while, then doesn't. The ideology that split a subcontinent into us and them has, by now, outlived the generation that walked through Partition itself.",
+    body: "Eighteen years later, the two countries go to war again, still over Kashmir, still over the same line. A ceasefire is brokered and a peace agreement signed in the Soviet city of Tashkent (Britannica, “Tashkent Declaration”), paper that holds for a while, then doesn't. The ideology that split a subcontinent into us and them has, by now, outlived the generation that walked through Partition itself.",
   },
   {
     heading: "1999: Kargil",
     tag: "Revolution and Reflection · Mirror to Society",
-    body: "By 1999, both India and Pakistan possess nuclear weapons. That summer, fighting breaks out in the mountains above Kargil, in Indian-administered Kashmir — ordinary soldiers, following institutional orders, killing and dying over high, cold ground for a line drawn by people long since dead. More than fifty years on, the ideology of 1947 is no longer even argued over; it has been internalized as simply how things are, worth any cost to defend.",
+    body: "By 1999, both India and Pakistan possess nuclear weapons. That summer, fighting breaks out in the mountains above Kargil, in Indian-administered Kashmir (Britannica, “Kargil War”), ordinary soldiers, following institutional orders, killing and dying over high, cold ground for a line drawn by people long since dead. More than fifty years on, the ideology of 1947 is no longer even argued over; it has been internalized as simply how things are, worth any cost to defend.",
   },
   {
     heading: "2025: Operation Sindoor",
     tag: "Revolution and Reflection · Mirror to Society",
-    body: "In April 2025, 26 civilians were killed in an attack on tourists in the Baisaran Valley near Pahalgam, Jammu and Kashmir (Al Jazeera, April 2025). India attributed the attack to terrorists and in May struck alleged terrorist targets inside Pakistan. The operation takes its name from sindoor, the red vermilion worn by married Hindu women — for the wives the attack suddenly widowed. Interpersonal violence becomes institutional retaliation becomes, again, a ceasefire within days. The pattern set in August 1947 repeats itself, smaller each time, never finished.",
+    body: "In April 2025, 26 civilians were killed in an attack on tourists in the Baisaran Valley near Pahalgam, Jammu and Kashmir (Al Jazeera, April 2025). India attributed the attack to terrorists and in May struck alleged terrorist targets inside Pakistan. The operation takes its name from sindoor, the red vermilion worn by married Hindu women, for the wives the attack suddenly widowed. Interpersonal violence becomes institutional retaliation becomes, again, a ceasefire within days. The pattern set in August 1947 repeats itself, smaller each time, never finished.",
   },
   {
     heading: "A Line That Hasn't Closed",
     tag: "Revolution and Reflection · Mirror to Society",
-    body: "More than seventy-five years after Partition, the border that sent Suresh's family walking into the Thar Desert by night is still being fought over, still being crossed, still ending lives on both sides. The ideology that justified one line has justified every war since. Nisha's story is one family's, fictional and small. In one form or another, it happened to millions — and the oppression Partition set in motion, ideological, institutional, interpersonal, and the quiet internalized kind that outlives the headlines, never fully closed the line it drew.",
+    body: "More than seventy-five years after Partition, the border that sent Suresh's family walking into the Thar Desert by night is still being fought over, still being crossed, still ending lives on both sides. The ideology that justified one line has justified every war since. Nisha's story is one family's, fictional and small. In one form or another, it happened to millions, and the oppression Partition set in motion, ideological, institutional, interpersonal, and the quiet internalized kind that outlives the headlines, never fully closed the line it drew.",
   },
 ];
 
@@ -132,6 +131,10 @@ const SOURCE_SLIDES = [
   {
     heading: "The Partition of India",
     body: "The Indian Independence Act, instituted by the British Parliament, directly caused the division of India into two countries: India and Pakistan. This historical event is called the partition of India.\n\nSources: Encyclopaedia Britannica, School Edition, \"Partition of India\" (https://school.eb.com/levels/high/article/partition-of-India/640159) · Congressional Research Service, IF13000 (https://www.congress.gov/crs-product/IF13000)",
+  },
+  {
+    heading: "The Wars After Partition",
+    body: "1947 to 1948 war over Kashmir: Britannica, “Kashmir,” https://www.britannica.com/place/Kashmir-region-Indian-subcontinent/The-Kashmir-problem\n\n1965 war and the Tashkent Declaration: Britannica, “Tashkent Declaration (1966),” https://www.britannica.com/event/Tashkent-Agreement\n\n1999 Kargil War: Britannica, “Kargil War (1999),” https://www.britannica.com/event/Kargil-War",
   },
   {
     heading: "Pahalgam and Operation Sindoor, 2025",
@@ -156,8 +159,7 @@ const SUPPLY_ITEMS = [
 const SATCHEL_CAPACITIES = [115, 50, 50, 15];
 const TOTAL_CAPACITY = SATCHEL_CAPACITIES.reduce((sum, c) => sum + c, 0);
 
-// Playing as Nisha, she carries Kazi's stone mortar in her own satchel —
-// less room for supplies, but it lets her catch extra water when it rains.
+// Playing as Nisha, she carries Kazi's stone mortar in her own satchel, // less room for supplies, but it lets her catch extra water when it rains.
 const KAZI_MORTAR_WEIGHT = 3;
 const KAZI_MORTAR_RAIN_BONUS = 3;
 
@@ -172,7 +174,7 @@ const LANDMARKS = [
   { name: "Mirpur Khas", miles: 0 },
   { name: "Umerkot",     miles: 150 },
   { name: "Khokhrapar",  miles: 165 },
-  { name: "Munabao — the border", miles: 170 },
+  { name: "Munabao, the border", miles: 170 },
   { name: "Barmer",      miles: 220 },
   { name: "Jodhpur",     miles: 300 },
 ];
@@ -188,7 +190,7 @@ const DADI_STARTING_FOOD = 15;
 // Character-specific event weighting, stacking on top of their stat nerfs
 // (damageMultiplier/capacityBonus/susceptibility) rather than replacing them.
 // Each has a "party" weight (applies whenever that member is alive, no matter
-// who you're playing as — they're just frailer) and a steeper "played" weight
+// who you're playing as, they're just frailer) and a steeper "played" weight
 // for when you're specifically living through it as them.
 const DADI_STRAP_TEAR_PARTY_WEIGHT = 2;
 const DADI_STRAP_TEAR_WEIGHT = 5; // her satchel is far more likely to give out
@@ -208,7 +210,7 @@ const RANDOM_EVENTS = [
   {
     id: "strapTear",
     title: "A Satchel Strap Tears",
-    body: "One of the satchels gives out crossing rough, rocky ground — its strap frayed thin from the weight of everything you own.",
+    body: "One of the satchels gives out crossing rough, rocky ground, its strap frayed thin from the weight of everything you own.",
     choices: [
       { label: "Mend it with repair cloth", requires: { parts: 3 }, apply: (s) => { s.inventory.parts -= 3; s.log("You mend the strap and keep moving.", "good"); } },
       { label: "Tie it off and go slow", apply: (s) => {
@@ -218,7 +220,7 @@ const RANDOM_EVENTS = [
         s.inventory.food -= foodLost;
         s.inventory.water -= waterLost;
         s.damagePartyHealth(10);
-        s.log(`The strap gives out more than once before you make camp — ${foodLost} lbs of food and ${waterLost} jar of water spill loose along the way, and the extra strain wears on everyone.`, "bad");
+        s.log(`The strap gives out more than once before you make camp, ${foodLost} lbs of food and ${waterLost} jar of water spill loose along the way, and the extra strain wears on everyone.`, "bad");
       } },
     ],
   },
@@ -243,7 +245,7 @@ const RANDOM_EVENTS = [
   {
     id: "wellVillage",
     title: "A Village Well",
-    body: "A village along the road opens its well to the passing families — neighbors helping strangers where they can, whatever the times.",
+    body: "A village along the road opens its well to the passing families, neighbors helping strangers where they can, whatever the times.",
     choices: [
       { label: "Draw water and thank them", social: true, apply: (s) => { const w = 1 + Math.floor(Math.random() * 3); const f = 5 + Math.floor(Math.random() * 10); s.inventory.water += w; s.inventory.food += f; s.log(`They fill your jars and share what food they can spare. +${w} water, +${f} lbs food.`, "good"); } },
       { label: "Take only what you need and move on quickly", apply: (s) => { const w = 1; s.inventory.water += w; s.log(`You draw a little water and keep moving. +${w} water.`, "good"); } },
@@ -264,14 +266,14 @@ const RANDOM_EVENTS = [
     tag: "Oppressive Action · 4 I's in Action",
     body: "Where the road narrows, a crowd has gathered, shouting at the families passing through. Fear moves down the line ahead of you like a current.",
     choices: [
-      { label: "Suresh steps forward — he's tended half this district as its doctor", social: true, apply: (s) => { s.damagePartyHealth(7); s.log("A few in the crowd recognize him. Someone lowers their voice, and the line is waved through — shaken, but unhurt.", "good"); } },
-      { label: "Keep your heads down and push through quickly", apply: (s) => { const lost = Math.min(s.inventory.food, 8 + Math.floor(Math.random() * 14)); s.inventory.food -= lost; s.damagePartyHealth(13); s.log(`You shoulder through the crowd. A hand grabs at a satchel before you break free — ${lost} lbs of food torn loose in the scramble.`, "bad"); } },
+      { label: "Suresh steps forward, he's tended half this district as its doctor", social: true, apply: (s) => { s.damagePartyHealth(7); s.log("A few in the crowd recognize him. Someone lowers their voice, and the line is waved through, shaken, but unhurt.", "good"); } },
+      { label: "Keep your heads down and push through quickly", apply: (s) => { const lost = Math.min(s.inventory.food, 8 + Math.floor(Math.random() * 14)); s.inventory.food -= lost; s.damagePartyHealth(13); s.log(`You shoulder through the crowd. A hand grabs at a satchel before you break free, ${lost} lbs of food torn loose in the scramble.`, "bad"); } },
     ],
   },
   {
     id: "rain",
     title: "Rain Over the Desert",
-    body: "Dark clouds break over the Thar — a rare desert rain drums against the satchels, and the dry ground drinks it in almost as fast as you can catch it.",
+    body: "Dark clouds break over the Thar, a rare desert rain drums against the satchels, and the dry ground drinks it in almost as fast as you can catch it.",
     choices: [
       { label: "Catch what you can in the jars", apply: (s) => {
         const usingMortar = s.character && s.character.id === "nisha";
@@ -289,7 +291,7 @@ const RANDOM_EVENTS = [
     title: "Amil Spills the Water",
     body: "A jar slips from Amil's hands on the loose stones, and water darkens the sand before anyone can catch it. \"I'm sorry,\" he says, already scrambling after it.",
     choices: [
-      { label: "Stop and salvage what you can", apply: (s) => { s.pace = "slow"; s.damagePartyHealth(7); s.log("You catch the jar before it's lost, but the delay costs you — the family falls behind pace, and the scramble over loose stone leaves everyone winded.", "bad"); } },
+      { label: "Stop and salvage what you can", apply: (s) => { s.pace = "slow"; s.damagePartyHealth(7); s.log("You catch the jar before it's lost, but the delay costs you, the family falls behind pace, and the scramble over loose stone leaves everyone winded.", "bad"); } },
       { label: "Let it go and keep moving", apply: (s) => { const lost = Math.min(s.inventory.water, 1); s.inventory.water -= lost; s.damagePartyHealth(5); s.log("There's no time to mourn spilled water. The jar soaks into the sand before you can stop it.", "bad"); } },
     ],
   },
@@ -314,13 +316,13 @@ const RANDOM_EVENTS = [
           }
         },
       },
-      { label: "Keep walking", apply: (s) => { s.log("You keep walking. There are so many who need help — you cannot stop for all of them.", "bad"); } },
+      { label: "Keep walking", apply: (s) => { s.log("You keep walking. There are so many who need help, you cannot stop for all of them.", "bad"); } },
     ],
   },
   {
     id: "sickChildColumn",
     title: "A Sick Child in the Column",
-    body: "A family nearby is desperate — their youngest has a fever, and they have no medicine left to bring it down.",
+    body: "A family nearby is desperate, their youngest has a fever, and they have no medicine left to bring it down.",
     choices: [
       {
         label: "Share medicine",
@@ -332,7 +334,7 @@ const RANDOM_EVENTS = [
           if (Math.random() < HELP_REWARD_CHANCE) {
             const o = 2 + Math.floor(Math.random() * 3);
             s.inventory.lantern += o;
-            s.log(`The fever breaks by morning. The father presses ${o} flasks of lantern oil on you — it's all he has to offer.`, "good");
+            s.log(`The fever breaks by morning. The father presses ${o} flasks of lantern oil on you, it's all he has to offer.`, "good");
           } else {
             s.log("The fever breaks by morning. The family has nothing to give back, only relief, and it will have to be enough.", "good");
           }
@@ -353,7 +355,7 @@ const RANDOM_EVENTS = [
         apply: (s) => {
           s.inventory.food -= 5;
           s.peopleHelped += 1;
-          s.log("You share what food you can. She thanks you quietly and walks on alone. You expect nothing back, and get nothing back — and that's alright.", "good");
+          s.log("You share what food you can. She thanks you quietly and walks on alone. You expect nothing back, and get nothing back, and that's alright.", "good");
         },
       },
       { label: "You can't spare it", apply: (s) => { s.log("You have little enough for your own family. You walk on, and don't look back.", "bad"); } },
@@ -366,7 +368,7 @@ const RANDOM_EVENTS = [
 // Food stays at real dry-ration figures, ~0.6-1.5 lbs/person/day.
 // Filling rations and a slow pace no longer heal for free (they used to stack
 // to +2 health/day doing nothing, which quietly undid most of the difficulty
-// tuning elsewhere) — the best you can do by resting easy is hold steady.
+// tuning elsewhere), the best you can do by resting easy is hold steady.
 const RATION_LEVELS = {
   filling: { label: "Filling", foodPerPerson: 1.5, waterPerPerson: 1 / 14, healthDelta: 0 },
   meager:  { label: "Meager",  foodPerPerson: 1,   waterPerPerson: 1 / 18, healthDelta: 0 },
@@ -379,13 +381,13 @@ const PACE_LEVELS = {
   grueling:{ label: "Grueling",milesPerDay: 22, healthDelta: -3 },
 };
 
-const BORDER_LANDMARK_NAME = "Munabao — the border";
+const BORDER_LANDMARK_NAME = "Munabao, the border";
 const REST_LANDMARK_NAME = "Umerkot";
 const REST_DANGER_CHANCE = 0.18;
 
 const NISHA_DANGER_EVENT = {
   title: "Nisha Is in Danger",
-  body: "Nisha has slipped off to talk with a neighbor's family — Muslim friends of Rashid Uncle's. Word travels fast in a house this close to the road, and voices are rising outside.",
+  body: "Nisha has slipped off to talk with a neighbor's family, Muslim friends of Rashid Uncle's. Word travels fast in a house this close to the road, and voices are rising outside.",
   choices: [
     {
       label: "Stay and wait it out",
@@ -400,7 +402,7 @@ const NISHA_DANGER_EVENT = {
       label: "Leave at once",
       apply: (s) => {
         s.restBlocked = true;
-        s.log("You gather the satchels and slip out before the voices reach the door. No rest gained — but everyone is safe.", "good");
+        s.log("You gather the satchels and slip out before the voices reach the door. No rest gained, but everyone is safe.", "good");
       },
     },
   ],
@@ -409,19 +411,19 @@ const NISHA_DANGER_EVENT = {
 const KNIFE_EVENT_MILE = 40;
 
 // Deliberately a single choice, not two. Nisha is selectively mute in the
-// book and cannot speak or resist in this moment — giving the player a real
+// book and cannot speak or resist in this moment, giving the player a real
 // option here would undo the point. The "choice" is living through it.
 //
 // The lasting effect is the point, not just the one-time health hit: this
 // permanently raises Nisha's susceptibility, so illness and fear hit her
-// harder for the rest of the journey — the internalized belief that she's a
+// harder for the rest of the journey, the internalized belief that she's a
 // burden doesn't go away once the knife does.
 const KNIFE_EVENT_SUSCEPTIBILITY_INCREASE = 0.35;
 
 const KNIFE_EVENT = {
   title: "A Knife in the Dark",
   tag: "Interpersonal Oppression · Breaking Point · Internalized Oppression · Trauma/Tension · 4 I's in Action",
-  body: "Suresh has gone ahead to scout the road. A Muslim man steps out of the shadows, a knife shaking in his hand. His family was killed by Hindus, he says, voice raw with grief and rage — and now here is a Hindu girl in front of him, and that is reason enough. She opens her mouth. No sound comes. It hasn't, not really, since everything changed. She cannot run. She cannot speak. In this moment she is certain of only one thing: that she is a burden the family would be better off without.",
+  body: "Suresh has gone ahead to scout the road. A Muslim man steps out of the shadows, a knife shaking in his hand. His family was killed by Hindus, he says, voice raw with grief and rage, and now here is a Hindu girl in front of him, and that is reason enough. She opens her mouth. No sound comes. It hasn't, not really, since everything changed. She cannot run. She cannot speak. In this moment she is certain of only one thing: that she is a burden the family would be better off without.",
   choices: [
     {
       label: "Nisha cannot speak",
@@ -430,20 +432,20 @@ const KNIFE_EVENT = {
         const nisha = s.party.find((m) => m.name === "Nisha");
         if (nisha) {
           nisha.susceptibility += KNIFE_EVENT_SUSCEPTIBILITY_INCREASE;
-          nisha.role = "daughter — shaken, since the knife";
+          nisha.role = "daughter, shaken, since the knife";
         }
-        s.log("Suresh returns just in time, stepping between them. He speaks quietly of loss — his own, and the man's — until the knife finally lowers. The man leaves without a word. Nisha says nothing of it, then or for a long time after. Something in her stays flinched shut, and it doesn't open back up.", "bad");
+        s.log("Suresh returns just in time, stepping between them. He speaks quietly of loss, his own, and the man's, until the knife finally lowers. The man leaves without a word. Nisha says nothing of it, then or for a long time after. Something in her stays flinched shut, and it doesn't open back up.", "bad");
       },
     },
   ],
     analysis: "The attacker’s revenge is part of a cycle the book describes: “So a Hindu family kills a Muslim family, who kills a Hindu family, who kills a Muslim family. It would never end unless someone ended it. But who was going to do that?” (Hiranandani 171). Nisha’s silence is internalized oppression: she is targeted for her religion, cannot speak or resist, and begins to believe her family would be better off without her.",
 };
 
-// Two small, free camp rests along the way — not Rashid Uncle's, no gift, no
+// Two small, free camp rests along the way, not Rashid Uncle's, no gift, no
 // risk, no extra day spent, just a modest breather to take the edge off a
 // harder road. Each fires once, automatically, the first time you cross it.
 // CAMP_REST_TWO_MILE sits 25 miles before TRAIN_LOOTERS_MILE (220, where the
-// journey resolves at Barmer) — more than even Grueling pace's 22mi/day, so
+// journey resolves at Barmer), more than even Grueling pace's 22mi/day, so
 // it can't be skipped over in a single travel day no matter the pace chosen.
 const CAMP_REST_ONE_MILE = 95;
 const CAMP_REST_TWO_MILE = 195;
@@ -454,7 +456,7 @@ const CAMP_REST_HEAL = 5;
 const DEPARTURE_ANALYSIS = "The journey begins at the breaking point. Mirpur Khas now belongs to another country, and Nisha’s grief over leaving her home and belongings is where the book’s emotional weight sits.";
 const LANDMARK_ANALYSIS = {
   "Umerkot": "Even here the idea travels with people. At Amil’s school, “all the Hindu boys chanted on one side and the Muslim boys chanted on the other” (Hiranandani 32).",
-  "Munabao — the border": "The border is where the government’s decision becomes real. “They left when the men came with fire to get all the Hindus and Sikhs out of the village” (Hiranandani 212). Crossing the line is the institutional split made into a single family’s night.",
+  "Munabao, the border": "The border is where the government’s decision becomes real. “They left when the men came with fire to get all the Hindus and Sikhs out of the village” (Hiranandani 212). Crossing the line is the institutional split made into a single family’s night.",
 };
 
 const WATER_PUMP_MILE = 75; // halfway between Mirpur Khas (0) and Umerkot (150)
@@ -482,25 +484,25 @@ const WATER_PUMP_EVENT = {
     analysis: "When resources run out, neighbours compete for them. Suresh’s choice to stay out of the fight is a small refusal of that pressure, and the game gives it no guaranteed reward.",
 };
 
-const TRAIN_LANDMARK_NAMES = ["Khokhrapar", "Munabao — the border"];
+const TRAIN_LANDMARK_NAMES = ["Khokhrapar", "Munabao, the border"];
 
 // The canonical ending, not a gamble: once the family reaches Barmer, they
 // board a train for the final leg into Jodhpur. Unlike TRAIN_EVENT above
 // (an optional, invented risk at the border), this one always ends the
-// journey — the book doesn't lose the family here, just costs them something
+// journey, the book doesn't lose the family here, just costs them something
 // on the way. See triggerTrainLootersEvent() in game.js.
 const TRAIN_LOOTERS_MILE = 220; // Barmer
 
 const TRAIN_EVENT = {
   title: "The Railway at the Border",
-  body: "A train idles at the siding, bound across the line into India. It could carry you past the worst of this crossing in a single night — or it could be exactly the kind of train the radio warned about, back in Mirpur Khas. Half the trains get through. Half don't.",
+  body: "A train idles at the siding, bound across the line into India. It could carry you past the worst of this crossing in a single night, or it could be exactly the kind of train the radio warned about, back in Mirpur Khas. Half the trains get through. Half don't.",
   choices: [
     {
       label: "Risk the train",
       apply: (s) => {
         if (Math.random() < 0.5) {
           s.miles = TOTAL_MILES;
-          endGame(true, jodhpurEndingBody("You gambled everything on the train, and it carried you clean across the border in the dark. By morning you are in Jodhpur — the rest of the journey never happened, and somehow, impossibly, you are whole."));
+          endGame(true, jodhpurEndingBody("You gambled everything on the train, and it carried you clean across the border in the dark. By morning you are in Jodhpur, the rest of the journey never happened, and somehow, impossibly, you are whole."));
         } else {
           s.party.forEach((m) => { m.health = 0; });
           endGame(false, "The train never reaches the other side. What was left of the family's journey ends here, somewhere along the line, in the dark.");
@@ -526,7 +528,7 @@ const MAP_WAYPOINTS = [
   { miles: 0,   x: 0.252, y: 0.418 }, // Mirpur Khas
   { miles: 150, x: 0.294, y: 0.400 }, // Umerkot
   { miles: 165, x: 0.318, y: 0.389 }, // Khokhrapar
-  { miles: 170, x: 0.320, y: 0.388 }, // Munabao — the border
+  { miles: 170, x: 0.320, y: 0.388 }, // Munabao, the border
   { miles: 220, x: 0.342, y: 0.378 }, // Barmer
   { miles: TOTAL_MILES, x: 0.388, y: 0.356 }, // Jodhpur
 ];
