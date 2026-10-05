@@ -52,6 +52,7 @@ function renderCharacters() {
     const card = document.createElement("div");
     card.className = "card";
     card.innerHTML = `
+      <div class="face face-${char.id}" aria-hidden="true"></div>
       <h4>${char.name} <span class="difficulty-badge difficulty-${char.difficulty.toLowerCase().replace(/[^a-z]/g, "-")}">${char.difficulty}</span></h4>
       <p class="card-role">${char.role}</p>
       <p>${char.desc}</p>
@@ -140,6 +141,13 @@ function renderSatchelVisual() {
 
     satchelDiv.appendChild(bar);
     satchelDiv.appendChild(label);
+    const owner = CHARACTERS.find((c) => c.satchelIndex === s);
+    if (owner) {
+      const face = document.createElement("div");
+      face.className = `face face-small face-${owner.id}`;
+      face.title = `${owner.name} carries this satchel`;
+      satchelDiv.appendChild(face);
+    }
     container.appendChild(satchelDiv);
   });
 }
@@ -209,10 +217,12 @@ function depart() {
   }
 
   document.getElementById("trail-log").innerHTML = "";
+  document.getElementById("map-marker").className = `map-marker-${state.character.id}`;
   document.getElementById("screen-trail").classList.add("active");
   showScreen("screen-trail");
   document.getElementById("stats-leader").textContent = `Suresh's Family — seen through ${state.character.name}'s eyes (${state.character.difficulty})`;
   state.log("August, 1947. Mirpur Khas is behind you now. Four satchels, packed light — one each. Dr. Suresh, his mother Dadi, and his twins Amil and Nisha set out on foot under starlight, east toward the Thar and whatever waits on the other side of the new border.", "milestone");
+  state.log(`Literary analysis: ${DEPARTURE_ANALYSIS}`, "analysis");
   renderStats();
 }
 
@@ -302,6 +312,7 @@ function showEventModal(event) {
   document.getElementById("event-tag").textContent = event.tag || "";
   document.getElementById("event-title").textContent = event.title;
   document.getElementById("event-body").textContent = event.body;
+  document.getElementById("event-analysis").textContent = event.analysis ? `Literary analysis: ${event.analysis}` : "";
   const choicesEl = document.getElementById("event-choices");
   choicesEl.innerHTML = "";
 
@@ -349,7 +360,8 @@ function triggerTrainLootersEvent() {
   const dadiAlive = isAlive("Dadi");
   const event = {
     title: "The Last Train to Jodhpur",
-    tag: "Breaking Point · Oppressive Action",
+    tag: "Breaking Point · Oppressive Action · 4 I's in Action",
+    analysis: "Even the last stretch is not safe. The looters show that the violence of the journey continues after the border, and that refugees are targets for those who exploit the disorder.",
     body: dadiAlive
       ? "At Barmer, the family boards a crowded train bound for Jodhpur — Dadi so weak now that Suresh and Amil have to lift her onto the car. The train lurches into motion, and word moves down the line: looters have been working trains like this one, stripping refugee families of whatever they still carry."
       : "At Barmer, what's left of the family boards a crowded train bound for Jodhpur. The train lurches into motion, and word moves down the line: looters have been working trains like this one, stripping refugee families of whatever they still carry.",
@@ -454,6 +466,7 @@ function travelDay() {
     } else {
       state.log(`You reach ${crossed.name}.`, "milestone");
     }
+    if (LANDMARK_ANALYSIS[crossed.name]) state.log(`Literary analysis: ${LANDMARK_ANALYSIS[crossed.name]}`, "analysis");
   }
 
   if (state.miles >= TOTAL_MILES) {
@@ -540,12 +553,12 @@ function triggerRandomEvent() {
 }
 
 function jodhpurEndingBody(opening) {
-  return `${opening} Suresh's brother is waiting with a flat already arranged — old and dusty, nothing like home, but theirs for now. Slowly, there is a routine again: school, cooking lentils, the small ordinary motions of a life. Nisha keeps her mother's jewelry close and finds something like healing in the kitchen, the way Kazi once taught her. She misses Mirpur Khas every day. She also, carefully, begins again. Millions of families made this same crossing, in both directions, that year — and the line drawn across their home still shapes the subcontinent today. In every new beginning like this one, something of what was lost is carried forward, and something of what was broken slowly, imperfectly, heals.`;
+  return `${opening} Nisha's uncle is waiting with a flat already arranged — old and dusty, nothing like home, but theirs for now. Slowly, there is a routine again: school, cooking lentils, the small ordinary motions of a life. Nisha keeps her mother's jewelry close and finds something like healing in the kitchen, the way Kazi once taught her. She misses Mirpur Khas every day. She also, carefully, begins again. Millions of families made this same crossing, in both directions, that year — and the line drawn across their home still shapes the subcontinent today. In every new beginning like this one, something of what was lost is carried forward, and something of what was broken slowly, imperfectly, heals.`;
 }
 
 function endGame(won, message) {
   state.over = true;
-  document.getElementById("end-tag").textContent = won ? "Resistance & Revolution · Taking Action/Resistance/Healing · Revolution and Reflection" : "";
+  document.getElementById("end-tag").textContent = won ? "Resistance & Revolution · Taking Action/Resistance/Healing · Revolution and Reflection · Mirror to Society" : "";
   document.getElementById("end-title").textContent = won ? "A New Home" : "The Journey Ends Here";
   document.getElementById("end-body").textContent = message;
   document.getElementById("end-helped").textContent = state.peopleHelped > 0
@@ -604,6 +617,7 @@ function renderActiveSlide() {
   document.getElementById("intro-tag").textContent = slide.tag || "";
   document.getElementById("intro-heading").textContent = slide.heading;
   document.getElementById("intro-body").textContent = slide.body;
+  document.getElementById("intro-analysis").textContent = slide.analysis ? `Literary analysis: ${slide.analysis}` : "";
   document.getElementById("intro-progress").textContent = `${slideIndex + 1} / ${activeSlideDeck.length}`;
   document.getElementById("intro-back").disabled = slideIndex === 0;
   const isLast = slideIndex === activeSlideDeck.length - 1;
@@ -638,6 +652,14 @@ document.getElementById("btn-start").addEventListener("click", () => {
 document.getElementById("intro-skip-tutorial").addEventListener("click", () => {
   setCookie(TUTORIAL_SEEN_COOKIE, "1", 365);
   enterIntroDeck();
+});
+
+document.getElementById("btn-sources").addEventListener("click", () => {
+  activeSlideDeck = SOURCE_SLIDES;
+  slideDeckMode = "sources";
+  slideIndex = 0;
+  renderActiveSlide();
+  showScreen("screen-intro");
 });
 
 document.getElementById("btn-epilogue").addEventListener("click", () => {

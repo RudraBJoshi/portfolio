@@ -56,12 +56,12 @@ const INTRO_SLIDES = [
   },
   {
     heading: "A Line Is Drawn",
-    tag: "Institutional Oppression · Expose the Problem",
+    tag: "Institutional Oppression · Expose the Problem · The System Exposed",
     body: "But independence comes with a price. Britain has decided to split the land in two: a new country called Pakistan for its Muslim-majority regions, and India for the rest. The decision is made by governments, not by the families who will have to live with it.",
   },
   {
     heading: "An Idea Worth Killing For",
-    tag: "Ideological Oppression",
+    tag: "Ideological Oppression · The System Exposed",
     body: "Behind the new line is a belief: that Hindus, Sikhs, and Muslims cannot safely share one country — that each needs a nation of its own, with no room for the others. In the weeks around independence, that idea turns neighbors into enemies. In mixed villages and marginalized districts along the new border, Hindus, Sikhs, and Muslims begin killing each other for what they are, not for anything they've done.",
   },
   {
@@ -97,28 +97,49 @@ const INTRO_SLIDES = [
 const EPILOGUE_SLIDES = [
   {
     heading: "1947: The First War",
-    tag: "Revolution and Reflection",
+    tag: "Revolution and Reflection · Mirror to Society",
     body: "Within months of independence, India and Pakistan are already at war — over Kashmir, a princely state neither side will let go of. The same two-nation ideology that drew the line through Suresh's family's road now draws soldiers to a mountain border. The violence of Partition doesn't end at the crossing; it becomes policy, becomes army, becomes the first of several wars the two countries will fight across the rest of the century.",
   },
   {
     heading: "1965: The Second War",
-    tag: "Revolution and Reflection",
-    body: "Seventeen years later, the two countries go to war again, still over Kashmir, still over the same line. A ceasefire is brokered and a peace agreement signed in the Soviet city of Tashkent — paper that holds for a while, then doesn't. The ideology that split a subcontinent into us and them has, by now, outlived the generation that walked through Partition itself.",
+    tag: "Revolution and Reflection · Mirror to Society",
+    body: "Eighteen years later, the two countries go to war again, still over Kashmir, still over the same line. A ceasefire is brokered and a peace agreement signed in the Soviet city of Tashkent — paper that holds for a while, then doesn't. The ideology that split a subcontinent into us and them has, by now, outlived the generation that walked through Partition itself.",
   },
   {
     heading: "1999: Kargil",
-    tag: "Revolution and Reflection",
+    tag: "Revolution and Reflection · Mirror to Society",
     body: "By 1999, both India and Pakistan possess nuclear weapons. That summer, fighting breaks out in the mountains above Kargil, in Indian-administered Kashmir — ordinary soldiers, following institutional orders, killing and dying over high, cold ground for a line drawn by people long since dead. More than fifty years on, the ideology of 1947 is no longer even argued over; it has been internalized as simply how things are, worth any cost to defend.",
   },
   {
     heading: "2025: Operation Sindoor",
-    tag: "Revolution and Reflection",
-    body: "In May 2025, after a militant attack on tourists in Jammu and Kashmir, India strikes targets inside Pakistan. The operation takes its name from sindoor, the red vermilion worn by married Hindu women — for the wives the attack suddenly widowed. Interpersonal violence becomes institutional retaliation becomes, again, a ceasefire within days. The pattern set in August 1947 repeats itself, smaller each time, never finished.",
+    tag: "Revolution and Reflection · Mirror to Society",
+    body: "In May 2025, after a militant attack on tourists at Pahalgam in Jammu and Kashmir, India strikes targets inside Pakistan. The operation takes its name from sindoor, the red vermilion worn by married Hindu women — for the wives the attack suddenly widowed. Interpersonal violence becomes institutional retaliation becomes, again, a ceasefire within days. The pattern set in August 1947 repeats itself, smaller each time, never finished.",
   },
   {
     heading: "A Line That Hasn't Closed",
-    tag: "Revolution and Reflection",
+    tag: "Revolution and Reflection · Mirror to Society",
     body: "More than seventy-five years after Partition, the border that sent Suresh's family walking into the Thar Desert by night is still being fought over, still being crossed, still ending lives on both sides. The ideology that justified one line has justified every war since. Nisha's story is one family's, fictional and small. In one form or another, it happened to millions — and the oppression Partition set in motion, ideological, institutional, interpersonal, and the quiet internalized kind that outlives the headlines, never fully closed the line it drew.",
+  },
+];
+
+// Shown from the title screen. Sources are listed so the historical claims in the
+// game can be checked against the cited material.
+const SOURCE_SLIDES = [
+  {
+    heading: "Sources & Research",
+    body: "The historical claims in this game are drawn from the sources below. Each slide names where its information comes from.",
+  },
+  {
+    heading: "The Partition of India",
+    body: "The Indian Independence Act, instituted by the British Parliament, directly caused the division of India into two countries: India and Pakistan. This historical event is called the partition of India.\n\nSources: Encyclopaedia Britannica, School Edition, \"Partition of India\" (https://school.eb.com/levels/high/article/partition-of-India/640159) · Congressional Research Service, IF13000 (https://www.congress.gov/crs-product/IF13000)",
+  },
+  {
+    heading: "Pahalgam and Operation Sindoor, 2025",
+    body: "On 22 April 2025, 26 civilians were killed in an attack on tourists in the Baisaran Valley near Pahalgam, Jammu and Kashmir. The attackers targeted Hindu tourists, and the victims also included a Christian tourist and a local Muslim pony operator. India attributed the attack to terrorists and in May struck alleged terrorist targets inside Pakistan. Pakistan returned fire, and both sides caused casualties with missile and drone attacks.\n\nSource: Al Jazeera, \"'Act of war': What happened in Kashmir attack that killed 26 tourists?\" (https://www.aljazeera.com/news/2025/4/23/act-of-war-what-happened-in-kashmir-attack-that-killed-26-tourists)",
+  },
+  {
+    heading: "Why It Still Matters",
+    body: "The Muslim-Hindu divide that drove the violence of 1947 is still shown in the India-Pakistan divide, which continues today. India and Pakistan are rival countries and have had many conflicts over the years, particularly over Kashmir, a mountainous region that both India and Pakistan have laid claim to.",
   },
 ];
 
@@ -240,7 +261,7 @@ const RANDOM_EVENTS = [
   {
     id: "hostileCrowd",
     title: "A Crowd at the Crossroads",
-    tag: "Oppressive Action",
+    tag: "Oppressive Action · 4 I's in Action",
     body: "Where the road narrows, a crowd has gathered, shouting at the families passing through. Fear moves down the line ahead of you like a current.",
     choices: [
       { label: "Suresh steps forward — he's tended half this district as its doctor", social: true, apply: (s) => { s.damagePartyHealth(7); s.log("A few in the crowd recognize him. Someone lowers their voice, and the line is waved through — shaken, but unhurt.", "good"); } },
@@ -399,7 +420,7 @@ const KNIFE_EVENT_SUSCEPTIBILITY_INCREASE = 0.35;
 
 const KNIFE_EVENT = {
   title: "A Knife in the Dark",
-  tag: "Interpersonal Oppression · Breaking Point · Internalized Oppression · Trauma/Tension",
+  tag: "Interpersonal Oppression · Breaking Point · Internalized Oppression · Trauma/Tension · 4 I's in Action",
   body: "Suresh has gone ahead to scout the road. A Muslim man steps out of the shadows, a knife shaking in his hand. His family was killed by Hindus, he says, voice raw with grief and rage — and now here is a Hindu girl in front of him, and that is reason enough. She opens her mouth. No sound comes. It hasn't, not really, since everything changed. She cannot run. She cannot speak. In this moment she is certain of only one thing: that she is a burden the family would be better off without.",
   choices: [
     {
@@ -415,6 +436,7 @@ const KNIFE_EVENT = {
       },
     },
   ],
+    analysis: "The attacker’s revenge is part of a cycle the book describes: “So a Hindu family kills a Muslim family, who kills a Hindu family, who kills a Muslim family. It would never end unless someone ended it. But who was going to do that?” (Hiranandani 171). Nisha’s silence is internalized oppression: she is targeted for her religion, cannot speak or resist, and begins to believe her family would be better off without her.",
 };
 
 // Two small, free camp rests along the way — not Rashid Uncle's, no gift, no
@@ -426,6 +448,14 @@ const KNIFE_EVENT = {
 const CAMP_REST_ONE_MILE = 95;
 const CAMP_REST_TWO_MILE = 195;
 const CAMP_REST_HEAL = 5;
+
+// Shown in the trail log as the family reaches each place, rather than on the
+// intro slides, so the analysis sits alongside the journey it describes.
+const DEPARTURE_ANALYSIS = "The journey begins at the breaking point. Mirpur Khas now belongs to another country, and Nisha’s grief over leaving her home and belongings is where the book’s emotional weight sits.";
+const LANDMARK_ANALYSIS = {
+  "Umerkot": "Even here the idea travels with people. At Amil’s school, “all the Hindu boys chanted on one side and the Muslim boys chanted on the other” (Hiranandani 32).",
+  "Munabao — the border": "The border is where the government’s decision becomes real. “They left when the men came with fire to get all the Hindus and Sikhs out of the village” (Hiranandani 212). Crossing the line is the institutional split made into a single family’s night.",
+};
 
 const WATER_PUMP_MILE = 75; // halfway between Mirpur Khas (0) and Umerkot (150)
 
@@ -449,6 +479,7 @@ const WATER_PUMP_EVENT = {
       },
     },
   ],
+    analysis: "When resources run out, neighbours compete for them. Suresh’s choice to stay out of the fight is a small refusal of that pressure, and the game gives it no guaranteed reward.",
 };
 
 const TRAIN_LANDMARK_NAMES = ["Khokhrapar", "Munabao — the border"];
@@ -483,6 +514,7 @@ const TRAIN_EVENT = {
       },
     },
   ],
+    analysis: "The train is the one escape the family cannot be sure of. Its risk reflects the institutional failure of the period: refugees had little protection, so every route was dangerous.",
 };
 
 // Pixel positions are keyed to the game's (pacing-adjusted) mile markers so the

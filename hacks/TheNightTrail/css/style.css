@@ -240,6 +240,23 @@ body:has(#screen-outfit.active) #title-bg {
   margin: 0 0 10px;
 }
 
+.analysis-note {
+  font-size: 0.85rem;
+  font-style: italic;
+  text-align: left;
+  border-left: 3px solid var(--c-lantern);
+  padding-left: 10px;
+  margin: 12px 0;
+}
+
+.analysis-note:empty {
+  display: none;
+}
+
+.intro-panel #intro-body {
+  white-space: pre-line;
+}
+
 .intro-panel h2 {
   margin: 0 0 16px;
   color: var(--accent);
@@ -526,15 +543,43 @@ input[type="text"] {
 
 #map-marker {
   position: absolute;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: var(--accent);
-  border: 2px solid #fff;
-  box-shadow: 0 0 12px 4px rgba(111, 140, 255, 0.85);
+  width: 44px;
+  height: 44px;
+  background-color: transparent;
+  mix-blend-mode: multiply;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  image-rendering: pixelated;
   transform: translate(-50%, -50%);
   transition: left 0.6s ease, top 0.6s ease;
 }
+
+.face {
+  width: 64px;
+  height: 64px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  image-rendering: pixelated;
+  flex-shrink: 0;
+}
+
+.face-small {
+  width: 36px;
+  height: 36px;
+  margin-top: 6px;
+}
+
+.face-suresh { background-image: url(../images/Papa.png); }
+.face-nisha { background-image: url(../images/Nisha.png); }
+.face-amil { background-image: url(../images/Amil.png); }
+.face-dadi { background-image: url(../images/Dadi.png); }
+
+.map-marker-suresh { background-image: url(../images/Papa.png); }
+.map-marker-nisha { background-image: url(../images/Nisha.png); }
+.map-marker-amil { background-image: url(../images/Amil.png); }
+.map-marker-dadi { background-image: url(../images/Dadi.png); }
 
 #trail-log {
   background: var(--panel);
@@ -553,6 +598,13 @@ input[type="text"] {
 
 #trail-log p.milestone {
   color: var(--accent);
+}
+
+#trail-log p.analysis {
+  font-style: italic;
+  color: var(--muted);
+  border-left: 3px solid var(--c-lantern);
+  padding-left: 10px;
 }
 
 #trail-log p.bad {
