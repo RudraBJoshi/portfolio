@@ -414,6 +414,33 @@ function renderMapMarkerHeads() {
   marker.appendChild(row);
 }
 
+const ROUTE_CUMULATIVE = ROUTE_PATH.reduce((acc, [x, y], k) => {
+  if (k > 0) acc.push(acc[k - 1] + Math.hypot(x - ROUTE_PATH[k - 1][0], y - ROUTE_PATH[k - 1][1]));
+  return acc;
+}, [0]);
+
+function nearestRouteArc(waypoint) {
+  const px = waypoint.x * ROUTE_WIDTH;
+  const py = waypoint.y * ROUTE_HEIGHT;
+  let best = 0;
+  let bestDistance = Infinity;
+  ROUTE_PATH.forEach(([x, y], k) => {
+    const d = Math.hypot(x - px, y - py);
+    if (d < bestDistance) { bestDistance = d; best = k; }
+  });
+  return ROUTE_CUMULATIVE[best];
+}
+
+function routePointAt(arc) {
+  let k = 1;
+  while (k < ROUTE_PATH.length - 1 && ROUTE_CUMULATIVE[k] < arc) k++;
+  const span = ROUTE_CUMULATIVE[k] - ROUTE_CUMULATIVE[k - 1];
+  const t = span === 0 ? 0 : (arc - ROUTE_CUMULATIVE[k - 1]) / span;
+  const [x0, y0] = ROUTE_PATH[k - 1];
+  const [x1, y1] = ROUTE_PATH[k];
+  return [x0 + (x1 - x0) * t, y0 + (y1 - y0) * t];
+}
+
 function updateMapMarker() {
   const marker = document.getElementById("map-marker");
   if (!marker) return;
@@ -424,10 +451,11 @@ function updateMapMarker() {
   const a = MAP_WAYPOINTS[i];
   const b = MAP_WAYPOINTS[i + 1];
   const t = b.miles === a.miles ? 0 : (miles - a.miles) / (b.miles - a.miles);
-  const x = a.x + (b.x - a.x) * t;
-  const y = a.y + (b.y - a.y) * t;
-  marker.style.left = `${x * 100}%`;
-  marker.style.top = `${y * 100}%`;
+  const arcA = nearestRouteArc(a);
+  const arcB = nearestRouteArc(b);
+  const [x, y] = routePointAt(arcA + (arcB - arcA) * t);
+  marker.style.left = `${(x / ROUTE_WIDTH) * 100}%`;
+  marker.style.top = `${(y / ROUTE_HEIGHT) * 100}%`;
 }
 
 function currentLandmarkLabel() {
