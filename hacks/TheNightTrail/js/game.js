@@ -12,6 +12,7 @@ const state = {
   waterPumpEventFired: false,
   trainLootersEventFired: false,
   umerkotGiftGiven: false,
+  umerkotRested: false,
   campRestOneFired: false,
   campRestTwoFired: false,
   peopleHelped: 0,
@@ -204,6 +205,7 @@ function depart() {
   // can't be pushed past a slow pace, no matter what the player picks.
   if (state.character && state.character.id === "dadi") {
     state.pace = "slow";
+    state.inventory.food += DADI_STARTING_FOOD;
   }
 
   document.getElementById("trail-log").innerHTML = "";
@@ -255,12 +257,14 @@ function atUmerkot() {
 
 function updateRestAvailability() {
   const restBtn = document.getElementById("action-rest");
-  restBtn.disabled = !atUmerkot() || state.restBlocked;
+  restBtn.disabled = !atUmerkot() || state.restBlocked || state.umerkotRested;
   restBtn.title = state.restBlocked
     ? "There's no safe rest left here. Time to move on."
-    : atUmerkot()
-      ? "Rashid Uncle will take you in for the day."
-      : "Only safe to rest at Rashid Uncle's house, in Umerkot.";
+    : state.umerkotRested
+      ? "You've already rested at Rashid Uncle's. Time to move on."
+      : atUmerkot()
+        ? "Rashid Uncle will take you in for the day. Costs a day's food and water."
+        : "Only safe to rest at Rashid Uncle's house, in Umerkot.";
 }
 
 function atBorderCrossing() {
@@ -401,13 +405,8 @@ function currentLandmarkLabel() {
   return upcoming ? `${upcoming.miles - Math.floor(state.miles)} mi to ${upcoming.name}` : "Approaching the end of the trail";
 }
 
-function travelDay() {
-  if (state.over) return;
-
+function consumeDailySupplies() {
   const alive = state.party.filter((m) => m.health > 0);
-  if (alive.length === 0) return endGame(false, "The family did not make it through the night.");
-  if (playedCharacterDied()) return endGame(false, playedCharacterDeathMessage());
-
   const rationInfo = RATION_LEVELS[state.ration];
   const foodNeeded = rationInfo.foodPerPerson * alive.length;
   if (state.inventory.food >= foodNeeded) {
@@ -426,12 +425,24 @@ function travelDay() {
     state.damagePartyHealth(11, { illness: true });
     state.log("The jars run dry. The family goes thirsty under the desert sun.", "bad");
   }
+}
 
+function travelDay() {
+  if (state.over) return;
+
+  const alive = state.party.filter((m) => m.health > 0);
+  if (alive.length === 0) return endGame(false, "The family did not make it through the night.");
+  if (playedCharacterDied()) return endGame(false, playedCharacterDeathMessage());
+
+  consumeDailySupplies();
+
+  const rationInfo = RATION_LEVELS[state.ration];
   state.damagePartyHealth(-rationInfo.healthDelta);
 
   const paceInfo = PACE_LEVELS[state.pace];
   state.miles += paceInfo.milesPerDay;
-  state.damagePartyHealth(-paceInfo.healthDelta);
+  const forcedSlowRecovery = playingAsDadi() && state.pace === "slow" ? 1 : 0;
+  state.damagePartyHealth(-(paceInfo.healthDelta + forcedSlowRecovery));
 
   state.day += 1;
 
@@ -562,6 +573,7 @@ function resetState() {
   state.waterPumpEventFired = false;
   state.trainLootersEventFired = false;
   state.umerkotGiftGiven = false;
+  state.umerkotRested = false;
   state.campRestOneFired = false;
   state.campRestTwoFired = false;
   state.peopleHelped = 0;
@@ -668,13 +680,16 @@ document.getElementById("btn-depart").addEventListener("click", depart);
 document.getElementById("action-continue").addEventListener("click", travelDay);
 
 document.getElementById("action-rest").addEventListener("click", () => {
-  if (!atUmerkot() || state.restBlocked) return;
+  if (!atUmerkot() || state.restBlocked || state.umerkotRested) return;
   if (isAlive("Nisha") && Math.random() < REST_DANGER_CHANCE) {
     triggerNishaDangerEvent();
     return;
   }
+  consumeDailySupplies();
+  state.umerkotRested = true;
   state.damagePartyHealth(-10);
   state.day += 1;
+  updateRestAvailability();
   if (!state.umerkotGiftGiven) {
     state.umerkotGiftGiven = true;
     const f = 10 + Math.floor(Math.random() * 16);

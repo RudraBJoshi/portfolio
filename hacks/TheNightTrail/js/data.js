@@ -29,17 +29,17 @@ const TUTORIAL_SLIDES = [
 const CHARACTERS = [
   {
     id: "suresh", name: "Suresh", role: "Father, the doctor", difficulty: "Easy",
-    capacityBonus: 8, damageMultiplier: 0.85, satchelIndex: 0,
+    capacityBonus: 8, damageMultiplier: 1.0, satchelIndex: 0,
     desc: "Steady hands, calm under pressure. Years of treating the sick have hardened him against the worst the road can do. Lasts the longest.",
   },
   {
     id: "nisha", name: "Nisha", role: "Daughter", difficulty: "Medium",
-    capacityBonus: 2, damageMultiplier: 1.0, satchelIndex: 2,
+    capacityBonus: 2, damageMultiplier: 1.15, satchelIndex: 2,
     desc: "Quiet and watchful, neither the strongest nor the frailest of the family. A balanced telling of the journey. She has packed Kazi's stone mortar — less room for supplies, but she knows how to use it to catch rain.",
   },
   {
     id: "amil", name: "Amil", role: "Son", difficulty: "Medium-Hard",
-    capacityBonus: 0, damageMultiplier: 1.2, satchelIndex: 1,
+    capacityBonus: 0, damageMultiplier: 1.35, satchelIndex: 1,
     desc: "Restless and quick on his feet, but the road wears on him faster than it should. Weaker than Nisha, not as frail as Dadi.",
   },
   {
@@ -132,7 +132,7 @@ const SUPPLY_ITEMS = [
 
 // Uneven on purpose: Satchel 1 is the main adult-sized pack, Satchels 2-3 are
 // the twins' bags, and Satchel 4 is what Dadi alone can manage.
-const SATCHEL_CAPACITIES = [135, 50, 50, 15];
+const SATCHEL_CAPACITIES = [115, 50, 50, 15];
 const TOTAL_CAPACITY = SATCHEL_CAPACITIES.reduce((sum, c) => sum + c, 0);
 
 // Playing as Nisha, she carries Kazi's stone mortar in her own satchel —
@@ -160,6 +160,10 @@ const TOTAL_MILES = LANDMARKS[LANDMARKS.length - 1].miles;
 
 const HELP_REWARD_CHANCE = 0.15;
 
+// Her forced slow pace takes about half again as many days as the others, so
+// she starts with a little extra food on top of what she packs.
+const DADI_STARTING_FOOD = 15;
+
 // Character-specific event weighting, stacking on top of their stat nerfs
 // (damageMultiplier/capacityBonus/susceptibility) rather than replacing them.
 // Each has a "party" weight (applies whenever that member is alive, no matter
@@ -176,8 +180,8 @@ const RANDOM_EVENTS = [
     title: "The Sun Turns Cruel",
     body: "Midday heat catches the column before shade can be found. Throats are dry and tempers short.",
     choices: [
-      { label: "Share water from the jars", requires: { water: 2 }, apply: (s) => { s.inventory.water -= 2; s.log("The water holds everyone together a little longer.", "good"); } },
-      { label: "Push on and ration what's left", apply: (s) => { s.damagePartyHealth(8); s.log("The heat takes its toll on the weakest among you.", "bad"); } },
+      { label: "Share water from the jars", requires: { water: 3 }, apply: (s) => { s.inventory.water -= 3; s.log("The water holds everyone together a little longer.", "good"); } },
+      { label: "Push on and ration what's left", apply: (s) => { s.damagePartyHealth(12); s.log("The heat takes its toll on the weakest among you.", "bad"); } },
     ],
   },
   {
@@ -185,14 +189,14 @@ const RANDOM_EVENTS = [
     title: "A Satchel Strap Tears",
     body: "One of the satchels gives out crossing rough, rocky ground — its strap frayed thin from the weight of everything you own.",
     choices: [
-      { label: "Mend it with repair cloth", requires: { parts: 2 }, apply: (s) => { s.inventory.parts -= 2; s.log("You mend the strap and keep moving.", "good"); } },
+      { label: "Mend it with repair cloth", requires: { parts: 3 }, apply: (s) => { s.inventory.parts -= 3; s.log("You mend the strap and keep moving.", "good"); } },
       { label: "Tie it off and go slow", apply: (s) => {
         s.pace = "slow";
         const foodLost = Math.min(s.inventory.food, 4 + Math.floor(Math.random() * 8));
         const waterLost = Math.min(s.inventory.water, 1);
         s.inventory.food -= foodLost;
         s.inventory.water -= waterLost;
-        s.damagePartyHealth(7);
+        s.damagePartyHealth(10);
         s.log(`The strap gives out more than once before you make camp — ${foodLost} lbs of food and ${waterLost} jar of water spill loose along the way, and the extra strain wears on everyone.`, "bad");
       } },
     ],
@@ -202,8 +206,8 @@ const RANDOM_EVENTS = [
     title: "Sickness in the Column",
     body: "Word passes back through the column: a family further up the road has fallen ill overnight.",
     choices: [
-      { label: "Share medicine", requires: { medicine: 2 }, apply: (s) => { s.inventory.medicine -= 2; s.log("The fever is caught early.", "good"); } },
-      { label: "Keep your distance and move on", apply: (s) => { s.damagePartyHealth(11, { illness: true }); s.log("The illness spreads before you can outrun it.", "bad"); } },
+      { label: "Share medicine", requires: { medicine: 3 }, apply: (s) => { s.inventory.medicine -= 3; s.log("The fever is caught early.", "good"); } },
+      { label: "Keep your distance and move on", apply: (s) => { s.damagePartyHealth(15, { illness: true }); s.log("The illness spreads before you can outrun it.", "bad"); } },
     ],
   },
   {
@@ -211,8 +215,8 @@ const RANDOM_EVENTS = [
     title: "Dust Storm Over the Thar",
     body: "The wind rises and swallows the horizon in sand. The path forward disappears.",
     choices: [
-      { label: "Burn lantern oil and press on carefully", requires: { lantern: 2 }, apply: (s) => { s.inventory.lantern -= 2; s.log("You keep the caravan together and find the road again.", "good"); } },
-      { label: "Shelter until the storm passes", apply: (s) => { s.day += 1; s.log("A day lost waiting out the storm.", "bad"); } },
+      { label: "Burn lantern oil and press on carefully", requires: { lantern: 3 }, apply: (s) => { s.inventory.lantern -= 3; s.log("You keep the caravan together and find the road again.", "good"); } },
+      { label: "Shelter until the storm passes", apply: (s) => { s.day += 1; s.damagePartyHealth(6); s.log("A day lost waiting out the storm, and the dust gets into everything.", "bad"); } },
     ],
   },
   {
@@ -229,8 +233,8 @@ const RANDOM_EVENTS = [
     title: "Prowlers at the Camp's Edge",
     body: "Shapes move beyond the firelight. Opportunists have been following caravans like this one, looking for unguarded packs.",
     choices: [
-      { label: "Keep watch through the night", apply: (s) => { s.damagePartyHealth(9); s.log("Nothing is taken, but no one rests easy.", "bad"); } },
-      { label: "Sleep in shifts and hope for the best", apply: (s) => { const lost = Math.min(s.inventory.food, 15 + Math.floor(Math.random() * 20)); s.inventory.food -= lost; s.log(`By morning, ${lost} lbs of food are missing from your packs.`, "bad"); } },
+      { label: "Keep watch through the night", apply: (s) => { s.damagePartyHealth(12); s.log("Nothing is taken, but no one rests easy.", "bad"); } },
+      { label: "Sleep in shifts and hope for the best", apply: (s) => { const lost = Math.min(s.inventory.food, 15 + Math.floor(Math.random() * 20)); s.inventory.food -= lost; s.damagePartyHealth(4); s.log(`By morning, ${lost} lbs of food are missing from your packs.`, "bad"); } },
     ],
   },
   {
@@ -239,8 +243,8 @@ const RANDOM_EVENTS = [
     tag: "Oppressive Action",
     body: "Where the road narrows, a crowd has gathered, shouting at the families passing through. Fear moves down the line ahead of you like a current.",
     choices: [
-      { label: "Suresh steps forward — he's tended half this district as its doctor", social: true, apply: (s) => { s.damagePartyHealth(5); s.log("A few in the crowd recognize him. Someone lowers their voice, and the line is waved through — shaken, but unhurt.", "good"); } },
-      { label: "Keep your heads down and push through quickly", apply: (s) => { const lost = Math.min(s.inventory.food, 8 + Math.floor(Math.random() * 14)); s.inventory.food -= lost; s.damagePartyHealth(10); s.log(`You shoulder through the crowd. A hand grabs at a satchel before you break free — ${lost} lbs of food torn loose in the scramble.`, "bad"); } },
+      { label: "Suresh steps forward — he's tended half this district as its doctor", social: true, apply: (s) => { s.damagePartyHealth(7); s.log("A few in the crowd recognize him. Someone lowers their voice, and the line is waved through — shaken, but unhurt.", "good"); } },
+      { label: "Keep your heads down and push through quickly", apply: (s) => { const lost = Math.min(s.inventory.food, 8 + Math.floor(Math.random() * 14)); s.inventory.food -= lost; s.damagePartyHealth(13); s.log(`You shoulder through the crowd. A hand grabs at a satchel before you break free — ${lost} lbs of food torn loose in the scramble.`, "bad"); } },
     ],
   },
   {
@@ -264,8 +268,8 @@ const RANDOM_EVENTS = [
     title: "Amil Spills the Water",
     body: "A jar slips from Amil's hands on the loose stones, and water darkens the sand before anyone can catch it. \"I'm sorry,\" he says, already scrambling after it.",
     choices: [
-      { label: "Stop and salvage what you can", apply: (s) => { s.pace = "slow"; s.damagePartyHealth(5); s.log("You catch the jar before it's lost, but the delay costs you — the family falls behind pace, and the scramble over loose stone leaves everyone winded.", "bad"); } },
-      { label: "Let it go and keep moving", apply: (s) => { const lost = Math.min(s.inventory.water, 1); s.inventory.water -= lost; s.damagePartyHealth(3); s.log("There's no time to mourn spilled water. The jar soaks into the sand before you can stop it.", "bad"); } },
+      { label: "Stop and salvage what you can", apply: (s) => { s.pace = "slow"; s.damagePartyHealth(7); s.log("You catch the jar before it's lost, but the delay costs you — the family falls behind pace, and the scramble over loose stone leaves everyone winded.", "bad"); } },
+      { label: "Let it go and keep moving", apply: (s) => { const lost = Math.min(s.inventory.water, 1); s.inventory.water -= lost; s.damagePartyHealth(5); s.log("There's no time to mourn spilled water. The jar soaks into the sand before you can stop it.", "bad"); } },
     ],
   },
   {
@@ -433,7 +437,7 @@ const WATER_PUMP_EVENT = {
       label: "Push into the fight for water",
       apply: (s) => {
         const w = 1 + Math.floor(Math.random() * 3);
-        s.damagePartyHealth(17);
+        s.damagePartyHealth(20);
         s.inventory.water += w;
         s.log(`You come away bruised, but with ${w} more jars of water than you had.`, "bad");
       },
