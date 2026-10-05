@@ -57,7 +57,7 @@ const INTRO_SLIDES = [
   {
     heading: "A Line Is Drawn",
     tag: "Institutional Oppression · Expose the Problem · The System Exposed",
-    body: "But independence comes with a price. Britain has decided to split the land in two: a new country called Pakistan for its Muslim-majority regions, and India for the rest. The decision is made by governments, not by the families who will have to live with it.",
+    body: "But independence comes with a price. Britain has decided to split the land in two: a new country called Pakistan for its Muslim-majority regions, and India for the rest. The decision is made by governments, not by the families who will have to live with it. The Indian Independence Act, passed by the British Parliament, directly caused the division into two countries (Britannica School, “Partition of India”; Congressional Research Service, IF13000).",
   },
   {
     heading: "An Idea Worth Killing For",
@@ -113,7 +113,7 @@ const EPILOGUE_SLIDES = [
   {
     heading: "2025: Operation Sindoor",
     tag: "Revolution and Reflection · Mirror to Society",
-    body: "In May 2025, after a militant attack on tourists at Pahalgam in Jammu and Kashmir, India strikes targets inside Pakistan. The operation takes its name from sindoor, the red vermilion worn by married Hindu women — for the wives the attack suddenly widowed. Interpersonal violence becomes institutional retaliation becomes, again, a ceasefire within days. The pattern set in August 1947 repeats itself, smaller each time, never finished.",
+    body: "In April 2025, 26 civilians were killed in an attack on tourists in the Baisaran Valley near Pahalgam, Jammu and Kashmir (Al Jazeera, April 2025). India attributed the attack to terrorists and in May struck alleged terrorist targets inside Pakistan. The operation takes its name from sindoor, the red vermilion worn by married Hindu women — for the wives the attack suddenly widowed. Interpersonal violence becomes institutional retaliation becomes, again, a ceasefire within days. The pattern set in August 1947 repeats itself, smaller each time, never finished.",
   },
   {
     heading: "A Line That Hasn't Closed",
