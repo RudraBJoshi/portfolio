@@ -58,7 +58,7 @@ const INTRO_SLIDES = [
     heading: "A Line Is Drawn",
     date: "Mirpur Khas, August 1947",
     tag: "Institutional Oppression · Expose the Problem · The System Exposed",
-    body: "Independence comes with a price. The British have decided to split the land in two: Pakistan for the Muslim-majority regions, and India for the rest. Papa says governments made this decision, not the families who will have to live with it. The Indian Independence Act, passed by the British Parliament, directly caused the division into two countries (Wikipedia, “Partition of India”).",
+    body: "Independence comes with a price. The British have decided to split the land in two: Pakistan for the Muslim-majority regions, and India for the rest. Papa says governments made this decision, not the families who will have to live with it. The Indian Independence Act, passed by the British Parliament, directly caused the division into two countries (Khan, 2007).",
   },
   {
     heading: "An Idea Worth Killing For",
@@ -69,7 +69,7 @@ const INTRO_SLIDES = [
   {
     heading: "Sir Cyril Radcliffe",
     date: "Mirpur Khas, August 1947",
-    body: "Papa read in the newspaper that the border was drawn by a British lawyer who had never been east of Paris and was given about five weeks to draw the line (Wikipedia, “Cyril Radcliffe”). The line cuts through provinces, villages, and families almost overnight. Nobody asked us.",
+    body: "Papa read in the newspaper that the border was drawn by a British lawyer who had never been east of Paris and was given about five weeks to draw the line (Khan, 2007). The line cuts through provinces, villages, and families almost overnight. Nobody asked us.",
   },
   {
     heading: "Mirpur Khas",
@@ -79,7 +79,7 @@ const INTRO_SLIDES = [
   {
     heading: "The Largest Migration in History",
     date: "Mirpur Khas, August 1947",
-    body: "Papa says between 12 and 20 million people will be displaced along religious lines as the new border is drawn (Wikipedia, “Partition of India”). Hindus and Sikhs are moving toward India, and Muslims toward Pakistan. Many will not survive the journey.",
+    body: "Papa says millions of people will be displaced along religious lines as the new border is drawn (Khan, 2007; Talbot and Singh, 2009). Hindus and Sikhs are moving toward India, and Muslims toward Pakistan. Many will not survive the journey.",
   },
   {
     heading: "A Choice",
@@ -90,7 +90,7 @@ const INTRO_SLIDES = [
   {
     heading: "Not by Train",
     date: "Mirpur Khas, August 1947",
-    body: "The railway would be faster, but trains have become targets for violence from every side (Wikipedia, “1947 Amritsar train massacre”; Wikipedia, “1947 Kamoke train massacre”), and word is spreading about trains that never reach their destination. Papa won’t risk it. We will walk, joining a slow caravan of families leaving Sindh.",
+    body: "The railway would be faster, but trains have become targets for violence from every side (Talbot and Singh, 2009), and word is spreading about trains that never reach their destination. Papa won’t risk it. We will walk, joining a slow caravan of families leaving Sindh.",
   },
   {
     heading: "This Is Their Story",
@@ -106,25 +106,25 @@ const EPILOGUE_SLIDES = [
     heading: "1947: The First War",
     date: "1947",
     tag: "Revolution and Reflection · Mirror to Society",
-    body: "Only months after we crossed, India and Pakistan are at war over Kashmir, a princely state neither side will let go of (Wikipedia, “Indo-Pakistani war of 1947–1948”). The same two-nation idea that drew our line now draws soldiers to a mountain border. The violence of Partition did not end at the crossing. It became policy, then army, then war.",
+    body: "Only months after we crossed, India and Pakistan are at war over Kashmir, a princely state neither side will let go of (Ganguly, 2002). The same two-nation idea that drew our line now draws soldiers to a mountain border. The violence of Partition did not end at the crossing. It became policy, then army, then war.",
   },
   {
     heading: "1965: The Second War",
     date: "1965",
     tag: "Revolution and Reflection · Mirror to Society",
-    body: "Eighteen years later, the two countries are at war again, still over Kashmir and still over the same line. A UN ceasefire ends the fighting, and a peace agreement is signed in Tashkent, brokered by the Soviet Union (Wikipedia, “Tashkent Declaration”). It holds for a while, then it doesn’t. The idea that split a subcontinent into us and them has outlived the generation that walked through Partition.",
+    body: "Eighteen years later, the two countries are at war again, still over Kashmir and still over the same line. A UN ceasefire ends the fighting, and a peace agreement is signed in Tashkent, brokered by the Soviet Union (Ganguly, 2002). It holds for a while, then it doesn’t. The idea that split a subcontinent into us and them has outlived the generation that walked through Partition.",
   },
   {
     heading: "1999: Kargil",
     date: "1999",
     tag: "Revolution and Reflection · Mirror to Society",
-    body: "By 1999 both India and Pakistan possess nuclear weapons. That summer, fighting breaks out in the mountains above Kargil (Wikipedia, “Kargil War”). Ordinary soldiers, following orders, die over high, cold ground for a line drawn by people long dead. The ideology of 1947 is no longer even argued over. It has become simply how things are, worth any cost to defend.",
+    body: "By 1999 both India and Pakistan possess nuclear weapons. That summer, fighting breaks out in the mountains above Kargil (Ganguly, 2002). Ordinary soldiers, following orders, die over high, cold ground for a line drawn by people long dead. The ideology of 1947 is no longer even argued over. It has become simply how things are, worth any cost to defend.",
   },
   {
     heading: "2025: Operation Sindoor",
     date: "2025",
     tag: "Revolution and Reflection · Mirror to Society",
-    body: "In April 2025, 26 civilians were killed in an attack on tourists in the Baisaran Valley near Pahalgam, Jammu and Kashmir, where gunmen asked victims their religion before shooting them (Al Jazeera, April 23, 2025; France 24, April 30, 2025). India attributed the attack to terrorists and on May 7 struck alleged terrorist targets inside Pakistan (Wikipedia, “Operation Sindoor”; Congressional Research Service, IF13000). The operation takes its name from sindoor, the red vermilion worn by married Hindu women, for the wives the attack suddenly widowed. Violence becomes retaliation becomes, again, a ceasefire within days. The pattern set in August 1947 repeats itself, smaller each time, never finished.",
+    body: "In April 2025, 26 civilians were killed in an attack on tourists in the Baisaran Valley near Pahalgam, Jammu and Kashmir, where gunmen asked victims their religion before shooting them (Al Jazeera, April 23, 2025; France 24, April 30, 2025). India attributed the attack to terrorists and on May 7 struck alleged terrorist targets inside Pakistan (Al Jazeera, May 7, 2025; Congressional Research Service, IF13000). The operation takes its name from sindoor, the red vermilion worn by married Hindu women, for the wives the attack suddenly widowed. Violence becomes retaliation becomes, again, a ceasefire within days (Al Jazeera, May 10, 2025). The pattern set in August 1947 repeats itself, smaller each time, never finished.",
   },
   {
     heading: "A Line That Hasn't Closed",
@@ -136,19 +136,14 @@ const EPILOGUE_SLIDES = [
 ];
 
 const CITATIONS = [
-  "Encyclopaedia Britannica, School Edition. “Partition of India.” https://school.eb.com/levels/high/article/partition-of-India/640159",
   "Congressional Research Service. “India-Pakistan Conflict in Spring 2025,” IF13000, May 13, 2025. https://www.congress.gov/crs-product/IF13000",
-  "Wikipedia. “Partition of India.” https://en.wikipedia.org/wiki/Partition_of_India",
-  "Wikipedia. “Cyril Radcliffe.” https://en.wikipedia.org/wiki/Cyril_Radcliffe",
-  "Wikipedia. “Indo-Pakistani war of 1947–1948.” https://en.wikipedia.org/wiki/Indo-Pakistani_war_of_1947%E2%80%931948",
-  "Wikipedia. “Tashkent Declaration.” https://en.wikipedia.org/wiki/Tashkent_Declaration",
-  "Wikipedia. “Kargil War.” https://en.wikipedia.org/wiki/Kargil_War",
-  "Wikipedia. “Mirpur Khas.” https://en.wikipedia.org/wiki/Mirpur_Khas",
-  "Wikipedia. “1947 Amritsar train massacre.” https://en.wikipedia.org/wiki/1947_Amritsar_train_massacre",
-  "Wikipedia. “1947 Kamoke train massacre.” https://en.wikipedia.org/wiki/1947_Kamoke_train_massacre",
+  "Ganguly, Šumit. Conflict Unending: India-Pakistan Tensions since 1947. New York: Columbia University Press, 2002.",
+  "Khan, Yasmin. The Great Partition: The Making of India and Pakistan. New Haven: Yale University Press, 2007.",
+  "Talbot, Ian, and Gurharpal Singh. The Partition of India. Cambridge: Cambridge University Press, 2009.",
   "Al Jazeera. “‘Act of war’: What happened in Kashmir attack that killed 26 tourists?” April 23, 2025. https://www.aljazeera.com/news/2025/4/23/act-of-war-what-happened-in-kashmir-attack-that-killed-26-tourists",
+  "Al Jazeera. “Where did India hit Pakistan? Mapping Operation Sindoor and border strikes.” May 7, 2025. https://www.aljazeera.com/news/2025/5/7/where-did-india-hit-pakistan-mapping-operation-sindoor-and-border-strikes",
+  "Al Jazeera. “India and Pakistan agree to an immediate ceasefire after days of escalation.” May 10, 2025. https://www.aljazeera.com/news/2025/5/10/india-and-pakistan-agree-to-an-immediate-ceasefire-after-days-of-escalation",
   "France 24. “‘Are you a Hindu?’: Kashmir attack survivors say gunmen asked their religion before opening fire.” April 30, 2025. https://www.france24.com/en/asia-pacific/20250430-are-you-a-hindu-kashmir-attack-survivors-say-gunmen-asked-religion-before-opening-fire-pakistan-india",
-  "Wikipedia. “Operation Sindoor.” https://en.wikipedia.org/wiki/Operation_Sindoor",
   "Hiranandani, Veera. The Night Diary.",
 ];
 
