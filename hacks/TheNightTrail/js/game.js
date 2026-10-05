@@ -217,7 +217,6 @@ function depart() {
   }
 
   document.getElementById("trail-log").innerHTML = "";
-  document.getElementById("map-marker").className = `map-marker-${state.character.id}`;
   document.getElementById("screen-trail").classList.add("active");
   showScreen("screen-trail");
   document.getElementById("stats-leader").textContent = `Suresh's Family, seen through ${state.character.name}'s eyes (${state.character.difficulty})`;
@@ -361,7 +360,7 @@ function triggerTrainLootersEvent() {
   const event = {
     title: "The Last Train to Jodhpur",
     tag: "Breaking Point · Oppressive Action · 4 I's in Action",
-    analysis: "Even the last stretch is not safe. The looters show that the violence of the journey continues after the border, and that refugees are targets for those who exploit the disorder.",
+        analysis: "Power here belongs to mobs. Individuals act violently, but groups give them the power to harm others, and each side has been taught to hate the other. Trains heading into Pakistan are attacked by Hindus, and trains heading into India by Muslims. The violence is interpersonal in its act and ideological in its cause.",
     body: dadiAlive
       ? "At Barmer, the family boards a crowded train bound for Jodhpur, Dadi so weak now that Suresh and Amil have to lift her onto the car. The train lurches into motion, and word moves down the line: looters have been working trains like this one, stripping refugee families of whatever they still carry."
       : "At Barmer, what's left of the family boards a crowded train bound for Jodhpur. The train lurches into motion, and word moves down the line: looters have been working trains like this one, stripping refugee families of whatever they still carry.",
@@ -397,9 +396,28 @@ function triggerTrainLootersEvent() {
   showEventModal(event);
 }
 
+function makeMarkerHead(member, sizeClass) {
+  const head = document.createElement("div");
+  head.className = `marker-head ${sizeClass} face-${member.name.toLowerCase()}${member.health <= 0 ? " dead" : ""}`;
+  head.title = member.health <= 0 ? `${member.name} did not survive` : member.name;
+  return head;
+}
+
+function renderMapMarkerHeads() {
+  const marker = document.getElementById("map-marker");
+  marker.innerHTML = "";
+  const leader = state.party.find((m) => state.character && m.name === state.character.name);
+  if (leader) marker.appendChild(makeMarkerHead(leader, "marker-lead"));
+  const row = document.createElement("div");
+  row.className = "marker-followers";
+  state.party.filter((m) => m !== leader).forEach((m) => row.appendChild(makeMarkerHead(m, "marker-follower")));
+  marker.appendChild(row);
+}
+
 function updateMapMarker() {
   const marker = document.getElementById("map-marker");
   if (!marker) return;
+  renderMapMarkerHeads();
   const miles = Math.min(state.miles, TOTAL_MILES);
   let i = 0;
   while (i < MAP_WAYPOINTS.length - 2 && miles > MAP_WAYPOINTS[i + 1].miles) i++;
@@ -558,6 +576,17 @@ function jodhpurEndingBody(opening) {
 
 function endGame(won, message) {
   state.over = true;
+  const citations = document.getElementById("end-citations");
+  citations.innerHTML = "";
+  const heading = document.createElement("h4");
+  heading.textContent = "Citations";
+  const list = document.createElement("ol");
+  CITATIONS.forEach((entry) => {
+    const li = document.createElement("li");
+    li.textContent = entry;
+    list.appendChild(li);
+  });
+  citations.append(heading, list);
   document.getElementById("end-tag").textContent = won ? "Resistance & Revolution · Taking Action/Resistance/Healing · Revolution and Reflection · Mirror to Society" : "";
   document.getElementById("end-title").textContent = won ? "A New Home" : "The Journey Ends Here";
   document.getElementById("end-body").textContent = message;
@@ -616,6 +645,7 @@ function renderActiveSlide() {
   const slide = activeSlideDeck[slideIndex];
   document.getElementById("intro-tag").textContent = slide.tag || "";
   document.getElementById("intro-heading").textContent = slide.heading;
+  document.getElementById("intro-diary").textContent = slide.date ? `Nisha’s Diary · ${slide.date}` : "";
   document.getElementById("intro-body").textContent = slide.body;
   document.getElementById("intro-analysis").textContent = slide.analysis ? `Literary analysis: ${slide.analysis}` : "";
   document.getElementById("intro-progress").textContent = `${slideIndex + 1} / ${activeSlideDeck.length}`;
@@ -652,14 +682,6 @@ document.getElementById("btn-start").addEventListener("click", () => {
 document.getElementById("intro-skip-tutorial").addEventListener("click", () => {
   setCookie(TUTORIAL_SEEN_COOKIE, "1", 365);
   enterIntroDeck();
-});
-
-document.getElementById("btn-sources").addEventListener("click", () => {
-  activeSlideDeck = SOURCE_SLIDES;
-  slideDeckMode = "sources";
-  slideIndex = 0;
-  renderActiveSlide();
-  showScreen("screen-intro");
 });
 
 document.getElementById("btn-epilogue").addEventListener("click", () => {

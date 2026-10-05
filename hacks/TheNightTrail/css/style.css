@@ -199,39 +199,79 @@ body:has(#screen-outfit.active) #title-bg {
 
 .intro-wrap {
   display: flex;
-  gap: 32px;
-  flex-wrap: wrap;
-  align-items: stretch;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   min-height: 0;
   max-height: 100%;
 }
 
-#intro-map {
-  flex: 1 1 380px;
-  max-width: 560px;
-  width: 100%;
-  height: auto;
-  max-height: 100%;
-  object-fit: contain;
-  border-radius: 12px;
-  border: 1px solid var(--panel-border);
-  align-self: center;
+.intro-book {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: min(1080px, 100%);
+  height: min(520px, 70vh);
+  border-radius: 6px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
+  position: relative;
 }
 
-.intro-panel {
-  flex: 1 1 380px;
-  background: var(--panel);
-  border: 1px solid var(--panel-border);
-  border-radius: 12px;
-  padding: clamp(20px, 3vw, 44px);
+.intro-book::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 36px;
+  transform: translateX(-50%);
+  background: linear-gradient(to right, rgba(60, 40, 15, 0), rgba(60, 40, 15, 0.35), rgba(60, 40, 15, 0));
+  pointer-events: none;
+}
+
+.book-page {
+  background: #f3e7cc;
+  color: #2e2112;
+  padding: clamp(20px, 3vw, 40px);
   display: flex;
   flex-direction: column;
   justify-content: center;
   min-height: 0;
   max-height: 100%;
-  overflow-y: auto;
+  overflow: hidden;
 }
+
+.book-page-left {
+  background: linear-gradient(to right, #e6d4ab, #f3e7cc);
+  border-radius: 6px 0 0 6px;
+}
+
+.book-page-right {
+  background: linear-gradient(to left, #e6d4ab, #f3e7cc);
+  border-radius: 0 6px 6px 0;
+}
+
+.book-page h2 {
+  color: #3b2a14;
+}
+
+.book-page .study-tag {
+  color: #6b4a12;
+  border-color: #b08a3e;
+  background: rgba(176, 138, 62, 0.14);
+}
+
+.book-page .analysis-note {
+  color: #5a4220;
+  border-left-color: #b08a3e;
+}
+
+.book-page .intro-actions button {
+  margin-top: 0;
+}
+
+
+
+
 
 .intro-progress {
   color: var(--muted);
@@ -253,17 +293,35 @@ body:has(#screen-outfit.active) #title-bg {
   display: none;
 }
 
-.intro-panel #intro-body {
+.diary-date {
+  font-style: italic;
+  font-size: 0.85rem;
+  color: #8a5a1f;
+  margin: 0 0 4px;
+}
+
+.diary-date:empty {
+  display: none;
+}
+
+.book-page #intro-body {
+  font-family: Georgia, "Times New Roman", serif;
+  line-height: 1.6;
+  font-size: 0.95rem;
+  overflow-wrap: break-word;
+}
+
+.book-page #intro-body {
   white-space: pre-line;
 }
 
-.intro-panel h2 {
+.book-page h2 {
   margin: 0 0 16px;
-  color: var(--accent);
+  color: #3b2a14;
   font-size: clamp(1.6rem, 1.6vw + 1.1rem, 2.4rem);
 }
 
-.intro-panel p:not(.intro-progress) {
+.book-page p:not(.intro-progress) {
   font-size: clamp(1.05rem, 0.4vw + 0.95rem, 1.3rem);
   line-height: 1.6;
 }
@@ -523,9 +581,9 @@ input[type="text"] {
   position: relative;
   flex: 0 0 auto;
   width: 100%;
-  max-width: 420px;
-  aspect-ratio: 1190 / 904;
-  max-height: 28vh;
+  max-width: 760px;
+  aspect-ratio: 792 / 320;
+  max-height: 40vh;
   margin: 0 auto;
   line-height: 0;
   border-radius: 10px;
@@ -543,16 +601,70 @@ input[type="text"] {
 
 #map-marker {
   position: absolute;
-  width: 44px;
-  height: 44px;
-  background-color: transparent;
-  mix-blend-mode: multiply;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  transform: translate(-50%, -100%);
+  transition: left 0.6s ease, top 0.6s ease;
+}
+
+#map-marker .marker-head {
+  position: relative;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   image-rendering: pixelated;
-  transform: translate(-50%, -50%);
-  transition: left 0.6s ease, top 0.6s ease;
+  mix-blend-mode: multiply;
+}
+
+#map-marker .marker-lead {
+  width: 40px;
+  height: 40px;
+}
+
+#map-marker .marker-followers {
+  display: flex;
+  gap: 2px;
+}
+
+#map-marker .marker-follower {
+  width: 18px;
+  height: 18px;
+}
+
+#map-marker .marker-head.dead::after {
+  content: "✕";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #e53935;
+  font-weight: bold;
+  text-shadow: 0 0 3px #fff, 0 0 3px #fff;
+}
+
+#map-marker .marker-lead.dead::after {
+  font-size: 30px;
+}
+
+#map-marker .marker-follower.dead::after {
+  font-size: 15px;
+}
+
+#map-marker::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -4px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ffd166;
+  border: 1px solid #3a2a00;
+  transform: translateX(-50%);
+  mix-blend-mode: normal;
 }
 
 .face {
@@ -576,10 +688,6 @@ input[type="text"] {
 .face-amil { background-image: url(../images/Amil.png); }
 .face-dadi { background-image: url(../images/Dadi.png); }
 
-.map-marker-suresh { background-image: url(../images/Papa.png); }
-.map-marker-nisha { background-image: url(../images/Nisha.png); }
-.map-marker-amil { background-image: url(../images/Amil.png); }
-.map-marker-dadi { background-image: url(../images/Dadi.png); }
 
 #trail-log {
   background: var(--panel);
@@ -698,6 +806,29 @@ input[type="text"] {
   flex-shrink: 1;
 }
 
+#end-citations {
+  width: 100%;
+  max-width: 640px;
+  max-height: 30vh;
+  overflow-y: auto;
+  margin: 0 auto 16px;
+  text-align: left;
+  font-size: 0.72rem;
+  color: var(--muted);
+  flex-shrink: 1;
+}
+
+#end-citations h4 {
+  font-size: 0.8rem;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+
+#end-citations li {
+  overflow-wrap: anywhere;
+  margin-bottom: 4px;
+}
+
 #end-actions {
   display: flex;
   flex-wrap: wrap;
@@ -750,17 +881,31 @@ input[type="text"] {
     max-height: 16vh;
   }
 
-  .intro-wrap {
-    flex-direction: column;
-    flex-wrap: nowrap;
+  .intro-book {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    height: min(640px, 86vh);
   }
 
-  #intro-map {
-    flex: 0 0 auto;
-    max-height: 30vh;
+  .intro-book::after {
+    display: none;
   }
 
-  .intro-panel {
+  .book-page-left {
+    border-radius: 6px 6px 0 0;
+  }
+
+  .book-page-right {
+    border-radius: 0 0 6px 6px;
+  }
+
+
+  .book-page #intro-body {
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+
+  .book-page {
     flex: 1 1 auto;
   }
 }

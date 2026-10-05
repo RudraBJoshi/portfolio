@@ -23,22 +23,25 @@ search_exclude: true
     <p class="tagline">Mirpur Khas, August 1947. Leave before the roads close for good.</p>
     <p class="tagline" style="font-size:0.85rem; max-width:520px; margin:0 auto 28px;">A short, fictionalized journey inspired by the 1947 Partition of India and Veera Hiranandani's novel <em>The Night Diary</em>, following the doctor Suresh, his mother Dadi, and his twin children Amil and Nisha as they cross the Thar Desert by night toward a new home across the border.</p>
     <button id="btn-start">Start the Journey</button>
-    <button id="btn-sources" class="secondary-button">Sources &amp; Research</button>
   </section>
 
   <section id="screen-intro" class="screen">
     <div class="intro-wrap">
-      <img src="{{ site.baseurl }}/hacks/TheNightTrail/images/map.png" alt="Map of the 1947 India-Pakistan partition border" id="intro-map">
-      <div class="intro-panel">
-        <p class="intro-progress" id="intro-progress"></p>
-        <span id="intro-tag" class="study-tag"></span>
-        <h2 id="intro-heading"></h2>
-        <p id="intro-body"></p>
-        <p id="intro-analysis" class="analysis-note"></p>
-        <div class="intro-actions">
-          <button id="intro-back" type="button">Back</button>
-          <button id="intro-skip-tutorial" type="button" class="secondary-button" style="display:none;">Skip Tutorial</button>
-          <button id="intro-next" type="button">Continue</button>
+      <div class="intro-book">
+        <div class="book-page book-page-left">
+          <p class="intro-progress" id="intro-progress"></p>
+          <span id="intro-tag" class="study-tag"></span>
+          <p id="intro-diary" class="diary-date"></p>
+          <h2 id="intro-heading"></h2>
+        </div>
+        <div class="book-page book-page-right">
+          <p id="intro-body"></p>
+          <p id="intro-analysis" class="analysis-note"></p>
+          <div class="intro-actions">
+            <button id="intro-back" type="button">Back</button>
+            <button id="intro-skip-tutorial" type="button" class="secondary-button" style="display:none;">Skip Tutorial</button>
+            <button id="intro-next" type="button">Continue</button>
+          </div>
         </div>
       </div>
     </div>
@@ -74,7 +77,7 @@ search_exclude: true
 
     <div id="trail-main">
       <div id="map-wrap">
-        <img src="{{ site.baseurl }}/hacks/TheNightTrail/images/map.png" alt="Map of the route from Mirpur Khas to Jodhpur, 1947" id="trail-map">
+        <img src="{{ site.baseurl }}/hacks/TheNightTrail/images/route.png" alt="Map of the route from Mirpur Khas to Jodhpur, 1947" id="trail-map">
         <div id="map-marker" title="Your family"></div>
       </div>
       <div id="trail-log"></div>
@@ -104,6 +107,7 @@ search_exclude: true
     <p id="end-body"></p>
     <p id="end-helped" class="tagline"></p>
     <ul id="end-roster"></ul>
+    <div id="end-citations"></div>
     <div id="end-actions">
       <button id="btn-epilogue" class="secondary-button">What Came After</button>
       <button id="btn-restart">Try Again</button>

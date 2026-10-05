@@ -51,42 +51,50 @@ const CHARACTERS = [
 const INTRO_SLIDES = [
   {
     heading: "August 1947",
-    body: "For nearly 200 years, the British ruled India. Now, after decades of struggle, that rule is finally ending.",
+    date: "Mirpur Khas, August 1947",
+    body: "For nearly two hundred years the British have ruled India. Now, after so many years of struggle, that rule is finally ending. Papa says it should feel like a celebration. Mostly it feels like something is about to break.",
   },
   {
     heading: "A Line Is Drawn",
+    date: "Mirpur Khas, August 1947",
     tag: "Institutional Oppression · Expose the Problem · The System Exposed",
-    body: "But independence comes with a price. Britain has decided to split the land in two: a new country called Pakistan for its Muslim-majority regions, and India for the rest. The decision is made by governments, not by the families who will have to live with it. The Indian Independence Act, passed by the British Parliament, directly caused the division into two countries (Britannica School, “Partition of India”; Congressional Research Service, IF13000).",
+    body: "Independence comes with a price. The British have decided to split the land in two: Pakistan for the Muslim-majority regions, and India for the rest. Papa says governments made this decision, not the families who will have to live with it. The Indian Independence Act, passed by the British Parliament, directly caused the division into two countries (Britannica School, “Partition of India”; Congressional Research Service, IF13000).",
   },
   {
     heading: "An Idea Worth Killing For",
+    date: "Mirpur Khas, August 1947",
     tag: "Ideological Oppression · The System Exposed",
-    body: "Behind the new line is a belief: that Hindus, Sikhs, and Muslims cannot safely share one country, that each needs a nation of its own, with no room for the others. In the weeks around independence, that idea turns neighbors into enemies. In mixed villages and marginalized districts along the new border, Hindus, Sikhs, and Muslims begin killing each other for what they are, not for anything they've done.",
+    body: "Papa says the idea behind the line is simple: Hindus, Sikhs, and Muslims cannot safely share one country, so each needs a nation of its own with no room for the others. Our neighbours are turning into enemies. In the villages and poor districts along the new border, people are killing each other for what they are, not for anything they have done.",
   },
   {
     heading: "Sir Cyril Radcliffe",
-    body: "The border is drawn by a British lawyer who had never set foot in India before this year, working from maps in just a few weeks. It cuts through provinces, villages, and families almost overnight.",
+    date: "Mirpur Khas, August 1947",
+    body: "Papa read in the newspaper that the border was drawn by a British lawyer who had never set foot in India before this year. He worked from maps, in just a few weeks. The line cuts through provinces, villages, and families almost overnight. Nobody asked us.",
   },
   {
     heading: "Mirpur Khas",
-    body: "Mirpur Khas, in the province of Sindh, falls on the Pakistan side of the new line. For Suresh's Hindu family, the only home they have ever known now belongs to a different country.",
+    date: "Mirpur Khas, August 1947",
+    body: "Mirpur Khas is in Sindh, and Sindh is now on the Pakistan side of the new line. This is the only home I have ever known, and now it belongs to a different country.",
   },
   {
     heading: "The Largest Migration in History",
-    body: "In the weeks around independence, an estimated 15 million people will cross the new border in both directions, Hindus and Sikhs moving toward India, Muslims moving toward Pakistan. Many will not survive the journey.",
+    date: "Mirpur Khas, August 1947",
+    body: "Papa says about 15 million people will cross the new border in both directions. Hindus and Sikhs are moving toward India, and Muslims toward Pakistan. Many will not survive the journey.",
   },
   {
     heading: "A Choice",
+    date: "Mirpur Khas, August 1947",
     tag: "Breaking Point",
-    body: "Suresh, the town's doctor, must decide: stay and hope the danger passes, or take his mother and his twin children across the Thar Desert toward safety in India. There is no version of this choice that feels safe. Staying is a risk. Leaving home may be a bigger one.",
+    body: "Papa has to decide: stay and hope the danger passes, or take Dadi, Amil, and me across the Thar Desert toward India. There is no choice that feels safe. Staying is a risk. Leaving home may be a bigger one.",
   },
   {
     heading: "Not by Train",
-    body: "The railway would be faster. But trains have become a target for violence from every side, and word is spreading of trains that never reach their destination safely. Suresh won't risk it, the family will go on foot instead, joining a slower caravan of other families making the same journey out of Sindh.",
+    date: "Mirpur Khas, August 1947",
+    body: "The railway would be faster, but trains have become targets for violence from every side, and word is spreading about trains that never reach their destination. Papa won’t risk it. We will walk, joining a slow caravan of families leaving Sindh.",
   },
   {
     heading: "This Is Their Story",
-    body: "A short, fictionalized journey inspired by these events and by Veera Hiranandani's novel The Night Diary.",
+    body: "This is a short, fictional story about one family’s journey, inspired by these events and by Veera Hiranandani’s novel The Night Diary. The journey that follows is seen through the eyes of the family member you choose.",
   },
 ];
 
@@ -96,54 +104,44 @@ const INTRO_SLIDES = [
 const EPILOGUE_SLIDES = [
   {
     heading: "1947: The First War",
+    date: "1947",
     tag: "Revolution and Reflection · Mirror to Society",
-    body: "Within months of independence, India and Pakistan are already at war, over Kashmir, a princely state neither side will let go of (Britannica, “Kashmir”). The same two-nation ideology that drew the line through Suresh's family's road now draws soldiers to a mountain border. The violence of Partition doesn't end at the crossing; it becomes policy, becomes army, becomes the first of several wars the two countries will fight across the rest of the century.",
+    body: "Only months after we crossed, India and Pakistan are at war over Kashmir, a princely state neither side will let go of (Britannica, “Kashmir”). The same two-nation idea that drew our line now draws soldiers to a mountain border. The violence of Partition did not end at the crossing. It became policy, then army, then war.",
   },
   {
     heading: "1965: The Second War",
+    date: "1965",
     tag: "Revolution and Reflection · Mirror to Society",
-    body: "Eighteen years later, the two countries go to war again, still over Kashmir, still over the same line. A ceasefire is brokered and a peace agreement signed in the Soviet city of Tashkent (Britannica, “Tashkent Declaration”), paper that holds for a while, then doesn't. The ideology that split a subcontinent into us and them has, by now, outlived the generation that walked through Partition itself.",
+    body: "Eighteen years later, the two countries are at war again, still over Kashmir and still over the same line. A ceasefire is brokered, and a peace agreement is signed in Tashkent (Britannica, “Tashkent Declaration”). It holds for a while, then it doesn’t. The idea that split a subcontinent into us and them has outlived the generation that walked through Partition.",
   },
   {
     heading: "1999: Kargil",
+    date: "1999",
     tag: "Revolution and Reflection · Mirror to Society",
-    body: "By 1999, both India and Pakistan possess nuclear weapons. That summer, fighting breaks out in the mountains above Kargil, in Indian-administered Kashmir (Britannica, “Kargil War”), ordinary soldiers, following institutional orders, killing and dying over high, cold ground for a line drawn by people long since dead. More than fifty years on, the ideology of 1947 is no longer even argued over; it has been internalized as simply how things are, worth any cost to defend.",
+    body: "By 1999 both India and Pakistan possess nuclear weapons. That summer, fighting breaks out in the mountains above Kargil (Britannica, “Kargil War”). Ordinary soldiers, following orders, die over high, cold ground for a line drawn by people long dead. The ideology of 1947 is no longer even argued over. It has become simply how things are, worth any cost to defend.",
   },
   {
     heading: "2025: Operation Sindoor",
+    date: "2025",
     tag: "Revolution and Reflection · Mirror to Society",
-    body: "In April 2025, 26 civilians were killed in an attack on tourists in the Baisaran Valley near Pahalgam, Jammu and Kashmir (Al Jazeera, April 2025). India attributed the attack to terrorists and in May struck alleged terrorist targets inside Pakistan. The operation takes its name from sindoor, the red vermilion worn by married Hindu women, for the wives the attack suddenly widowed. Interpersonal violence becomes institutional retaliation becomes, again, a ceasefire within days. The pattern set in August 1947 repeats itself, smaller each time, never finished.",
+    body: "In April 2025, 26 civilians were killed in an attack on tourists in the Baisaran Valley near Pahalgam, Jammu and Kashmir (Al Jazeera, April 2025). India attributed the attack to terrorists, and in May it struck alleged terrorist targets inside Pakistan. The operation takes its name from sindoor, the red vermilion worn by married Hindu women, for the wives the attack suddenly widowed. Violence becomes retaliation becomes, again, a ceasefire within days. The pattern set in August 1947 repeats itself, smaller each time, never finished.",
   },
   {
     heading: "A Line That Hasn't Closed",
+    date: "Years later",
     tag: "Revolution and Reflection · Mirror to Society",
-    body: "More than seventy-five years after Partition, the border that sent Suresh's family walking into the Thar Desert by night is still being fought over, still being crossed, still ending lives on both sides. The ideology that justified one line has justified every war since. Nisha's story is one family's, fictional and small. In one form or another, it happened to millions, and the oppression Partition set in motion, ideological, institutional, interpersonal, and the quiet internalized kind that outlives the headlines, never fully closed the line it drew.",
+    body: "More than seventy-five years after Partition, the border that sent us walking into the Thar Desert by night is still being fought over, still being crossed, still ending lives on both sides. The ideology that justified one line has justified every war since. This is one family’s story, fictional and small. In one form or another, it happened to millions, and the oppression Partition set in motion, ideological, institutional, interpersonal, and the quiet internalized kind, never fully closed the line it drew.",
   },
 ];
 
-// Shown from the title screen. Sources are listed so the historical claims in the
-// game can be checked against the cited material.
-const SOURCE_SLIDES = [
-  {
-    heading: "Sources & Research",
-    body: "The historical claims in this game are drawn from the sources below. Each slide names where its information comes from.",
-  },
-  {
-    heading: "The Partition of India",
-    body: "The Indian Independence Act, instituted by the British Parliament, directly caused the division of India into two countries: India and Pakistan. This historical event is called the partition of India.\n\nSources: Encyclopaedia Britannica, School Edition, \"Partition of India\" (https://school.eb.com/levels/high/article/partition-of-India/640159) · Congressional Research Service, IF13000 (https://www.congress.gov/crs-product/IF13000)",
-  },
-  {
-    heading: "The Wars After Partition",
-    body: "1947 to 1948 war over Kashmir: Britannica, “Kashmir,” https://www.britannica.com/place/Kashmir-region-Indian-subcontinent/The-Kashmir-problem\n\n1965 war and the Tashkent Declaration: Britannica, “Tashkent Declaration (1966),” https://www.britannica.com/event/Tashkent-Agreement\n\n1999 Kargil War: Britannica, “Kargil War (1999),” https://www.britannica.com/event/Kargil-War",
-  },
-  {
-    heading: "Pahalgam and Operation Sindoor, 2025",
-    body: "On 22 April 2025, 26 civilians were killed in an attack on tourists in the Baisaran Valley near Pahalgam, Jammu and Kashmir. The attackers targeted Hindu tourists, and the victims also included a Christian tourist and a local Muslim pony operator. India attributed the attack to terrorists and in May struck alleged terrorist targets inside Pakistan. Pakistan returned fire, and both sides caused casualties with missile and drone attacks.\n\nSource: Al Jazeera, \"'Act of war': What happened in Kashmir attack that killed 26 tourists?\" (https://www.aljazeera.com/news/2025/4/23/act-of-war-what-happened-in-kashmir-attack-that-killed-26-tourists)",
-  },
-  {
-    heading: "Why It Still Matters",
-    body: "The Muslim-Hindu divide that drove the violence of 1947 is still shown in the India-Pakistan divide, which continues today. India and Pakistan are rival countries and have had many conflicts over the years, particularly over Kashmir, a mountainous region that both India and Pakistan have laid claim to.",
-  },
+const CITATIONS = [
+  "Encyclopaedia Britannica, School Edition. “Partition of India.” https://school.eb.com/levels/high/article/partition-of-India/640159",
+  "Congressional Research Service. IF13000. https://www.congress.gov/crs-product/IF13000",
+  "Encyclopaedia Britannica. “Kashmir.” https://www.britannica.com/place/Kashmir-region-Indian-subcontinent/The-Kashmir-problem",
+  "Encyclopaedia Britannica. “Tashkent Declaration (1966).” https://www.britannica.com/event/Tashkent-Agreement",
+  "Encyclopaedia Britannica. “Kargil War (1999).” https://www.britannica.com/event/Kargil-War",
+  "Al Jazeera. “‘Act of war’: What happened in Kashmir attack that killed 26 tourists?” April 23, 2025. https://www.aljazeera.com/news/2025/4/23/act-of-war-what-happened-in-kashmir-attack-that-killed-26-tourists",
+  "Hiranandani, Veera. The Night Diary.",
 ];
 
 const SUPPLY_ITEMS = [
@@ -298,6 +296,7 @@ const RANDOM_EVENTS = [
   {
     id: "waterPumpStranger",
     title: "The Man at the Water Pump",
+        analysis: "Helping others resists an order that relies on division. Suresh gives water to a man too weak to help himself, whatever his religion, and asks nothing in return. The choice refuses the idea that some people do not deserve help.",
     body: "An old man sits slumped against the pump, too weak to work the handle himself. No one else has stopped.",
     choices: [
       {
@@ -438,7 +437,7 @@ const KNIFE_EVENT = {
       },
     },
   ],
-    analysis: "The attacker’s revenge is part of a cycle the book describes: “So a Hindu family kills a Muslim family, who kills a Hindu family, who kills a Muslim family. It would never end unless someone ended it. But who was going to do that?” (Hiranandani 171). Nisha’s silence is internalized oppression: she is targeted for her religion, cannot speak or resist, and begins to believe her family would be better off without her.",
+        analysis: "Power and bias run through this attack. The attacker lost his family to violence, and his grief has hardened into a belief that every Hindu is a murderer, which gives him a reason to strike a girl who has done nothing. The book describes the cycle: “So a Hindu family kills a Muslim family, who kills a Hindu family, who kills a Muslim family. It would never end unless someone ended it. But who was going to do that?” (Hiranandani 171). Nisha has no power to speak or resist, so her fear turns inward: internalized oppression, where she begins to believe her family would be better off without her. Suresh later gives the attacker back his knife and topi, helping a man whose hatred is the source of the danger.",
 };
 
 // Two small, free camp rests along the way, not Rashid Uncle's, no gift, no
@@ -453,10 +452,10 @@ const CAMP_REST_HEAL = 5;
 
 // Shown in the trail log as the family reaches each place, rather than on the
 // intro slides, so the analysis sits alongside the journey it describes.
-const DEPARTURE_ANALYSIS = "The journey begins at the breaking point. Mirpur Khas now belongs to another country, and Nisha’s grief over leaving her home and belongings is where the book’s emotional weight sits.";
+const DEPARTURE_ANALYSIS = "The power here sits with governments far away. The family’s home now belongs to another country because of a decision they never made, and Nisha’s grief over leaving her home and belongings shows what that power costs the people it touches.";
 const LANDMARK_ANALYSIS = {
-  "Umerkot": "Even here the idea travels with people. At Amil’s school, “all the Hindu boys chanted on one side and the Muslim boys chanted on the other” (Hiranandani 32).",
-  "Munabao, the border": "The border is where the government’s decision becomes real. “They left when the men came with fire to get all the Hindus and Sikhs out of the village” (Hiranandani 212). Crossing the line is the institutional split made into a single family’s night.",
+    "Umerkot": "Bias travels with people, not only with governments. At Amil’s school, the boys split by religion and chant against each other: “all the Hindu boys chanted on one side and the Muslim boys chanted on the other” (Hiranandani 32). Children learn to see the other side as the enemy, which is how an ideology that started at the top reaches every street.",
+    "Munabao, the border": "Power here is institutional. The government’s line becomes a crossing where ordinary people carry the cost: “They left when the men came with fire to get all the Hindus and Sikhs out of the village” (Hiranandani 212). The bias is written into the decision itself, which sorts people by the religion of the majority in each new country.",
 };
 
 const WATER_PUMP_MILE = 75; // halfway between Mirpur Khas (0) and Umerkot (150)
@@ -481,7 +480,7 @@ const WATER_PUMP_EVENT = {
       },
     },
   ],
-    analysis: "When resources run out, neighbours compete for them. Suresh’s choice to stay out of the fight is a small refusal of that pressure, and the game gives it no guaranteed reward.",
+        analysis: "When scarce water is divided, power goes to whoever pushes hardest. The fight at the pump shows how scarcity turns neighbours into rivals, and how a system that leaves families without safe water pushes people toward violence.",
 };
 
 const TRAIN_LANDMARK_NAMES = ["Khokhrapar", "Munabao, the border"];
@@ -516,19 +515,16 @@ const TRAIN_EVENT = {
       },
     },
   ],
-    analysis: "The train is the one escape the family cannot be sure of. Its risk reflects the institutional failure of the period: refugees had little protection, so every route was dangerous.",
+        analysis: "Power over the route belongs to whoever controls the train. Refugees had little protection, so every route was dangerous, and the risk falls hardest on families with no choice but to travel.",
 };
 
-// Pixel positions are keyed to the game's (pacing-adjusted) mile markers so the
-// dot still lands on each landmark exactly when it's announced in the log, but
-// Khokhrapar/Munabao/Barmer are placed along the Umerkot-to-Jodhpur line using
-// their real relative distances (Umerkot->Khokhrapar ~70mi, ->Munabao ~75mi,
-// ->Barmer ~140mi, ->Jodhpur ~275mi), not the rebalanced in-game mile gaps.
+// Positions are fractions of route.png, placed along its dotted route in
+// proportion to each landmark's place in the journey.
 const MAP_WAYPOINTS = [
-  { miles: 0,   x: 0.252, y: 0.418 }, // Mirpur Khas
-  { miles: 150, x: 0.294, y: 0.400 }, // Umerkot
-  { miles: 165, x: 0.318, y: 0.389 }, // Khokhrapar
-  { miles: 170, x: 0.320, y: 0.388 }, // Munabao, the border
-  { miles: 220, x: 0.342, y: 0.378 }, // Barmer
-  { miles: TOTAL_MILES, x: 0.388, y: 0.356 }, // Jodhpur
+  { miles: 0,   x: 0.210, y: 0.531 }, // Mirpur Khas
+  { miles: 150, x: 0.304, y: 0.588 }, // Umerkot
+  { miles: 165, x: 0.395, y: 0.456 }, // Khokhrapar
+  { miles: 170, x: 0.404, y: 0.447 }, // Munabao, the border
+  { miles: 220, x: 0.487, y: 0.391 }, // Barmer
+  { miles: TOTAL_MILES, x: 0.663, y: 0.341 }, // Jodhpur
 ];
