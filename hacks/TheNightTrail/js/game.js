@@ -395,7 +395,7 @@ function triggerTrainLootersEvent() {
   const event = {
     title: "The Last Train to Jodhpur",
     tag: "Breaking Point · Oppressive Action · 4 I's in Action",
-        analysis: "Power here belongs to mobs. Individuals act violently, but groups give them the power to harm others, and each side has been taught to hate the other. Trains heading into Pakistan are attacked by Hindus, and trains heading into India by Muslims. The violence is interpersonal in its act and ideological in its cause.",
+        analysis: "Power here belongs to mobs. Individuals act violently, but groups give them the power to harm others, and each side has been taught to hate the other. Trains in both directions came under attack. The violence is interpersonal in its act and ideological in its cause.",
     body: dadiAlive
       ? "At Barmer, the family boards a crowded train bound for Jodhpur, Dadi so weak now that Suresh and Amil have to lift her onto the car. The train lurches into motion, and word moves down the line: looters have been working trains like this one, stripping refugee families of whatever they still carry."
       : "At Barmer, what's left of the family boards a crowded train bound for Jodhpur. The train lurches into motion, and word moves down the line: looters have been working trains like this one, stripping refugee families of whatever they still carry.",
